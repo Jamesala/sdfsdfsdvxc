@@ -1,0 +1,1 @@
+{"success":false,"errors":[{"type":"field","value":"tagi","msg":"Tytuł musi mieć od 5 do 100 znaków","path":"title","location":"body"}],"message":"Popraw błędy w formularzu"}

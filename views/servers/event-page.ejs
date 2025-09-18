@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+  <title><%= event.name %> | Wydarzenie - Discordzik</title>
+  <link rel="icon" href="/assets/img/favicon.ico" type="image/x-icon">
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+  <meta name="google-adsense-account" content="ca-pub-9136474966764887">
+  <meta name="title" content="<%= event.name %> | Wydarzenie">
+  <meta name="description" content="<%= event.description || 'Brak opisu' %>">
+  <meta name="theme-color" content="#5024f3">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="<%= config.website.url || '' %>/server/<%= serverdata.serverID %>/event/<%= event.id %>">
+  <meta property="og:title" content="<%= event.name %> | Wydarzenie">
+  <meta property="og:description" content="<%= event.description || 'Brak opisu' %>">
+  <meta property="og:image" content="<%= event.imageURL %>">
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:title" content="<%= event.name %> | Wydarzenie">
+  <meta property="twitter:description" content="<%= event.description || 'Brak opisu' %>">
+  <meta property="twitter:image" content="<%= event.imageURL %>">
+  <%- include('../partials/head') %>
+  <style>
+    .event-image {
+      max-height: 400px;
+      width: auto;
+      object-fit: contain;
+      margin: 0 auto;
+      display: block;
+      border-radius: 8px;
+    }
+    .event-header {
+      margin-top: 80px;
+    }
+	#countdown {
+    font-weight: bold;
+    margin: 10px 0;
+    transition: all 0.3s ease;
+}
+  </style>
+</head>
+
+<body>
+  <%- include('../partials/spinner') %>
+  <main class="page-wrapper">
+    <%- include('../partials/header') %>
+    
+    <!-- Nagłówek wydarzenia -->
+    <section class="container event-header mb-4 pt-2 pb-lg-5">
+      <div class="row gy-4">
+        <div class="col-12">
+          <h1 class="display-4 text-center line-height">Wydarzenie</h1>
+          <p class="text-center text-muted">
+            <%= moment(event.startDate).format('DD.MM.YYYY, HH:mm') %> - 
+            <%= moment(event.endDate).format('DD.MM.YYYY, HH:mm') %>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Główna zawartość -->
+    <section class="container mb-5 pb-lg-5">
+      <div class="row gy-4">
+        <!-- Lewa kolumna - zdjęcie i opis -->
+        <div class="col-lg-8">
+          <div class="card shadow-sm">
+            <div class="card-body">
+              <% if (event.imageURL) { %>
+                <img src="<%= event.imageURL %>" class="event-image img-fluid mb-4" alt="<%= event.name %>" ">
+              <% } %>
+              
+              <h2 class="card-title mb-3 text-center"><%= event.name %></h2>
+              <div class="card-text text-center"><%= event.description || 'Brak opisu' %></div>
+			  <div id="countdown" class="text-center mt-2"></div>
+              
+              <div class="card-footer bg-transparent mt-4 px-0">
+                <div class="row">
+                  <div class="col-md-6 text-center">
+                    <p><strong>Data rozpoczęcia:</strong><br><span id="startDate"><%= moment(event.startDate).format('DD.MM.YYYY, HH:mm') %></span></p>
+                  </div>
+                  <div class="col-md-6 text-center">
+                    <p><strong>Data zakończenia:</strong><br><span id="endDate"><%= moment(event.endDate).format('DD.MM.YYYY, HH:mm') %></span></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Prawa kolumna - informacje dodatkowe -->
+        <div class="col-lg-4">
+          <div class="card shadow-sm mb-4">
+            <div class="card-body">
+              <h2 class="h5 card-title mb-3">Informacje o wydarzeniu</h2>
+              <div class="alert alert-info">
+                <p><strong>Serwer:</strong> 
+                  <% if (sbot && sbot.guilds && sbot.guilds.cache) { %>
+                    <%= sbot.guilds.cache.get(serverdata.serverID)?.name || serverdata.name || 'Unknown' %>
+                  <% } else { %>
+                    <%= serverdata.name || 'Unknown' %>
+                  <% } %>
+                </p>
+                <p><strong>ID wydarzenia:</strong> <%= event.id %></p>
+              </div>
+              
+              <div class="d-grid gap-2">
+                <a href="/server/<%= serverdata.serverID %>" class="btn btn-outline-primary">Powrót do serwera</a>
+                <% if (user && user.id === serverdata.ownerID) { %>
+                  <button class="btn btn-outline-danger" onclick="confirmDelete()">Usuń wydarzenie</button>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Funkcja do potwierdzenia usunięcia wydarzenia
+    function confirmDelete() {
+      if (confirm('Czy na pewno chcesz usunąć to wydarzenie? Ta akcja jest nieodwracalna.')) {
+        fetch(`/server/<%= serverdata.serverID %>/event/delete`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            eventId: '<%= event.id %>'
+          }),
+          credentials: 'include'
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            window.location.href = '/server/<%= serverdata.serverID %>';
+          } else {
+            alert('Wystąpił błąd podczas usuwania wydarzenia: ' + (data.error || 'Nieznany błąd'));
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Wystąpił błąd podczas komunikacji z serwerem');
+        });
+      }
+    }
+
+    // Sprawdzanie czy wydarzenie jest aktualne
+    document.addEventListener('DOMContentLoaded', function() {
+      const now = new Date();
+      const startDate = new Date('<%= event.startDate %>');
+      const endDate = new Date('<%= event.endDate %>');
+      
+      const eventStatus = document.createElement('div');
+      eventStatus.className = 'alert mt-3';
+      
+      if (now.getTime() < startDate.getTime()) {
+        eventStatus.classList.add('alert-warning');
+        eventStatus.textContent = 'Wydarzenie jeszcze się nie rozpoczęło';
+      } else if (now.getTime() >= startDate.getTime() && now.getTime() <= endDate.getTime()) {
+        eventStatus.classList.add('alert-success');
+        eventStatus.textContent = 'Wydarzenie trwa!';
+      } else {
+        eventStatus.classList.add('alert-secondary');
+        eventStatus.textContent = 'Wydarzenie zakończone';
+      }
+      
+      document.querySelector('.card-footer').appendChild(eventStatus);
+    });
+  </script>
+<script>
+// W sekcji <script> dodaj:
+function updateCountdown() {
+    const now = new Date();
+    const startDate = new Date('<%= event.startDate %>');
+    const endDate = new Date('<%= event.endDate %>');
+    
+    let diff, message;
+    
+    if (now < startDate) {
+        diff = startDate - now;
+        message = 'Do rozpoczęcia: ';
+    } else if (now < endDate) {
+        diff = endDate - now;
+        message = 'Do zakończenia: ';
+    } else {
+        return; // Wydarzenie zakończone
+    }
+    
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    
+    const countdownElement = document.getElementById('countdown');
+    if (countdownElement) {
+        countdownElement.textContent = message + `${days}d ${hours}h ${minutes}m`;
+    }
+}
+
+// Wywołaj na starcie i aktualizuj co minutę
+updateCountdown();
+setInterval(updateCountdown, 60000);
+</script>
+  <%- include('../partials/footer') %>
+</body>
+
+</html>

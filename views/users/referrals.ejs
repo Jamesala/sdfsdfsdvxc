@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<%- include('../partials/head') %>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<body>
+  <%- include('../partials/spinner') %>
+  <main class="page-wrapper border-bottom">
+    <%- include('../partials/header') %>
+
+    <section class="container pt-5">
+      <div class="row">
+
+        <!-- Sidebar (User info + Account menu) -->
+        <%- include('partials/aside') %>
+
+        <div class="col-md-8 offset-lg-1 pb-5 mb-2 mb-lg-4 pt-md-5 mt-n3 mt-md-0">
+          <div class="ps-md-3 ps-lg-0 mt-md-2 pt-md-4 pb-md-2">
+            <h1 class="h2 pt-xl-1 mb-3 pb-2 pb-lg-3">Program poleceń</h1>
+            <h2 class="h5 text-primary mb-4">Zdobywaj punkty za polecanie naszej strony</h2>
+
+<!-- Link polecający -->
+<div class="card border-0 shadow-sm mb-4">
+  <div class="card-body">
+    <h5 class="card-title">
+      <i class="fas fa-link me-2"></i>Twój link polecający
+    </h5>
+    <div class="input-group mb-3">
+      <input type="text" class="form-control" 
+            value="https://discordzik.pl/ref/<%= pdata.referralCode %>"
+            id="referralLink" readonly>
+      <button class="btn btn-outline-secondary" onclick="copyReferralLink()">
+        <i class="fas fa-copy"></i> Kopiuj
+      </button>
+    </div>
+    <p class="text-muted">Otrzymuj <%= pdata.partnerBonuses.pointsPerServer %> punktów za każdego użytkownika, który doda serwer przez Twój link.</p>
+    <div class="alert alert-warning mt-3">
+      <small>
+        <i class="fas fa-exclamation-triangle me-1"></i> Zabronione jest nadużywanie systemu, w tym tworzenie fałszywych kont lub serwerów w celu zdobycia punktów. Więcej na <a href="https://discordzik.pl/tos" target="_blank" class="alert-link">Warunki Korzystania z Usługi (ToS)</a>. 
+      </small>
+    </div>
+  </div>
+</div>
+
+            <!-- Statystyki -->
+            <div class="row mb-4">
+              <div class="col-md-6 mb-3">
+                <div class="card border-0 bg-success bg-opacity-10 h-100">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                      <div>
+                        <h6 class="text-success mb-1"><i class="fas fa-coins me-2"></i>Twoje punkty</h6>
+                        <h2 class="mb-0"><%= pdata.points %></h2>
+                      </div>
+                      <div class="icon-circle bg-success bg-opacity-25 text-success">
+                        <i class="fas fa-wallet"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="card border-0 bg-primary bg-opacity-10 h-100">
+                  <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                      <div>
+                        <h6 class="text-primary mb-1"><i class="fas fa-users me-2"></i>Liczba poleceń</h6>
+                        <h2 class="mb-0"><%= pdata.referralCount %></h2>
+                      </div>
+                      <div class="icon-circle bg-primary bg-opacity-25 text-primary">
+                        <i class="fas fa-user-plus"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+			
+<% 
+  const userTasks = pdata.userTasks || { 
+    youtubeSubscribed: false, 
+    discordJoined: false, 
+    sharedServer: false 
+  };
+  const partnerBonuses = pdata.partnerBonuses || {
+    pointsPerYoutube: 10,
+    pointsPerDiscord: 10
+  };
+%>
+
+<!-- Sekcja zadań -->
+<div class="card border-0 shadow-sm mb-4">
+  <div class="card-body">
+    <h5 class="card-title mb-3">
+      <i class="fas fa-tasks me-2"></i>Dodatkowe punkty
+    </h5>
+    
+    <div class="row g-3">
+      <!-- Zadanie 1: YouTube -->
+      <div class="col-md-6">
+        <div class="card h-100 border-0 <%= pdata.userTasks.youtubeSubscribed ? 'bg-success bg-opacity-10' : 'bg-light' %>">
+          <div class="card-body">
+            <div class="d-flex align-items-start">
+              <div class="icon-circle bg-danger text-white me-3 flex-shrink-0">
+                <i class="fab fa-youtube" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;"></i>
+              </div>
+              <div class="flex-grow-1">
+                <h6 class="mb-1">Subskrybuj YouTube</h6>
+                <p class="text-muted small">Odbierz <%= pdata.partnerBonuses.pointsPerYoutube %> punktów</p>
+                
+                <% if (pdata.userTasks.youtubeSubscribed) { %>
+                  <div class="alert alert-success p-2 mb-2">
+                    <small>
+                      <i class="fas fa-check-circle me-1"></i> 
+                      Zadanie już wykonane! Punkty zostały przyznane.
+                    </small>
+                  </div>
+                  <button class="btn btn-success w-100" disabled>
+                    <i class="fas fa-check me-1"></i> Wykonane
+                  </button>
+                <% } else { %>
+                  <div class="alert alert-info p-2 mb-2">
+                    <small>
+                      <i class="fas fa-info-circle me-1"></i> 
+                      Najpierw "Zasubskrybuj", a następnie "Odbierz punkty"
+                    </small>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <a href="https://www.youtube.com/@Discordzik?sub_confirmation=1" 
+                       target="_blank" 
+                       class="btn btn-sm btn-outline-danger"
+                       id="youtubeSubscribeBtn">
+                      <i class="fab fa-youtube me-1"></i> Subskrybuj
+                    </a>
+                    <button class="btn btn-sm btn-primary" 
+                            id="youtubeClaimBtn"
+                            disabled
+                            onclick="completeTask('youtubeSubscribed')">
+                      Odbierz punkty
+                    </button>
+                  </div>
+                  <small class="text-muted d-block mt-2" id="youtubeStatus"></small>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Zadanie 2: Discord -->
+      <div class="col-md-6">
+        <div class="card h-100 border-0 <%= pdata.userTasks.discordJoined ? 'bg-success bg-opacity-10' : 'bg-light' %>">
+          <div class="card-body">
+            <div class="d-flex align-items-start">
+              <div class="icon-circle bg-discord text-white me-3 flex-shrink-0">
+                <i class="fab fa-discord" style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;"></i>
+              </div>
+              <div class="flex-grow-1">
+                <h6 class="mb-1">Dołącz na Discord</h6>
+                <p class="text-muted small">Odbierz <%= pdata.partnerBonuses.pointsPerDiscord %> punktów</p>
+                
+                <% if (pdata.userTasks.discordJoined) { %>
+                  <div class="alert alert-success p-2 mb-2">
+                    <small>
+                      <i class="fas fa-check-circle me-1"></i> 
+                      Zadanie już wykonane! Punkty zostały przyznane.
+                    </small>
+                  </div>
+                  <button class="btn btn-success w-100" disabled>
+                    <i class="fas fa-check me-1"></i> Wykonane
+                  </button>
+                <% } else { %>
+                  <div class="alert alert-info p-2 mb-2">
+                    <small>
+                      <i class="fas fa-info-circle me-1"></i> 
+                      Najpierw "Dołącz", a następnie "Odbierz punkty"
+                    </small>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <a href="https://discordzik.pl/discord" 
+                       target="_blank" 
+                       class="btn btn-sm btn-outline-discord"
+                       id="discordJoinBtn">
+                      <i class="fab fa-discord me-1"></i> Dołącz
+                    </a>
+                    <button class="btn btn-sm btn-primary" 
+                            id="discordClaimBtn"
+                            disabled
+                            onclick="completeTask('discordJoined')">
+                      Odbierz punkty
+                    </button>
+                  </div>
+                  <small class="text-muted d-block mt-2" id="discordStatus"></small>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Historia transakcji - teraz zwinięta -->
+<div class="card border-0 shadow-sm mb-4">
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center">
+      <h5 class="card-title mb-0">
+        <i class="fas fa-history me-2"></i>Historia punktów
+      </h5>
+      <button class="btn btn-sm btn-outline-primary" id="toggleHistoryBtn" onclick="toggleHistory()">
+        <i class="fas fa-chevron-down me-1"></i> Rozwiń
+      </button>
+    </div>
+    
+    <div id="historyContent" style="display: none;">
+      <% if (pdata.transactions.length > 0) { %>
+        <div class="table-responsive mt-3" style="max-height: 400px; overflow-y: auto;">
+          <table class="table table-hover table-borderless">
+            <tbody>
+              <% pdata.transactions.slice().reverse().forEach(tx => { %>
+              <tr>
+                <td>
+                  <span class="badge bg-<%= tx.type === 'earn' ? 'success' : 'danger' %>">
+                    <%= tx.type === 'earn' ? 'Zarobione' : 'Wydane' %>
+                  </span>
+                </td>
+                <td class="fw-bold"><%= tx.type === 'earn' ? '+' : '-' %><%= tx.amount %></td>
+                <td class="transaction-description" data-description="<%= tx.details %>">
+                  <%= tx.details %>
+                </td>
+                <td><small class="text-muted"><%= new Date(tx.date).toLocaleDateString() %></small></td>
+              </tr>
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      <% } else { %>
+        <div class="text-center py-4">
+          <i class="fas fa-exchange-alt fa-4x text-muted mb-3 opacity-25"></i>
+          <h5>Brak historii transakcji</h5>
+          <p class="text-muted">Twoje punkty za polecenia pojawią się tutaj</p>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</div>
+
+            <!-- Nagrody -->
+            <div class="card border-0 shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title mb-3">
+                  <i class="fas fa-gift me-2"></i>Wymień punkty
+                </h5>
+                <div class="row g-3">
+                  <div class="col-md-4">
+                    <div class="card h-100 border-0 bg-gradient-primary-hover">
+                      <div class="card-body text-center">
+                        <div class="icon-xl bg-primary bg-opacity-10 text-primary rounded-circle mb-3 mx-auto">
+                          <i class="fas fa-bolt"></i>
+                        </div>
+                        <h5>Boost serwera</h5>
+                        <p class="text-muted">7-dniowy boost</p>
+                        <div class="d-flex justify-content-center align-items-center mb-3">
+                          <span class="h4 mb-0 me-2">50</span>
+                          <i class="fas fa-coins text-warning"></i>
+                        </div>
+                        <button class="btn btn-primary w-100" onclick="redeemPoints(50, 'boost')">Wymień</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="card h-100 border-0 bg-gradient-success-hover">
+                      <div class="card-body text-center">
+                        <div class="icon-xl bg-success bg-opacity-10 text-success rounded-circle mb-3 mx-auto">
+                          <i class="fas fa-crown"></i>
+                        </div>
+                        <h5>Status PRO</h5>
+                        <p class="text-muted">Dożywotni dostęp PRO</p>
+                        <div class="d-flex justify-content-center align-items-center mb-3">
+                          <span class="h4 mb-0 me-2">150</span>
+                          <i class="fas fa-coins text-warning"></i>
+                        </div>
+                        <button class="btn btn-primary w-100" onclick="redeemPoints(150, 'giftcard')">Wymień</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <div class="card h-100 border-0 bg-gradient-premium-hover">
+                      <div class="card-body text-center">
+                        <div class="icon-xl bg-premium-light text-premium rounded-circle mb-3 mx-auto">
+                          <i class="fas fa-crown"></i>
+                        </div>
+                        <h5>Status PRO</h5>
+                        <p class="text-muted">Dożywotni dostęp</p>
+                        <div class="d-flex justify-content-center align-items-center mb-3">
+                          <span class="h4 mb-0 me-2">200</span>
+                          <i class="fas fa-coins text-warning"></i>
+                        </div>
+                        <button class="btn btn-primary w-100" onclick="redeemPoints(200, 'vip')">Wymień</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <%- include('../partials/footer') %>
+<script>
+// Śledzenie kliknięć w przyciski subskrypcji/dołączenia
+document.addEventListener('DOMContentLoaded', function() {
+  // YouTube
+  const youtubeSubscribeBtn = document.getElementById('youtubeSubscribeBtn');
+  const youtubeClaimBtn = document.getElementById('youtubeClaimBtn');
+  const youtubeStatus = document.getElementById('youtubeStatus');
+  
+  if (youtubeSubscribeBtn && !<%= pdata.userTasks.youtubeSubscribed %>) {
+    youtubeSubscribeBtn.addEventListener('click', function() {
+      localStorage.setItem('youtubeClicked', 'true');
+      youtubeClaimBtn.disabled = false;
+      youtubeStatus.textContent = 'Dziękujemy za subskrypcję! Teraz możesz odebrać punkty.';
+      youtubeStatus.className = 'text-success d-block mt-2';
+    });
+    
+    if (localStorage.getItem('youtubeClicked') === 'true') {
+      youtubeClaimBtn.disabled = false;
+      youtubeStatus.textContent = 'Subskrypcja potwierdzona. Możesz odebrać punkty.';
+      youtubeStatus.className = 'text-success d-block mt-2';
+    }
+  }
+
+  // Discord
+  const discordJoinBtn = document.getElementById('discordJoinBtn');
+  const discordClaimBtn = document.getElementById('discordClaimBtn');
+  const discordStatus = document.getElementById('discordStatus');
+  
+  if (discordJoinBtn && !<%= pdata.userTasks.discordJoined %>) {
+    discordJoinBtn.addEventListener('click', function() {
+      localStorage.setItem('discordClicked', 'true');
+      discordClaimBtn.disabled = false;
+      discordStatus.textContent = 'Dziękujemy za dołączenie! Teraz możesz odebrać punkty.';
+      discordStatus.className = 'text-success d-block mt-2';
+    });
+    
+    if (localStorage.getItem('discordClicked') === 'true') {
+      discordClaimBtn.disabled = false;
+      discordStatus.textContent = 'Dołączenie potwierdzone. Możesz odebrać punkty.';
+      discordStatus.className = 'text-success d-block mt-2';
+    }
+  }
+});
+
+async function completeTask(taskType) {
+  try {
+    // Sprawdzamy czy użytkownik kliknął przycisk subskrypcji
+    const clickedButton = localStorage.getItem(taskType === 'youtubeSubscribed' ? 'youtubeClicked' : 'discordClicked') || 'false';
+    
+    if (clickedButton !== 'true') {
+      return alert('Najpierw musisz kliknąć przycisk subskrypcji/dołączenia!');
+    }
+
+    // Pokazanie potwierdzenia
+    const taskName = {
+      'youtubeSubscribed': 'subskrypcji YouTube',
+      'discordJoined': 'dołączenia na Discord',
+      'sharedServer': 'udostępnienia serwera'
+    }[taskType];
+    
+    if (!confirm(`Czy na pewno wykonałeś wymagane działanie (${taskName})?`)) {
+      return;
+    }
+
+    const response = await fetch('/profile/complete-task', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 
+        taskType,
+        clickedButton 
+      })
+    });
+    
+    const result = await response.json();
+    
+    if (result.success) {
+      // Czyszczenie flagi po udanym odebraniu nagrody
+      localStorage.removeItem(taskType === 'youtubeSubscribed' ? 'youtubeClicked' : 'discordClicked');
+      alert(result.message);
+      location.reload();
+    } else {
+      alert(result.message || 'Wystąpił błąd!');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    alert('Wystąpił błąd podczas komunikacji z serwerem');
+  }
+}
+</script>
+  <script>
+    // Kopiowanie linku polecającego
+    function copyReferralLink() {
+      const linkInput = document.getElementById('referralLink');
+      linkInput.select();
+      document.execCommand('copy');
+      
+      // Pokazanie potwierdzenia
+      const originalText = event.target.innerHTML;
+      event.target.innerHTML = '<i class="fas fa-check"></i> Skopiowano!';
+      event.target.classList.remove('btn-outline-secondary');
+      event.target.classList.add('btn-success');
+      
+      setTimeout(() => {
+        event.target.innerHTML = originalText;
+        event.target.classList.remove('btn-success');
+        event.target.classList.add('btn-outline-secondary');
+      }, 2000);
+    }
+
+    // Wymiana punktów
+    async function redeemPoints(amount, rewardType) {
+      if (<%= pdata.points %> < amount) {
+        return alert('Nie masz wystarczającej liczby punktów!');
+      }
+
+      if (!confirm(`Czy na pewno chcesz wymienić ${amount} punktów na ${rewardType}?`)) {
+        return;
+      }
+
+      try {
+        const response = await fetch('/profile/redeem-points', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            amount: amount,
+            type: rewardType
+          })
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          alert('Punkty zostały pomyślnie wymienione!');
+          location.reload();
+        } else {
+          alert(result.message || 'Wystąpił błąd podczas wymiany punktów');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Wystąpił błąd podczas łączenia z serwerem');
+      }
+    }
+
+    // Funkcja dostosowująca rozmiar czcionki dla długich opisów
+    function adjustDescriptionFontSize() {
+      const descriptions = document.querySelectorAll('.transaction-description');
+      descriptions.forEach(desc => {
+        const text = desc.getAttribute('data-description') || desc.textContent;
+        const length = text.length;
+        const cellWidth = desc.clientWidth;
+        
+        // Bazowy rozmiar czcionki
+        let fontSize = '0.875rem'; // Domyślnie 14px
+        
+        // Reguły dostosowujące rozmiar czcionki
+        if (length > 100 || cellWidth < 200) {
+          fontSize = '0.75rem'; // 12px
+        } 
+        if (length > 150 || cellWidth < 150) {
+          fontSize = '0.6875rem'; // 11px
+        }
+        if (length > 200 || cellWidth < 100) {
+          fontSize = '0.625rem'; // 10px
+        }
+        
+        desc.style.fontSize = fontSize;
+        desc.style.lineHeight = '1.2';
+        desc.style.wordBreak = 'break-word';
+      });
+    }
+
+    // Funkcja do pokazywania/ukrywania historii
+    function toggleHistory() {
+      const content = document.getElementById('historyContent');
+      const btn = document.getElementById('toggleHistoryBtn');
+      
+      if (content.style.display === 'none') {
+        content.style.display = 'block';
+        btn.innerHTML = '<i class="fas fa-chevron-up me-1"></i> Zwiń';
+      } else {
+        content.style.display = 'none';
+        btn.innerHTML = '<i class="fas fa-chevron-down me-1"></i> Rozwiń';
+      }
+      
+      // Dostosuj rozmiar czcionki po pokazaniu zawartości
+      if (content.style.display === 'block') {
+        setTimeout(adjustDescriptionFontSize, 50);
+      }
+    }
+
+    // Wywołanie funkcji przy ładowaniu i zmianie rozmiaru okna
+    window.addEventListener('load', function() {
+      adjustDescriptionFontSize();
+      // Domyślnie pokazujemy tylko 5 ostatnich transakcji
+      if (<%= pdata.transactions.length %> > 5) {
+        document.getElementById('historyContent').style.display = 'none';
+      }
+    });
+    window.addEventListener('resize', adjustDescriptionFontSize);
+  </script>
+
+  <style>
+    .icon-circle {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+    }
+    .icon-xl {
+      width: 70px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+    }
+    .bg-gradient-primary-hover:hover {
+      background: linear-gradient(135deg, rgba(13,110,253,0.1) 0%, rgba(13,110,253,0.05) 100%);
+    }
+    .bg-gradient-success-hover:hover {
+      background: linear-gradient(135deg, rgba(25,135,84,0.1) 0%, rgba(25,135,84,0.05) 100%);
+    }
+    .bg-gradient-premium-hover:hover {
+      background: linear-gradient(135deg, rgba(255,215,0,0.1) 0%, rgba(255,215,0,0.05) 100%);
+    }
+    .bg-premium-light {
+      background-color: rgba(255,215,0,0.1);
+    }
+    .text-premium {
+      color: #FFD700;
+    }
+    .table-borderless td, .table-borderless th {
+      border: none;
+    }
+    
+    /* Responsywność tabeli */
+    @media (max-width: 767.98px) {
+      .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .table td, .table th {
+        white-space: nowrap;
+      }
+      .table td:last-child, .table th:last-child {
+        padding-right: 1rem;
+      }
+      .transaction-description {
+        max-width: 150px;
+        white-space: normal !important;
+      }
+    }
+    
+    @media (min-width: 768px) {
+      .transaction-description {
+        max-width: 250px;
+        white-space: normal;
+      }
+    }
+    
+    /* Animacja rozwijania */
+    #historyContent {
+      transition: all 0.3s ease;
+    }
+    .bg-discord {
+      background-color: #5865F2 !important;
+    }
+    .btn-outline-discord {
+      color: #5865F2;
+      border-color: #5865F2;
+    }
+    .btn-outline-discord:hover {
+      background-color: #5865F2;
+      color: white;
+    }
+
+    /* Responsywność kart zadań */
+    @media (max-width: 767.98px) {
+      .tasks-container .card-body {
+        padding: 1rem;
+      }
+      .tasks-container .btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+      }
+    }
+    
+    /* Gwarancja okrągłych ikon YouTube i Discord */
+    .icon-circle i.fab {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      width: 100% !important;
+      height: 100% !important;
+    }
+  </style>
+</body>
+</html>

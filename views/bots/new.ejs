@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Discordzik | Dodaj Bota</title>
+  <link rel="icon" href="/assets/img/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="/assets/img/favicon.ico" type="image/x-icon">
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+  <meta name="google-adsense-account" content="ca-pub-9136474966764887">
+  <meta name="title" content="Discordzik | Dodaj Bota">
+  <meta name="keywords" content="Discord, Discordzik, Polskie serwery Discord, polskie serwery, serwery Discord, polski Discord, społeczność Discord, najlepsze serwery Discord, dołącz do serwera Discord, polskie społeczności online, polski czat, serwery do gier, polskie serwery gier, polski gaming, serwery Discord dla graczy, serwery Discord dla uczniów, polskie grupy Discord, Discord polska, forum Discord, polskie grupy gamingowe, serwery Discord do nauki, serwery Discord do rozmów, serwery Discord do grania, polskie boty Discord, boty Discord, najlepsze boty Discord, darmowe boty Discord, boty muzyczne Discord, boty moderacyjne Discord, boty do gier Discord, automatyzacja na Discordzie, boty do ankiet Discord, boty do zarządzania Discord, polskie boty muzyczne, polskie boty moderacyjne, polskie narzędzia Discord">
+  <meta name="description" content="Discordzik to najlepsze źródło polskich serwerów i botów Discord! Odkryj grupy tematyczne, gamingowe i edukacyjne, znajdź nowych znajomych i dołącz do społeczności pełnej pasjonatów z całej Polski.">
+  <meta name="theme-color" content="#5024f3">
+  <meta name="og:site_name" content="Discordzik.pl">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="<%= config.website.url %>">
+  <meta property="og:title" content="Discordzik | Dodaj Bota">
+  <meta property="og:description" content="Discordzik to najlepsze źródło polskich serwerów i botów Discord! Odkryj grupy tematyczne, gamingowe i edukacyjne, znajdź nowych znajomych i dołącz do społeczności pełnej pasjonatów z całej Polski.">
+  <meta property="og:image" content="/assets/img/banner.png">
+  <meta property="og:image:secure_url" content="/assets/img/banner.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="<%= config.website.url %>">
+  <meta property="twitter:title" content="Discordzik | Dodaj Bota">
+  <meta property="twitter:description" content="Discordzik to najlepsze źródło polskich serwerów i botów Discord! Odkryj grupy tematyczne, gamingowe i edukacyjne, znajdź nowych znajomych i dołącz do społeczności pełnej pasjonatów z całej Polski.">
+  <meta property="twitter:image" content="/assets/img/banner.png">
+  <meta property="twitter:image:width" content="1200">
+  <meta property="twitter:image:height" content="360">
+  <meta property="summary_large_image" content="/assets/img/banner.png">
+</head>
+
+<%- include('../partials/head') %>
+
+<body>
+  <%- include('../partials/spinner') %>
+  <main class="page-wrapper">
+    <%- include('../partials/header') %>
+
+    <section class="container mt-4 mb-5 pt-2 pb-lg-5">
+      <div class="row gy-4"></div>
+    </section>
+
+    <section class="container mb-5 pb-lg-5">
+
+      <div class="alert d-flex alert-warning" role="alert">
+        <i class="bx bx-error lead me-3"></i>
+        <div>
+          <h6 class="alert-heading mb-1">Uwaga!</h6>
+          <p class="mb-0">
+            Zamierzasz dodać nowego bota do swojego konta.
+            - <strong>Dodając bota wyrażasz zgodę na nasze <a href="/tos" target="_blank">Warunki Korzystania</a> i <a href="/privacy" target="_blank">Polityke Prywatności</a></strong>
+          </p>
+        </div>
+      </div>
+
+
+      <div class="border-bottom py-5 ps-lg-2 ps-xxl-0">
+
+        <form class="needs-validation" id="form">
+
+          <div class="mb-4 row align-items-center">
+            <label class="col-md-2 col-form-label fs-sm" for="text-input">ID Klienta <code>*</code></label>
+            <div class="col-md-10 was-validated">
+              <input class="form-control" type="text" name="botID" id="botID" placeholder="ID Klienta" required>
+              <div class="form-text">ID Klienta Twojego bota.</div>
+            </div>
+          </div>
+
+          <div class="mb-4 row align-items-center">
+            <label class="col-md-2 col-form-label fs-sm" for="text-input">ID Aplikacji <code>*</code></label>
+            <div class="col-md-10 was-validated">
+              <input class="form-control" type="text" name="appID" id="appID" placeholder="appID" required>
+              <div class="form-text mb-3">ID Aplikacji Twojego bota.</div>
+            </div>
+            <div class="alert d-flex alert-warning" role="alert">
+              <i class="bx bx-error lead me-3"></i>
+              <div>
+                W przypadku nowych botów identyfikator aplikacji jest taki sam jak identyfikator klienta. Mamy oba, ponieważ niektóre starsze boty mają oddzielne identyfikatory aplikacji.
+              </div>
+            </div>
+          </div>
+		  
+		  <div class="mb-4 row align-items-center">
+    <label class="col-md-2 col-form-label fs-sm" for="inviteURL">Zaproszenie bota <code>*</code></label>
+    <div class="col-md-10 was-validated">
+        <input class="form-control" type="text" name="inviteURL" id="inviteURL" placeholder="https://discord.com/oauth2/..." required>
+        <div class="form-text">Link zaproszenia Twojego bota.</div>
+    </div>
+</div>
+
+          <div class="mb-4 row align-items-center">
+            <label class="col-md-2 col-form-label fs-sm" for="text-input">Prefix <code>*</code></label>
+            <div class="col-md-10 was-validated">
+              <input class="form-control" type="text" name="prefix" id="prefix" placeholder="Prefix" required>
+              <div class="form-text">Prefix Twojego bota.</div>
+            </div>
+          </div>
+
+
+    
+    <div class="mb-4 row align-items-center">
+      <label class="col-md-2 col-form-label fs-sm" for="supportURL">Link do pomocy</label>
+      <div class="col-md-10">
+        <input class="form-control" type="text" name="supportURL" id="supportURL" placeholder="https://discord.gg/xyzpomoc">
+        <div class="form-text">Zaproszenie do serwera pomocy technicznej, do którego może dołączyć każdy, kto potrzebuje pomocy z botem.</div>
+      </div>
+    </div>
+    
+    <div class="mb-4 row align-items-center">
+      <label class="col-md-2 col-form-label fs-sm" for="websiteURL">Strona</label>
+      <div class="col-md-10">
+        <input class="form-control" type="text" name="websiteURL" id="websiteURL" placeholder="https://discordzik.pl/">
+        <div class="form-text">Link do strony bota lub twórcy. (opcjonalne)</div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="w-100">
+    <div class="mb-4 row align-items-center">
+      <label class="col-md-2 col-form-label fs-sm" for="webhookURL">Webhook</label>
+      <div class="col-md-10">
+        <input class="form-control" type="text" name="webhookURL" id="webhookURL" placeholder="https://discord.com/api/webhooks/WEBHOOK_ID/WEBHOOK_TOKEN">
+        <div class="form-text">To będzie webhook, gdzie będą publikowane wszystkie głosy. (opcjonalne)</div>
+      </div>
+    </div>
+    
+    <div class="mb-4 row align-items-center">
+      <label class="col-md-2 col-form-label fs-sm" for="githubURL">Github</label>
+      <div class="col-md-10">
+        <input class="form-control" type="text" name="githubURL" id="githubURL" placeholder="https://github.com/">
+        <div class="form-text">Adres URL repozytorium Twojego bota w serwisie Github. (opcjonalne)</div>
+      </div>
+    </div>
+    
+    <div class="mb-4 row align-items-center">
+      <label class="col-md-2 col-form-label fs-sm" for="donateURL">Donate</label>
+      <div class="col-md-10">
+        <input class="form-control" type="text" name="donateURL" id="donateURL" placeholder="https://wspierajmniexyz.pl/">
+        <div class="form-text">Link strony donate twojego bota. (opcjonalne)</div>
+      </div>
+    </div>
+  </div>
+</div>
+		  
+		  <div class="mb-4 row align-items-center">
+    <label class="col-md-2 col-form-label fs-sm" for="framework">Framework/Language <code>*</code></label>
+    <div class="col-md-10">
+        <select class="form-select" name="framework" id="framework" style="background-color: #10141e; color: white;" required>
+            <option value="" disabled selected>Wybierz framework/language</option>
+            <option value="Discord.js">Discord.js (JavaScript)</option>
+            <option value="Discord.py">Discord.py (Python)</option>
+            <option value="Eris">Eris (JavaScript)</option>
+            <option value="JDA">JDA (Java)</option>
+            <option value="Discord4J">Discord4J (Java)</option>
+            <option value="Disnake">Disnake (Python)</option>
+            <option value="Nextcord">Nextcord (Python)</option>
+            <option value="Pycord">Pycord (Python)</option>
+            <option value="Other">Inny</option>
+        </select>
+        <div class="form-text">Wybierz framework/language w którym został napisany Twój bot</div>
+    </div>
+</div>
+
+<div class="mb-4 row align-items-center">
+    <label class="col-md-2 col-form-label fs-sm" for="text-input">Współwłaściciele</label>
+    <div class="form-text">Możesz dodać maksymalnie 3 współwłaścicieli. Wpisz każde ID w polu poniżej i kliknij "Dodaj".</div>
+    <div class="input-group mb-4">
+        <input class="form-control" type="text" name="coowners" id="coowners" placeholder="ID Współwłaściciela">
+        <button class="btn btn-secondary" type="button" id="addCoowner">Dodaj</button>
+    </div>
+    <div id="coownersList"></div>
+</div>
+
+<script>
+    document.getElementById('addCoowner').addEventListener('click', function() {
+        const input = document.getElementById('coowners');
+        const coownerId = input.value.trim();
+        const coownersList = document.getElementById('coownersList');
+        const currentCoowners = coownersList.querySelectorAll('.coowner-item').length;
+
+        if (!coownerId) return;
+        if (currentCoowners >= 3) {
+            alert('Możesz dodać maksymalnie 3 współwłaścicieli.');
+            return;
+        }
+
+        // Sprawdź czy już nie został dodany
+        if (document.querySelector(`.coowner-item input[value="${coownerId}"]`)) {
+            alert('Ten współwłaściciel został już dodany.');
+            return;
+        }
+
+        const div = document.createElement('div');
+        div.className = 'input-group mb-2 coowner-item';
+        div.innerHTML = `
+            <span class="input-group-text">
+                <i class="bx bx-user fs-lg"></i>
+            </span>
+            <input class="form-control" type="text" value="${coownerId}" disabled>
+            <button class="btn btn-danger remove-coowner" type="button">Usuń</button>
+            <input type="hidden" name="coowners[]" value="${coownerId}">
+        `;
+        coownersList.appendChild(div);
+        input.value = '';
+
+        div.querySelector('.remove-coowner').addEventListener('click', function() {
+            div.remove();
+        });
+    });
+</script>
+
+          <section class="ps-lg-2 ps-xxl-0">
+            <h2 class="h4">Tagi <code>*</code></h2>
+            <div class="form-text">
+              Tagi służą do kategoryzowania Twojego bota. Możesz wybrać do 20 tagów dla swojego bota. Jeśli nie widzisz tagu, który Twoim zdaniem powinien mieć Twój bot, <a href="/discord" target="_blank">Skontaktuj się z nami</a>.
+            </div>
+            <div class="card mb-4">
+              <div class="card-body">
+                <div class="row row-cols-sm-4 row-cols-2 gy-2 mb-3">
+                  <% for (let i = 0; i < global.config.website.botTags.length; i++) { %>
+                  <div class="col">
+                    <div class="form-check mb-0">
+                      <input type="checkbox" class="form-check-input" id="tag<%= global.config.website.botTags[i] %>" name="tags" value="<%= global.config.website.botTags[i] %>">
+                      <label for="s-daily-newsletter" class="form-check-label"><%= global.config.website.botTags[i] %></label>
+                    </div>
+                  </div>
+                  <% } %>
+                </div>
+                <h5 class="h5">Wybrane tagi</h5>
+                <div class="row row-cols-sm-4 row-cols-2 gy-2 mb-3" id="selectedTags"></div>
+                <Script>
+                  document.querySelectorAll('[name="tags"]').forEach(item => {
+                    if (item.checked) {
+                      let div = document.createElement('div');
+                      div.className = 'col';
+                      div.innerHTML = `
+                      <div class="form-check mb-0">
+                        <input type="checkbox" class="form-check-input" id="tag${item.value}" name="tags" value="${item.value}" checked disabled>
+                        <label for="s-daily-newsletter" class="form-check-label">${item.value}</label>
+                      </div>
+                      `;
+                      document.getElementById('selectedTags').appendChild(div);
+                    }
+                  });
+
+                  document.querySelectorAll('[name="tags"]').forEach(item => {
+                    item.addEventListener('change', event => {
+                      let tags = document.getElementById('selectedTags');
+                      let tag = item.value;
+                      if (item.checked == true) {
+                        let div = document.createElement('div');
+                        div.className = 'col';
+                        div.innerHTML = `
+                        <div class="form-check mb-0">
+                          <input type="checkbox" class="form-check-input" id="tag${tag}" name="tags" value="${tag}" checked disabled>
+                          <label for="s-daily-newsletter" class="form-check-label">${tag}</label>
+                        </div>
+                        `;
+                        tags.appendChild(div);
+                      } else if (item.checked == false) {
+                        let div = document.getElementById('selectedTags').children;
+                        for (let i = 0; i < div.length; i++) {
+                          if (div[i].children[0].children[1].innerHTML == tag) {
+                            div[i].remove();
+                          }
+                        }
+                      }
+                    })
+                  });
+                  if (document.getElementById('tags').children.length == 0) {
+                    let div = document.createElement('div');
+                    div.className = 'col';
+                    div.innerHTML = `
+                    <div class="form-check mb-0">
+                      <label for="s-daily-newsletter" class="form-check-label">Stary, ale nic nie wybrałeś z tagów.</label>
+                    </div>
+                    `;
+                    document.getElementById('tags').appendChild(div);
+                  }
+                </Script>
+              </div>
+            </div>
+          </section>
+		  <div id="commands-section">
+  <h4>Komendy Bota</h4>
+  <div class="form-text">Dodaj komendy dla swojego bota (opcjonalne)</div>
+  <div id="commands-list"></div>
+  <button type="button" id="add-command" class="btn btn-secondary" style="margin-bottom: 20px;">Dodaj</button>
+</div>
+
+<script>
+  // Add new command item
+  document.getElementById('add-command').addEventListener('click', () => {
+    const commandsList = document.getElementById('commands-list');
+    const commandItems = commandsList.getElementsByClassName('command-item');
+
+    if (commandItems.length < 40) { // Max 10 commands
+      const commandItem = document.createElement('div');
+      commandItem.className = 'command-item';
+      commandItem.innerHTML = `
+        <div class="command-entry" style="margin-bottom: 15px;">
+          <label>Nazwa Komendy:</label>
+          <input type="text" class="form-control command-name" placeholder="Nazwa" required maxlength="30">
+          <label>Opis Komendy:</label>
+          <textarea class="form-control command-description" placeholder="Opis" required style="margin-bottom: 10px;" maxlength="50"></textarea>
+          <button type="button" class="btn btn-danger remove-command">Usuń</button>
+        </div>
+      `;
+      commandsList.appendChild(commandItem);
+
+      // Remove button functionality
+      commandItem.querySelector('.remove-command').addEventListener('click', () => {
+        commandItem.remove();
+      });
+    } else {
+      alert('Możesz dodać maksymalnie 40 komend.');
+    }
+  });
+</script>
+<div id="faq-section">
+    <h4>FAQ</h4>
+    <div class="form-text">Dodaj odpowiedzi na najczęściej zadawane pytania (opcjonalne)</div>
+    <div id="faq-list"></div>
+    <button type="button" id="add-faq" class="btn btn-secondary" style="margin-bottom: 20px;">Dodaj</button>
+</div>
+
+<script>
+    // Add new FAQ item
+    document.getElementById('add-faq').addEventListener('click', () => {
+        const faqList = document.getElementById('faq-list');
+        const faqItems = faqList.getElementsByClassName('faq-item');
+
+        if (faqItems.length < 6) { // Check if the maximum limit is reached
+            const faqItem = document.createElement('div');
+            faqItem.className = 'faq-item';
+            faqItem.innerHTML = `
+                <div class="faq-entry" style="margin-bottom: 15px;">
+				    <label>Pytanie:</label>
+                    <input type="text" class="form-control faq-question" placeholder="Pytanie" required maxlength="50">
+					<label>Odpowiedź:</label>
+                    <textarea class="form-control faq-answer" placeholder="Odpowiedź" required style="margin-bottom: 10px;" maxlength="100"></textarea>
+                    <button type="button" class="btn btn-danger remove-faq">Usuń</button>
+                </div>
+            `;
+            faqList.appendChild(faqItem);
+
+            // Add event listener for remove button
+            faqItem.querySelector('.remove-faq').addEventListener('click', () => {
+                faqItem.remove();
+            });
+        } else {
+            alert('Możesz dodać maksymalnie 6 sekcji FAQ.');
+        }
+    });
+</script>
+
+
+
+
+          <section class="ps-lg-2 ps-xxl-0 was-validated mb-3">
+            <h2 class="h4">Krótki Opis <code>*</code></h2>
+            <div class="form-text">Krótki opis Twojego bota. (Nie obsługuje znaczników Markdown)</div>
+            <textarea class="form-control" style="height: 10rem" name="shortDesc" id="shortDesc" minlength="50" maxlength="140" placeholder="Krótki opis Twojego bota." required></textarea>
+          </section>
+
+
+<!-- Sekcja dla długiego opisu -->
+<section class="ps-lg-2 ps-xxl-0 mb-3 was-validated">
+  <h2 class="h4">Długi Opis <code>*</code></h2>
+  <div class="form-text">Długi opis Twojego bota. Obsługuje Markdown.</div>
+  
+  <div class="border rounded overflow-hidden">
+    <!-- Toolbar dla podstawowego formatowania -->
+    <div class="bg-light p-2 d-flex flex-wrap gap-2 border-bottom">
+      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('**', '**')">
+        <i class="fas fa-bold"></i>
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('_', '_')">
+        <i class="fas fa-italic"></i>
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('[', '](url)')">
+        <i class="fas fa-link"></i>
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('\n- ', '')">
+        <i class="fas fa-list-ul"></i>
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('\n1. ', '')">
+        <i class="fas fa-list-ol"></i>
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('> ', '')">
+        <i class="fas fa-quote-right"></i>
+      </button>
+	    <button type="button" class="btn btn-sm btn-outline-primary" id="generateBotDescBtn">
+    <i class="fas fa-magic me-2"></i>Wygeneruj Opis z AI
+  </button>
+<button type="button" id="togglePreviewBtn" class="btn btn-sm btn-outline-primary ms-auto">
+  <i class="fas fa-eye"></i><span class="ms-2">Podgląd</span>
+</button>
+    </div>
+    
+    <!-- Edytor -->
+    <textarea class="form-control border-0" style="height: 30rem; min-height: 300px; resize: vertical;" 
+              name="longDesc" 
+              id="longDesc" 
+              minlength="200" 
+              maxlength="5000" 
+              required 
+                        oninput="updateCounter()"><%= typeof botdata !== 'undefined' && botdata.longDesc ? botdata.longDesc.replace(/</g, '&lt;').replace(/>/g, '&gt;') : '' %></textarea>
+    
+    <!-- Licznik znaków -->
+    <div class="bg-light p-2 border-top text-end">
+      <span id="charCounter">0</span>/5000 znaków
+    </div>
+  </div>
+  
+  <!-- Podgląd Markdown -->
+  <div id="markdownPreview" class="border p-3 mt-3 rounded bg-light" style="display: none;"></div>
+</section>
+
+<!-- Załaduj wymagane biblioteki -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/markdown-it@12.3.2/dist/markdown-it.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.6/purify.min.js"></script>
+
+<style>
+  #togglePreviewBtn.active {
+    background-color: #0d6efd;
+    color: white;
+  }
+  
+  #markdownPreview img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  #markdownPreview {
+    max-height: 500px;
+    overflow-y: auto;
+  }
+</style>
+
+<script>
+  // Elementy DOM
+  const textarea = document.getElementById('longDesc');
+  const preview = document.getElementById('markdownPreview');
+  const charCounter = document.getElementById('charCounter');
+  const toggleBtn = document.getElementById('togglePreviewBtn');
+  let isPreviewVisible = false;
+
+  // Inicjalizacja licznika
+  updateCounter();
+
+  // Przypisanie event listenerów
+  toggleBtn.addEventListener('click', togglePreview);
+  textarea.addEventListener('input', updateCounter);
+
+  // Funkcje
+  function formatText(prefix, suffix) {
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = textarea.value.substring(start, end);
+    const beforeText = textarea.value.substring(0, start);
+    const afterText = textarea.value.substring(end);
+    
+    textarea.value = beforeText + prefix + selectedText + suffix + afterText;
+    textarea.selectionStart = start + prefix.length;
+    textarea.selectionEnd = end + prefix.length;
+    textarea.focus();
+    updateCounter();
+    
+    if (isPreviewVisible) {
+      updatePreview();
+    }
+  }
+
+  function togglePreview() {
+    isPreviewVisible = !isPreviewVisible;
+    preview.style.display = isPreviewVisible ? 'block' : 'none';
+    toggleBtn.classList.toggle('active', isPreviewVisible);
+    
+    if (isPreviewVisible) {
+      updatePreview();
+    }
+  }
+
+  function updatePreview() {
+    try {
+      if (!textarea.value.trim()) {
+        preview.innerHTML = '<div class="text-muted">Podgląd pojawi się tutaj...</div>';
+        return;
+      }
+
+      const markdownText = textarea.value;
+      const safeMarkdown = DOMPurify.sanitize(markdownText);
+      
+      const md = window.markdownit({
+        html: true,
+        linkify: true,
+        typographer: true,
+        breaks: true
+      });
+      
+      preview.innerHTML = md.render(safeMarkdown);
+      
+      // Obsługa linków
+      preview.querySelectorAll('a').forEach(link => {
+        link.setAttribute('target', '_blank');
+        link.setAttribute('rel', 'noopener noreferrer');
+      });
+      
+    } catch (error) {
+      console.error('Błąd podglądu:', error);
+      preview.innerHTML = '<div class="alert alert-danger">Błąd generowania podglądu. Sprawdź konsolę.</div>';
+    }
+  }
+
+  function updateCounter() {
+    const length = textarea.value.length;
+    charCounter.textContent = length;
+    
+    charCounter.classList.toggle('text-warning', length > 4500);
+    charCounter.classList.toggle('text-danger', length > 4900);
+  }
+
+  // Inicjalizacja podglądu jeśli jest tekst
+  if (textarea.value.trim()) {
+    updatePreview();
+  }
+</script>
+
+          <div id="results"></div>
+          <div class="tab-pane fade show active" id="preview1" role="tabpanel">
+            <button class="btn btn-primary" type="submit" id="submit">Wyślij</button>
+          </div>
+        </form>
+      </div>
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4793022343319587" crossorigin="anonymous"></script>
+      <ins class="adsbygoogle" style="display:block" data-ad-format="fluid" data-ad-layout-key="-gw-22-2r-9d+199" data-ad-client="ca-pub-4793022343319587" data-ad-slot="7366836311"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </section>
+	
+<!-- Modal dla generowania opisów botów -->
+<div class="modal fade" id="aiBotGenerateModal" tabindex="-1" aria-labelledby="aiBotGenerateModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="aiBotGenerateModalLabel">Generuj Opis Bota z AI</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="aiBotLimitInfo" class="alert alert-warning mb-3">
+          <i class="fas fa-info-circle me-2"></i>
+          Możesz wygenerować opis <span id="remainingBotGenerations">2</span>/2 razy dziennie.
+        </div>
+        
+        <div class="mb-3">
+          <label for="aiBotPromptInput" class="form-label">Podpowiedź dla AI</label>
+          <textarea class="form-control" id="aiBotPromptInput" rows="3" 
+                   placeholder="Opisz funkcje swojego bota (np. 'Bot muzyczny z odtwarzaniem z YouTube, playlistami, systemem kolejki')" 
+                   maxlength="500"></textarea>
+          <div class="form-text text-end"><span id="botPromptCounter">0</span>/500 znaków</div>
+        </div>
+        
+        <div class="alert alert-info">
+          <i class="fas fa-info-circle me-2"></i>
+          AI może czasem generować nieidealne opisy. Przed wysłaniem sprawdź i popraw wygenerowany tekst.
+        </div>
+        
+        <div id="aiBotGenerationStatus" class="d-none alert alert-info">
+          <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+          <span id="aiBotStatusText">Generowanie opisu bota...</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+        <button type="button" class="btn btn-primary" id="generateBotWithAI">Generuj</button>
+      </div>
+    </div>
+  </div>
+</div>
+  </main>
+
+  <%- include('../partials/footer') %>
+</body>
+
+</html>
+
+<script>
+  // Initialize the modal
+  const aiBotGenerateModal = new bootstrap.Modal(document.getElementById('aiBotGenerateModal'));
+  let remainingBotGenerations = 2;
+  
+  // Show modal when button is clicked
+  document.getElementById('generateBotDescBtn').addEventListener('click', async () => {
+    try {
+      const response = await fetch('/api/check-bot-ai-usage');
+      const data = await response.json();
+      
+      remainingBotGenerations = data.remaining || 2;
+      document.getElementById('remainingBotGenerations').textContent = remainingBotGenerations;
+      
+      if (remainingBotGenerations <= 0) {
+        alert('Osiągnięto dzienny limit generowania opisów dla botów. Spróbuj jutro.');
+        return;
+      }
+      
+      aiBotGenerateModal.show();
+    } catch (error) {
+      console.error('Error checking bot AI usage:', error);
+      aiBotGenerateModal.show();
+    }
+  });
+  
+  // Character counter for prompt
+  document.getElementById('aiBotPromptInput').addEventListener('input', function() {
+    document.getElementById('botPromptCounter').textContent = this.value.length;
+  });
+  
+  // Handle generation
+  document.getElementById('generateBotWithAI').addEventListener('click', async () => {
+    if (remainingBotGenerations <= 0) {
+      alert('Osiągnięto dzienny limit generowania. Spróbuj jutro.');
+      return;
+    }
+    
+    const prompt = document.getElementById('aiBotPromptInput').value.trim();
+    const statusElement = document.getElementById('aiBotGenerationStatus');
+    const statusText = document.getElementById('aiBotStatusText');
+    
+    if (!prompt) {
+      alert('Proszę podać opis funkcji bota dla AI.');
+      return;
+    }
+    
+    // Show loading state
+    statusElement.classList.remove('d-none');
+    document.getElementById('generateBotWithAI').disabled = true;
+    
+    try {
+      const response = await fetch('/api/generate-bot-description', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          prompt: prompt,
+          framework: document.getElementById('framework').value
+        })
+      });
+      
+      const result = await response.json();
+      
+      if (result.error) {
+        throw new Error(result.error);
+      }
+      
+      // Apply generated content
+      if (result.shortDesc) {
+        document.getElementById('shortDesc').value = result.shortDesc;
+      }
+      
+      if (result.longDesc) {
+        document.getElementById('longDesc').value = result.longDesc;
+        updateCounter();
+      }
+      
+      // Update remaining generations
+      remainingBotGenerations = result.remaining || 0;
+      document.getElementById('remainingBotGenerations').textContent = remainingBotGenerations;
+      
+      if (remainingBotGenerations <= 0) {
+        document.getElementById('aiBotLimitInfo').classList.add('alert-danger');
+        document.getElementById('aiBotLimitInfo').classList.remove('alert-warning');
+      }
+      
+      // Show success message
+      statusText.textContent = 'Opis bota wygenerowany pomyślnie!';
+      statusElement.classList.remove('alert-info');
+      statusElement.classList.add('alert-success');
+      
+      setTimeout(() => {
+        aiBotGenerateModal.hide();
+      }, 1500);
+      
+    } catch (error) {
+      console.error('Error generating bot description:', error);
+      statusText.textContent = `Błąd: ${error.message || 'Wystąpił problem podczas generowania'}`;
+      statusElement.classList.remove('alert-info');
+      statusElement.classList.add('alert-danger');
+    } finally {
+      setTimeout(() => {
+        statusElement.classList.add('d-none');
+        statusElement.classList.remove('alert-danger', 'alert-success');
+        statusElement.classList.add('alert-info');
+        statusText.textContent = 'Generowanie opisu bota...';
+        document.getElementById('generateBotWithAI').disabled = false;
+      }, 3000);
+    }
+  });
+</script>
+<script>
+document.getElementById('form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const submitBtn = document.getElementById('submit');
+    submitBtn.disabled = true;
+    
+    try {
+        // Collect coowners
+        let coowners = [];
+        document.querySelectorAll('input[name="coowners[]"]').forEach(input => {
+            coowners.push(input.value);
+        });
+
+        // Collect tags
+        let tags = [];
+        document.querySelectorAll('input[name="tags"]:checked').forEach(item => {
+            tags.push(item.value);
+        });
+
+        // Collect FAQ data
+        let faq = [];
+        document.querySelectorAll('.faq-item').forEach(item => {
+            let question = item.querySelector('.faq-question').value;
+            let answer = item.querySelector('.faq-answer').value;
+            if (question && answer) {
+                faq.push({ question, answer });
+            }
+        });
+
+        // Collect commands
+        let commands = [];
+        document.querySelectorAll('.command-item').forEach(item => {
+            let name = item.querySelector('.command-name').value;
+            let description = item.querySelector('.command-description').value;
+            if (name && description) {
+                commands.push({ name, description });
+            }
+        });
+
+        // Prepare data
+        let data = {
+            botID: document.getElementById('botID').value,
+            appID: document.getElementById('appID').value,
+            prefix: document.getElementById('prefix').value,
+            inviteURL: document.getElementById('inviteURL').value,
+            supportURL: document.getElementById('supportURL').value,
+            websiteURL: document.getElementById('websiteURL').value,
+            githubURL: document.getElementById('githubURL').value,
+            donateURL: document.getElementById('donateURL').value,
+            webhookURL: document.getElementById('webhookURL').value,
+            shortDesc: document.getElementById('shortDesc').value,
+            longDesc: document.getElementById('longDesc').value,
+            framework: document.getElementById('framework').value,
+            coowners: coowners,
+            tags: tags,
+            faq: faq,
+            commands: commands
+        };
+
+        // Send request
+        const response = await fetch('/bots/new', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+        
+        if (result.error) {
+            document.getElementById('results').innerHTML = `
+                <div class="alert alert-danger" role="alert">${result.message}</div>
+            `;
+        } else {
+            window.location.href = `/bot/${result.botID}`;
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        document.getElementById('results').innerHTML = `
+            <div class="alert alert-danger" role="alert">Wystąpił błąd podczas przetwarzania żądania</div>
+        `;
+    } finally {
+        submitBtn.disabled = false;
+    }
+});
+</script>

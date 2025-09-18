@@ -1,0 +1,406 @@
+<%- include('../partials/head.ejs') %>
+
+<head>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css">
+  <style>
+    :root {
+      --primary-color: #7289da;
+      --danger-color: #f04747;
+      --warning-color: #faa61a;
+      --success-color: #43b581;
+    }
+    
+    .comment-card {
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: all 0.3s ease;
+      background: rgba(255,255,255,0.03);
+    }
+    
+    .comment-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      border-color: rgba(114, 137, 218, 0.3);
+    }
+    
+    .stars {
+      color: var(--warning-color);
+    }
+    
+    .comment-author {
+      font-weight: 500;
+      color: var(--primary-color);
+    }
+    
+    .comment-date {
+      font-size: 0.8rem;
+      color: #b9bbbe;
+    }
+    
+    .comment-actions {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .comment-card:hover .comment-actions {
+      opacity: 1;
+    }
+    
+    .server-badge {
+      background: rgba(114, 137, 218, 0.1);
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 0.85rem;
+    }
+    
+    .empty-state {
+      padding: 40px 20px;
+      text-align: center;
+      background: rgba(255,255,255,0.02);
+      border-radius: 12px;
+      border: 1px dashed rgba(255,255,255,0.1);
+    }
+    
+    .empty-state-icon {
+      font-size: 3rem;
+      color: rgba(255,255,255,0.2);
+      margin-bottom: 1rem;
+    }
+    
+    .section-header {
+      border-bottom: 2px solid rgba(114, 137, 218, 0.3);
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .comment-content {
+      position: relative;
+    }
+    
+    .comment-content:before {
+      font-size: 4rem;
+      position: absolute;
+      opacity: 0.1;
+      top: -20px;
+      left: -10px;
+      line-height: 1;
+    }
+    
+    @media (max-width: 768px) {
+      .comment-actions {
+        opacity: 1;
+      }
+    }
+
+    .comment-table th {
+      white-space: nowrap;
+    }
+
+    .comment-table img {
+      object-fit: cover;
+    }
+  </style>
+</head>
+
+<body class="dark-mode">
+  <%- include('./partials/header.ejs') %>
+  <%- include('./partials/aside.ejs') %>
+
+  <main class="docs-container pt-5 pb-3 pb-lg-4">
+    <div class="container-fluid px-xxl-5 px-lg-4 pt-4 pt-lg-5 pb-4">
+      <!-- Page Header -->
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-4 gap-3">
+        <h1 class="ps-lg-2 ps-xxl-0 mt-2 mt-lg-0 py-3 animate__animated animate__fadeIn">
+          <i class="fas fa-comments me-2"></i>Panel Komentarzy
+        </h1>
+        <div class="text-muted fs-5">
+          Łącznie komentarzy: <span class="text-white fw-bold"><%= comments.reduce((acc, server) => acc + server.comments.length, 0) %></span>
+        </div>
+      </div>
+
+      <!-- Latest Reviews Section -->
+<section class="card border-0 shadow-sm mb-5 animate__animated animate__fadeIn">
+  <div class="card-header bg-dark-2 border-0">
+    <h2 class="h4 mb-0"><i class="fas fa-list-ol me-2"></i>10 Najnowszych Recenzji</h2>
+  </div>
+  <div class="card-body">
+    <% 
+      const allComments = comments.flatMap(server => 
+        server.comments.map(comment => ({
+          ...comment,
+          serverID: server.serverID,
+          serverName: server.serverName,
+          serverIcon: server.serverIcon
+        }))
+      ).sort((a, b) => new Date(b.date) - new Date(a.date));
+      
+      const latestComments = allComments.slice(0, 10);
+    %>
+    
+    <% if (latestComments.length > 0) { %>
+      <div class="row g-4">
+        <% latestComments.forEach((comment, index) => { %>
+          <div class="col-md-6">
+            <div class="comment-card p-4 h-100 d-flex flex-column">
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <div>
+                  <span class="comment-author"><%= comment.author %></span>
+<span class="server-badge ms-2">
+  <a href="/server/<%= comment.serverID %>" class="text-decoration-none text-white">
+    <i class="fas fa-external-link-alt me-1"></i> Przejdź do serwera
+  </a>
+</span>
+                </div>
+                <div class="stars">
+                  <% for (let i = 0; i < 5; i++) { %>
+                    <i class="fas fa-star<%= i >= comment.star_rate ? '-half-alt' : '' %>"></i>
+                  <% } %>
+                </div>
+              </div>
+              
+              <div class="comment-content mb-3 flex-grow-1">
+                <p class="mb-0"><%= comment.message %></p>
+              </div>
+              
+              <div class="d-flex justify-content-between align-items-center mt-auto">
+                <span class="comment-date">
+                  <i class="far fa-clock me-1"></i>
+                  <%= new Date(comment.date).toLocaleString() %>
+                </span>
+                
+                <div class="comment-actions">
+                  <button class="btn btn-sm btn-outline-danger delete-comment" 
+                          data-comment-id="<%= comment.id %>" 
+                          data-server-id="<%= comment.serverID %>">
+                    <i class="fas fa-trash-alt me-1"></i> Usuń
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <div class="empty-state">
+        <div class="empty-state-icon">
+          <i class="fas fa-comment-slash"></i>
+        </div>
+        <h3 class="h5">Brak recenzji</h3>
+        <p class="text-muted">Nie ma jeszcze żadnych recenzji do wyświetlenia.</p>
+      </div>
+    <% } %>
+  </div>
+</section>
+
+      <!-- All Reviews Section -->
+      <section class="card border-0 shadow-sm animate__animated animate__fadeIn">
+        <div class="card-header bg-dark-2 border-0">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+            <h2 class="h4 mb-0"><i class="fas fa-list-ul me-2"></i>Wszystkie Recenzje</h2>
+            <div class="w-100 w-md-auto">
+              <div class="input-group">
+                <span class="input-group-text bg-dark border-dark text-muted">
+                  <i class="fas fa-search"></i>
+                </span>
+                <input type="text" class="form-control bg-dark border-dark text-light" id="searchComments" placeholder="Szukaj recenzji...">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <% if (allComments.length > 0) { %>
+            <div class="table-responsive">
+              <table class="table table-dark table-hover align-middle comment-table">
+                <thead class="bg-dark-3">
+                  <tr>
+                    <th width="50px">#</th>
+                    <th>Serwer</th>
+                    <th>Autor</th>
+                    <th width="120px">Ocena</th>
+                    <th width="150px">Data</th>
+                    <th width="180px" class="text-end">Akcje</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% allComments.forEach((comment, index) => { %>
+                    <tr>
+                      <td><%= index + 1 %></td>
+<td>
+  <div class="d-flex align-items-center">
+    <% if (comment.serverIcon && comment.serverName) { %>
+      <img src="<%= comment.serverIcon %>" 
+           class="rounded-circle me-2" 
+           width="30" 
+           height="30" 
+           alt="<%= comment.serverName %>"
+           onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+      <a href="/server/<%= comment.serverID %>" class="text-truncate text-decoration-none" style="max-width: 200px;">
+        <%= comment.serverName %>
+      </a>
+    <% } else { %>
+      <a href="/server/<%= comment.serverID %>" class="btn btn-sm btn-outline-secondary">
+        <i class="fas fa-external-link-alt me-1"></i> Przejdź do serwera
+      </a>
+    <% } %>
+  </div>
+</td>
+                      <td><%= comment.author %></td>
+                      <td>
+                        <div class="stars">
+                          <% for (let i = 0; i < comment.star_rate; i++) { %>
+                            <i class="fas fa-star"></i>
+                          <% } %>
+                        </div>
+                      </td>
+                      <td>
+                        <div class="d-flex flex-column">
+                          <span><%= new Date(comment.date).toLocaleDateString() %></span>
+                          <small class="text-muted"><%= new Date(comment.date).toLocaleTimeString() %></small>
+                        </div>
+                      </td>
+                      <td class="text-end">
+                        <button class="btn btn-sm btn-outline-primary me-2 view-comment" 
+                                data-comment="<%= comment.message %>"
+                                data-author="<%= comment.author %>"
+                                data-stars="<%= comment.star_rate %>">
+                          <i class="fas fa-eye me-1"></i> Podgląd
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger delete-comment" 
+                                data-comment-id="<%= comment.id %>" 
+                                data-server-id="<%= comment.serverID %>">
+                          <i class="fas fa-trash-alt me-1"></i> Usuń
+                        </button>
+                      </td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+          <% } else { %>
+            <div class="empty-state">
+              <div class="empty-state-icon">
+                <i class="fas fa-comment-slash"></i>
+              </div>
+              <h3 class="h5">Brak recenzji</h3>
+              <p class="text-muted">Nie ma jeszcze żadnych recenzji do wyświetlenia.</p>
+            </div>
+          <% } %>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Comment Preview Modal -->
+  <div class="modal fade" id="commentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark border-dark">
+        <div class="modal-header border-dark">
+          <h5 class="modal-title">Podgląd komentarza</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <strong>Autor:</strong> <span id="commentAuthor" class="text-primary"></span>
+          </div>
+          <div class="mb-3">
+            <strong>Ocena:</strong> <span id="commentStars" class="text-warning"></span>
+          </div>
+          <div class="mb-3">
+            <strong>Treść:</strong>
+            <p id="commentText" class="mt-2 p-3 bg-dark-2 rounded"></p>
+          </div>
+        </div>
+        <div class="modal-footer border-dark">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark border-dark">
+        <div class="modal-header border-dark">
+          <h5 class="modal-title text-danger"><i class="fas fa-exclamation-triangle me-2"></i>Potwierdzenie usunięcia</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Czy na pewno chcesz usunąć ten komentarz? Tej akcji nie można cofnąć.</p>
+        </div>
+        <div class="modal-footer border-dark">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Anuluj</button>
+          <a id="confirmDeleteBtn" href="#" class="btn btn-danger">
+            <i class="fas fa-trash-alt me-1"></i> Usuń
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Comment preview
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize tooltips
+      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+
+      // Comment preview modal
+      document.querySelectorAll('.view-comment').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const commentModal = new bootstrap.Modal(document.getElementById('commentModal'));
+          document.getElementById('commentAuthor').textContent = btn.dataset.author;
+          document.getElementById('commentText').textContent = btn.dataset.comment;
+          
+          let starsHtml = '';
+          const starCount = parseInt(btn.dataset.stars);
+          for (let i = 0; i < 5; i++) {
+            starsHtml += `<i class="fas fa-star${i >= starCount ? '-half-alt' : ''}"></i>`;
+          }
+          document.getElementById('commentStars').innerHTML = starsHtml;
+          
+          commentModal.show();
+        });
+      });
+
+      // Delete confirmation
+      document.querySelectorAll('.delete-comment').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+          const confirmBtn = document.getElementById('confirmDeleteBtn');
+          
+          const serverID = this.dataset.serverId;
+          const commentId = this.dataset.commentId;
+
+          confirmBtn.href = `/servers/comment/delete?commentId=${commentId}&serverID=${serverID}`;
+          deleteModal.show();
+        });
+      });
+
+      // Search functionality
+      const searchInput = document.getElementById('searchComments');
+      if (searchInput) {
+        searchInput.addEventListener('input', function() {
+          const searchTerm = this.value.toLowerCase();
+          const rows = document.querySelectorAll('tbody tr');
+          
+          rows.forEach(row => {
+            const serverName = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+            const author = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+            const commentText = row.querySelector('.view-comment').dataset.comment.toLowerCase();
+            
+            const matches = serverName.includes(searchTerm) || 
+                           author.includes(searchTerm) || 
+                           commentText.includes(searchTerm);
+            
+            row.style.display = matches ? '' : 'none';
+          });
+        });
+      }
+    });
+  </script>
+</body>
+</html>

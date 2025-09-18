@@ -1,0 +1,503 @@
+<%- include('../partials/head.ejs') %>
+
+<head>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css">
+  <style>
+    :root {
+      --primary-color: #7289da;
+      --danger-color: #f04747;
+      --warning-color: #faa61a;
+      --success-color: #43b581;
+    }
+    
+    .transaction-card {
+      border-left: 3px solid var(--primary-color);
+      background: rgba(255,255,255,0.03);
+      border-radius: 5px;
+      transition: all 0.3s ease;
+      margin-bottom: 10px;
+    }
+    
+    .transaction-earn {
+      border-left-color: var(--success-color);
+    }
+    
+    .transaction-redeem {
+      border-left-color: var(--danger-color);
+    }
+    
+    .badge-earn {
+      background: rgba(67, 181, 129, 0.2);
+      color: var(--success-color);
+    }
+    
+    .badge-redeem {
+      background: rgba(240, 71, 71, 0.2);
+      color: var(--danger-color);
+    }
+    
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 12px;
+    }
+    
+    .user-info {
+      min-width: 0;
+    }
+    
+    .user-info div {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .pagination .page-item.active .page-link {
+      background-color: var(--primary-color);
+      border-color: var(--primary-color);
+    }
+    
+    .pagination .page-link {
+      color: var(--primary-color);
+    }
+    
+    .empty-state {
+      padding: 40px 20px;
+      text-align: center;
+      background: rgba(255,255,255,0.02);
+      border-radius: 12px;
+      border: 1px dashed rgba(255,255,255,0.1);
+    }
+    
+    .empty-state-icon {
+      font-size: 3rem;
+      color: rgba(255,255,255,0.2);
+      margin-bottom: 1rem;
+    }
+    
+    /* Improved table layout */
+    .table-responsive {
+      overflow-x: auto;
+    }
+    
+    .table td, .table th {
+      vertical-align: middle;
+      padding: 12px 8px;
+    }
+    
+    .table td {
+      max-width: 250px;
+    }
+    
+    .progress {
+      width: 100px;
+      background-color: rgba(255,255,255,0.1);
+    }
+    
+    .progress-bar {
+      min-width: 15px;
+    }
+    
+    /* Action buttons */
+    .action-buttons {
+      white-space: nowrap;
+    }
+    
+    /* Modal fixes */
+    .modal-body {
+      max-height: 60vh;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+
+<body class="dark-mode">
+
+  <%- include('./partials/header.ejs') %>
+  <%- include('./partials/aside.ejs') %>
+
+  <main class="docs-container pt-5 pb-3 pb-lg-4">
+    <div class="container-fluid px-xxl-5 px-lg-4 pt-4 pt-lg-5 pb-4">
+      <!-- Page Header -->
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4">
+        <h1 class="ps-lg-2 ps-xxl-0 mt-2 mt-lg-0 pt-4 pb-2 mb-3 mb-xl-4 animate__animated animate__fadeIn">
+          <i class="fas fa-user-friends me-3"></i>Panel Referencji
+        </h1>
+        <div class="text-muted">
+          Łącznie użytkowników: <span class="text-white"><%= profiles.length %></span>
+        </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="row mb-4 animate__animated animate__fadeIn">
+        <div class="col-md-6 mb-3">
+          <div class="card bg-dark-2 h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="text-muted mb-2">Łącznie punktów</h6>
+                  <h3 class="mb-0">
+                    <%= profiles.reduce((sum, p) => sum + p.points, 0) %>
+                  </h3>
+                </div>
+                <div class="bg-primary bg-opacity-10 p-3 rounded">
+                  <i class="fas fa-coins text-primary fs-2"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+          <div class="card bg-dark-2 h-100">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h6 class="text-muted mb-2">Łącznie referencji</h6>
+                  <h3 class="mb-0">
+                    <%= profiles.reduce((sum, p) => sum + p.referralCount, 0) %>
+                  </h3>
+                </div>
+                <div class="bg-success bg-opacity-10 p-3 rounded">
+                  <i class="fas fa-users text-success fs-2"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+	  
+
+      <!-- Main Content -->
+      <div class="card border-0 shadow-sm mb-5 animate__animated animate__fadeIn">
+        <div class="card-header bg-dark-2 border-0">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+            <h2 class="h4 mb-3 mb-md-0"><i class="fas fa-list-ul me-2"></i>Użytkownicy</h2>
+            <div class="input-group" style="max-width: 300px;">
+              <span class="input-group-text bg-dark border-dark text-muted">
+                <i class="fas fa-search"></i>
+              </span>
+              <input type="text" class="form-control bg-dark border-dark text-light" id="searchUsers" placeholder="Szukaj użytkowników...">
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <% if (profiles.length > 0) { %>
+            <div class="table-responsive">
+              <table class="table table-dark table-hover align-middle">
+                <thead class="bg-dark-3">
+                  <tr>
+                    <th style="min-width: 200px;">Użytkownik</th>
+                    <th style="min-width: 150px;">Kod referencyjny</th>
+                    <th style="min-width: 120px;">Punkty</th>
+                    <th style="min-width: 100px;">Referencje</th>
+                    <th style="min-width: 150px;">Ostatnia transakcja</th>
+                    <th class="text-end action-buttons" style="min-width: 180px;">Akcje</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% profiles.forEach((profile, index) => { %>
+                    <tr>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <img src="https://cdn.discordapp.com/avatars/<%= profile.userID %>/<%= req.user.avatar %>.png?size=64" 
+                               class="user-avatar" 
+                               onerror="this.src='https://cdn.discordapp.com/embed/avatars/<%= parseInt(profile.userID) % 5 %>.png'"
+                               alt="User Avatar">
+                          <div class="user-info">
+                            <small class="text-muted">ID: <%= profile.userID %></small>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <code class="d-block"><%= profile.referralCode %></code>
+                        <% if (profile.referredBy) { %>
+                          <small class="text-muted">Zaproszony przez: <%= profile.referredBy %></small>
+                        <% } %>
+                      </td>
+                      <td>
+                        <span class="badge bg-primary bg-opacity-10 text-primary mb-1">
+                          <%= profile.points %> pkt
+                        </span>
+                        </div>
+                      </td>
+                      <td>
+                        <span class="badge bg-success bg-opacity-10 text-success">
+                          <%= profile.referralCount %> ref
+                        </span>
+                      </td>
+                      <td>
+                        <% if (profile.transactions.length > 0) { %>
+                          <% const lastTx = profile.transactions[profile.transactions.length - 1]; %>
+                          <span class="badge <%= lastTx.type === 'earn' ? 'badge-earn' : 'badge-redeem' %> mb-1">
+                            <%= lastTx.type === 'earn' ? '+' : '-' %><%= lastTx.amount %>
+                          </span>
+                          <div class="text-muted small">
+                            <%= new Date(lastTx.date).toLocaleDateString() %>
+                          </div>
+                        <% } else { %>
+                          <span class="text-muted">Brak</span>
+                        <% } %>
+                      </td>
+                      <td class="text-end action-buttons">
+                        <button class="btn btn-sm btn-outline-primary me-2 mb-1 mb-md-0 view-transactions" 
+                                data-user-id="<%= profile.userID %>">
+                          <i class="fas fa-history"></i> Historia
+                        </button>
+                        <button class="btn btn-sm btn-outline-warning edit-points" 
+                                data-user-id="<%= profile.userID %>"
+                                data-current-points="<%= profile.points %>">
+                          <i class="fas fa-edit"></i> Edytuj
+                        </button>
+                      </td>
+                    </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+            
+            <!-- Pagination -->
+            <% if (totalPages > 1) { %>
+              <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center mt-4">
+                  <% if (currentPage > 1) { %>
+                    <li class="page-item">
+                      <a class="page-link" href="?page=<%= currentPage - 1 %>" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                      </a>
+                    </li>
+                  <% } %>
+                  
+                  <% for (let i = 1; i <= totalPages; i++) { %>
+                    <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                      <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                    </li>
+                  <% } %>
+                  
+                  <% if (currentPage < totalPages) { %>
+                    <li class="page-item">
+                      <a class="page-link" href="?page=<%= currentPage + 1 %>" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                    </li>
+                  <% } %>
+                </ul>
+              </nav>
+            <% } %>
+            
+          <% } else { %>
+            <div class="empty-state">
+              <div class="empty-state-icon">
+                <i class="fas fa-user-slash"></i>
+              </div>
+              <h3 class="h5">Brak użytkowników!</h3>
+              <p class="text-muted">Nie ma jeszcze żadnych użytkowników z referencjami.</p>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Transactions Modal -->
+  <div class="modal fade" id="transactionsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content bg-dark border-dark">
+        <div class="modal-header border-dark">
+          <h5 class="modal-title">Historia transakcji</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="transactions-list" class="d-flex flex-column gap-2"></div>
+        </div>
+        <div class="modal-footer border-dark">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Points Modal -->
+  <div class="modal fade" id="editPointsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content bg-dark border-dark">
+        <div class="modal-header border-dark">
+          <h5 class="modal-title">Edytuj punkty</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editPointsForm">
+            <input type="hidden" id="editUserId" name="userID">
+            <div class="mb-3">
+              <label for="actionType" class="form-label">Typ akcji</label>
+              <select class="form-select bg-dark border-dark text-light" id="actionType" name="action" required>
+                <option value="earn">Dodaj punkty</option>
+                <option value="redeem">Odejmij punkty</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="amount" class="form-label">Ilość</label>
+              <input type="number" class="form-control bg-dark border-dark text-light" id="amount" name="amount" min="1" required>
+            </div>
+            <div class="mb-3">
+              <label for="reason" class="form-label">Powód</label>
+              <textarea class="form-control bg-dark border-dark text-light" id="reason" name="reason" rows="2" required></textarea>
+            </div>
+            <div class="alert alert-info">
+              Aktualne punkty: <span id="currentPointsDisplay" class="fw-bold">0</span>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer border-dark">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+          <button type="button" class="btn btn-primary" id="savePointsBtn">Zapisz</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+// View transactions - improved version
+document.querySelectorAll('.view-transactions').forEach(btn => {
+    btn.addEventListener('click', async function() {
+        const userId = this.dataset.userId;
+        const modal = new bootstrap.Modal(document.getElementById('transactionsModal'));
+        const transactionsList = document.getElementById('transactions-list');
+        
+        // Show loading state
+        transactionsList.innerHTML = `
+            <div class="text-center py-4">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-2">Ładowanie transakcji...</p>
+            </div>
+        `;
+        
+        modal.show();
+        
+        try {
+            const response = await fetch(`/dashboard/referral/transactions?userID=${userId}`);
+            
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                const profile = data.profile;
+                transactionsList.innerHTML = '';
+                
+                if (!profile.transactions || profile.transactions.length === 0) {
+                    transactionsList.innerHTML = `
+                        <div class="empty-state py-3">
+                            <div class="empty-state-icon">
+                                <i class="fas fa-exchange-alt"></i>
+                            </div>
+                            <h6 class="h6">Brak transakcji</h6>
+                            <p class="text-muted small">Nie znaleziono transakcji dla tego użytkownika</p>
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Sort transactions by date (newest first)
+                const sortedTransactions = profile.transactions.sort((a, b) => new Date(b.date) - new Date(a.date));
+                
+                sortedTransactions.forEach(tx => {
+                    const txElement = document.createElement('div');
+                    txElement.className = `transaction-card p-3 ${tx.type === 'earn' ? 'transaction-earn' : 'transaction-redeem'}`;
+                    
+                    txElement.innerHTML = `
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="badge ${tx.type === 'earn' ? 'badge-earn' : 'badge-redeem'} me-2">
+                                    ${tx.type === 'earn' ? '+' : '-'}${tx.amount}
+                                </span>
+                                <span class="text-muted small">${new Date(tx.date).toLocaleString()}</span>
+                            </div>
+                        </div>
+                        <div class="mt-2">${tx.details || 'Brak szczegółów'}</div>
+                    `;
+                    
+                    transactionsList.appendChild(txElement);
+                });
+            } else {
+                throw new Error(data.error || 'Failed to load transactions');
+            }
+        } catch (e) {
+            console.error('Error loading transactions:', e);
+            transactionsList.innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Wystąpił błąd podczas ładowania transakcji: ${e.message}
+                </div>
+            `;
+        }
+    });
+});
+    
+    // Edit points
+    document.querySelectorAll('.edit-points').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const userId = this.dataset.userId;
+        const currentPoints = this.dataset.currentPoints;
+        
+        document.getElementById('editUserId').value = userId;
+        document.getElementById('currentPointsDisplay').textContent = currentPoints;
+        
+        const modal = new bootstrap.Modal(document.getElementById('editPointsModal'));
+        modal.show();
+      });
+    });
+    
+    // Save points
+    document.getElementById('savePointsBtn').addEventListener('click', async function() {
+      const form = document.getElementById('editPointsForm');
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      
+      try {
+        const response = await fetch('/dashboard/referral/update', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (result.success) {
+          alert('Punkty zostały zaktualizowane!');
+          location.reload();
+        } else {
+          throw new Error(result.error || 'Failed to update points');
+        }
+      } catch (e) {
+        console.error('Error updating points:', e);
+        alert('Wystąpił błąd podczas aktualizacji punktów: ' + e.message);
+      }
+    });
+    
+    // Search functionality
+    document.getElementById('searchUsers').addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      const rows = document.querySelectorAll('tbody tr');
+      
+      rows.forEach(row => {
+        const userId = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+        const refCode = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+        const matches = userId.includes(searchTerm) || refCode.includes(searchTerm);
+        
+        row.style.display = matches ? '' : 'none';
+      });
+    });
+  </script>
+  
+</body>
+</html>

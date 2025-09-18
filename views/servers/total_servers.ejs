@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Title Tag - Optimized for SEO -->
+  <title>Discordzik | Lista Polskich Serwerów Discord - Najlepsze Społeczności i Boty</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Favicon -->
+  <link rel="icon" href="/assets/img/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="/assets/img/favicon.ico" type="image/x-icon">
+
+  <!-- Charset & Viewport -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
+  <!-- Google Adsense -->
+  <meta name="google-adsense-account" content="ca-pub-9136474966764887">
+
+  <!-- SEO Meta Tags -->
+  <meta name="title" content="Discordzik | Lista Polskich Serwerów Discord - Najlepsze Społeczności i Boty">
+  <meta name="keywords" content="Discord, Discordzik, Polskie serwery Discord, polskie serwery, serwery Discord, polski Discord, społeczność Discord, najlepsze serwery Discord, dołącz do serwera Discord, polskie społeczności online, polski czat, serwery do gier, polskie serwery gier, polski gaming, serwery Discord dla graczy, serwery Discord dla uczniów, polskie grupy Discord, Discord polska, forum Discord, polskie grupy gamingowe, serwery Discord do nauki, serwery Discord do rozmów, serwery Discord do grania, polskie boty Discord, boty Discord, najlepsze boty Discord, darmowe boty Discord, boty muzyczne Discord, boty moderacyjne Discord, boty do gier Discord, automatyzacja na Discordzie, boty do ankiet Discord, boty do zarządzania Discord, polskie boty muzyczne, polskie boty moderacyjne, polskie narzędzia Discord">
+  <meta name="description" content="Discordzik to najlepsze źródło polskich serwerów i botów Discord! Odkryj grupy tematyczne, gamingowe i edukacyjne, znajdź nowych znajomych i dołącz do społeczności pełnej pasjonatów z całej Polski.">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#5024f3">
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:site_name" content="Discordzik.pl">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="<%= config.website.url %>">
+  <meta property="og:title" content="Discordzik | Lista Polskich Serwerów Discord - Najlepsze Społeczności i Boty">
+  <meta property="og:description" content="Discordzik to najlepsze źródło polskich serwerów i botów Discord! Odkryj grupy tematyczne, gamingowe i edukacyjne, znajdź nowych znajomych i dołącz do społeczności pełnej pasjonatów z całej Polski.">
+  <meta property="og:image" content="/assets/img/banner.png">
+  <meta property="og:image:secure_url" content="/assets/img/banner.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+
+  <!-- Twitter Card Meta Tags -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="<%= config.website.url %>">
+  <meta property="twitter:title" content="Discordzik | Lista Polskich Serwerów Discord - Najlepsze Społeczności i Boty">
+  <meta property="twitter:description" content="Discordzik to najlepsze źródło polskich serwerów i botów Discord! Odkryj grupy tematyczne, gamingowe i edukacyjne, znajdź nowych znajomych i dołącz do społeczności pełnej pasjonatów z całej Polski.">
+  <meta property="twitter:image" content="/assets/img/banner.png">
+  <meta property="twitter:image:width" content="1200">
+  <meta property="twitter:image:height" content="360">
+
+  <!-- Preload Critical Resources -->
+  <link rel="preload" href="/assets/img/banner.png" as="image">
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" as="style">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Discordzik | Lista Polskich Serwerów Discord",
+      "description": "Discordzik to najlepsze źródło polskich serwerów i botów Discord! Odkryj grupy tematyczne, gamingowe i edukacyjne, znajdź nowych znajomych i dołącz do społeczności pełnej pasjonatów z całej Polski.",
+      "url": "https://discordzik.pl/allservers",
+      "image": "/assets/img/banner.png"
+    }
+  </script>
+</head>
+
+<%- include('../partials/head') %>
+
+<body>
+  <%- include('../partials/spinner') %>
+  <main class="page-wrapper">
+    <%- include('../partials/header') %>
+
+    <!-- Hero -->
+    <section class="position-relative py-1 border-bottom">
+      <div class="container mt-4 mb-lg-5 pt-lg-2 pb-5">
+        <!-- Breadcrumbs -->
+        <nav aria-label="breadcrumb" class="mb-4">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Strona główna</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Wszystkie serwery</li>
+          </ol>
+        </nav>
+
+        <div class="align-items-end gy-3 mb-4 pb-lg-3 pb-1">
+          <h1 class="mb-2 mb-md-0">Wszystkie Serwery</h1>
+          <span class="text-muted"><strong>500+</strong> serwerów dostępnych</span>
+        </div>
+
+        <!-- Search and Sort Section -->
+        <div class="d-flex flex-column flex-md-row justify-content-between gap-3 mb-4">
+<a href="/" class="btn btn-primary align-self-start">
+  <i class="fas fa-home me-2"></i>Strona główna
+</a>
+
+          
+          <!-- Sorting Buttons -->
+          <div class="btn-group" role="group" aria-label="Sortowanie serwerów">
+            <button onclick="sortServers('votes')" 
+                    class="btn btn-outline-primary px-3 py-2"
+                    aria-label="Sortuj według głosów">
+              <i class="fas fa-thumbs-up me-2"></i>Najpopularniejsze
+            </button>
+            <button onclick="sortServers('random')" 
+                    class="btn btn-outline-primary px-3 py-2"
+                    aria-label="Losowe sortowanie">
+              <i class="fas fa-random me-2"></i>Losowe
+            </button>
+            <button onclick="sortServers('newest')" 
+                    class="btn btn-outline-primary px-3 py-2"
+                    aria-label="Najnowsze">
+              <i class="fas fa-clock me-2"></i>Najnowsze
+            </button>
+          </div>
+        </div>
+
+        <!-- Search Results -->
+        <div class="accordion border-bottom mb-4" style="margin-bottom: 100px;" id="foundBot"></div>
+
+        <!-- Server List -->
+        <div class="accordition" id="serversContainer">
+          <% servers.forEach(a => { %>
+            <a href="/server/<%= a.serverID %>" style="text-decoration: none; color: inherit" class="server-item" 
+               data-votes="<%= a.votes %>" 
+               data-date="<%= new Date(a.Date).getTime() %>">
+              <div class="accordion-item border-0 rounded-3 shadow-sm mb-3" style="padding: 10px;">
+                <figcaption class="card-footer d-flex align-items-center border-0 mt-lg-0" style="padding: 3px;">
+                  <img 
+                    src="<%= sbot.guilds.cache.get(a.serverID)?.iconURL() || 'https://cdn.discordapp.com/embed/avatars/0.png' %>" 
+                    width="60" 
+                    class="rounded-circle" 
+                    alt="<%= a.username %>" 
+                    loading="lazy"
+                    onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'"
+                  >
+                  <div class="ps-3">
+                    <h6 class="fw-semibold lh-base mb-0">
+                      <span class="fw-semibold me-2 mb-2">
+                        <%= sbot.guilds.cache.get(a.serverID)?.name || a.name %>
+                      </span>
+                      <% if (a.status === 'BASIC' || a.status === 'PRO' || a.status === 'GOLD') { %>
+                        <span class="badge bg-faded-warning text-warning mx-1">Promowany</span>
+                      <% } %>
+                      <% if (a.Date > Date.now() - 604800000) { %>
+                        <span class="badge bg-faded-success text-success me-2 mb-2">NOWY!</span>
+                      <% } %>
+                      <span class="badge bg-faded-info text-info me-2 mb-2">Głosów: <%= a.votes.toLocaleString() %></span>
+                      <% if (a.tags && a.tags.length > 0) { %>
+                        <% a.tags.slice(0, 3).forEach(t => { %>
+                          <span class="badge bg-secondary me-2 mb-2"><%= t %></span>
+                        <% }) %>
+                        <% if (a.tags.length > 3) { %>
+                          <span class="badge bg-secondary me-2 mb-2"><i class="bx bx-plus-circle"></i> <%= a.tags.length - 3 %> więcej</span>
+                        <% } %>
+                      <% } %>
+                    </h6>
+                    <span class="fs-sm text-muted"><%= a.shortDesc %></span>
+                  </div>
+                </figcaption>
+              </div>
+            </a>
+          <% }) %>
+        </div>
+
+        <!-- Pagination -->
+        <nav aria-label="Page navigation">
+          <ul class="pagination mb-4" style="justify-content: center">
+            <% if (page > 1) { %>
+              <li class="page-item">
+                <a href="/allservers?page=1" class="page-link"><i class="bx bx-chevrons-left ms-n1 me-1"></i></a>
+              </li>
+              <li class="page-item">
+                <a class="page-link" href="/allservers?page=<%= page - 1 %>" aria-label="Previous"><i class="bx bx-chevron-left"></i></a>
+              </li>
+            <% } else { %>
+              <li class="page-item disabled">
+                <span class="page-link"><i class="bx bx-chevrons-left ms-n1 me-1"></i></span>
+              </li>
+            <% } %>
+
+            <% for (let i = Math.max(1, page - 2); i <= Math.min(totalPages, page + 2); i++) { %>
+              <li class="page-item <%= i === page ? 'active' : '' %>">
+                <a href="/allservers?page=<%= i %>" class="page-link"><%= i %></a>
+              </li>
+            <% } %>
+
+            <% if (page < totalPages) { %>
+              <li class="page-item">
+                <a href="/allservers?page=<%= page + 1 %>" class="page-link"><i class="bx bx-chevron-right"></i></a>
+              </li>
+              <li class="page-item">
+                <a href="/allservers?page=<%= totalPages %>" class="page-link"><i class="bx bx-chevrons-right"></i></a>
+              </li>
+            <% } else { %>
+              <li class="page-item disabled">
+                <span class="page-link"><i class="bx bx-chevrons-right"></i></span>
+              </li>
+            <% } %>
+          </ul>
+        </nav>
+
+        <!-- Tags Section -->
+        <div class="mt-5 pt-4 border-top">
+          <h3 class="h4 mb-3">Popularne tagi</h3>
+          <div class="d-flex flex-wrap gap-2">
+            <% tags.slice(0, 27).forEach(tag => { %>
+              <a href="/servers/<%= encodeURIComponent(tag.tag) %>" 
+                 class="btn btn-sm btn-outline-primary">
+                <%= tag.tag %> <span class="badge bg-primary rounded-pill ms-1"><%= tag.count %></span>
+              </a>
+            <% }) %>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <%- include('../partials/footer') %>
+
+    <script>
+      // Search functionality
+      document.getElementById('searchServerBtn').addEventListener('click', (e) => {
+        let searchServer = document.getElementById('searchServer').value;
+        if (searchServer == '') return document.getElementById('foundBot').innerHTML = '';
+        if (searchServer.length < 3) return document.getElementById('foundBot').innerHTML = '<div class="alert alert-danger" role="alert">Proszę wpisać co najmniej 3 znaki</div>';
+        
+        document.getElementById('searchServerBtn').innerHTML = `<span class="spinner-grow spinner-grow-sm me-2" role="status" aria-hidden="true"><span class="visually-hidden">Szukanie</span></span>Szukanie...`;
+        
+        fetch("/servers/find/" + encodeURIComponent(searchServer), {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }).then(res => res.json()).then(data => {
+          document.getElementById('searchServerBtn').innerHTML = 'Szukaj';
+          
+          if (data.error == false) {
+            document.getElementById('foundBot').innerHTML = '';
+            
+            if (data.servers.length === 0) {
+              document.getElementById('foundBot').innerHTML = `
+                <div class="alert alert-info" role="alert">
+                  Nie znaleziono serwerów pasujących do wyszukiwania
+                </div>`;
+              return;
+            }
+            
+            data.servers.forEach(a => {
+              document.getElementById('foundBot').innerHTML += `
+                <a href="/server/${a.serverID}" style="text-decoration: none; color: inherit">
+                  <div class="accordion-item border-0 rounded-3 shadow-sm mb-3" style="padding: 10px;">
+                    <figcaption class="card-footer d-flex align-items-center border-0 mt-lg-0" style="padding: 3px;">
+                      <img src="${a.icon}" width="60" class="rounded-circle" alt="${a.name}" loading="lazy" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
+                      <div class="ps-3">
+                        <h6 class="fw-semibold lh-base mb-0">
+                          ${a.name}
+                          ${a.status === 'BASIC' || a.status === 'PRO' || a.status === 'GOLD' ? 
+                            '<span class="badge bg-faded-warning text-warning mx-1">PRO</span>' : ''}
+                          <span class="badge bg-faded-info text-info me-2 mb-2">Głosów: ${a.votes}</span>
+                        </h6>
+                        <span class="fs-sm text-muted">${a.shortDesc}</span>
+                      </div>
+                    </figcaption>
+                  </div>
+                </a>`;
+            });
+          } else {
+            document.getElementById('foundBot').innerHTML = `
+              <div class="alert alert-danger" role="alert">
+                ${data.message || 'Wystąpił błąd podczas wyszukiwania'}
+              </div>`;
+          }
+        }).catch(err => {
+          document.getElementById('searchServerBtn').innerHTML = 'Szukaj';
+          document.getElementById('foundBot').innerHTML = `
+            <div class="alert alert-danger" role="alert">
+              Wystąpił błąd podczas wyszukiwania
+            </div>`;
+          console.error('Search error:', err);
+        });
+      });
+
+      // Sorting functionality
+      function sortServers(method) {
+        const container = document.getElementById('serversContainer');
+        if (!container) return;
+        
+        const servers = Array.from(container.querySelectorAll('.server-item'));
+        
+        if (method === 'votes') {
+          servers.sort((a, b) => {
+            const votesA = parseInt(a.dataset.votes) || 0;
+            const votesB = parseInt(b.dataset.votes) || 0;
+            return votesB - votesA;
+          });
+        } 
+        else if (method === 'random') {
+          servers.sort(() => Math.random() - 0.5);
+        }
+        else if (method === 'newest') {
+          servers.sort((a, b) => {
+            const dateA = parseInt(a.dataset.date) || 0;
+            const dateB = parseInt(b.dataset.date) || 0;
+            return dateB - dateA;
+          });
+        }
+        
+        // Re-append sorted servers
+        servers.forEach(server => container.appendChild(server));
+        
+        // Show feedback to user
+        let message = '';
+        switch(method) {
+          case 'votes': message = 'Posortowano według liczby głosów'; break;
+          case 'random': message = 'Wyświetlono w losowej kolejności'; break;
+          case 'newest': message = 'Posortowano od najnowszych'; break;
+        }
+        
+        const feedback = document.createElement('div');
+        feedback.className = 'alert alert-info alert-dismissible fade show mt-3';
+        feedback.innerHTML = `
+          ${message}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        `;
+        
+        const existingFeedback = container.querySelector('.alert');
+        if (existingFeedback) existingFeedback.remove();
+        
+        container.prepend(feedback);
+      }
+
+      // Make tags clickable
+      document.addEventListener('DOMContentLoaded', function() {
+        const serversContainer = document.getElementById('serversContainer');
+        if (serversContainer) {
+          serversContainer.addEventListener('click', function(e) {
+            // Check if clicked on a tag
+            if (e.target.classList.contains('badge') && e.target.classList.contains('bg-secondary')) {
+              e.preventDefault();
+              const tag = e.target.textContent.trim().replace(/\s+\d+ więcej$/, '');
+              if (tag) {
+                window.location.href = `/servers/${encodeURIComponent(tag)}`;
+              }
+            }
+          });
+        }
+      });
+    </script>
+  </main>
+</body>
+</html>

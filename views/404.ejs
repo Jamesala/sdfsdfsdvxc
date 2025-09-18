@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
+
+<head>
+  <title>Discordzik | Lista Polskich Serwerów i Botów Discord</title>
+  <link rel="icon" href="/assets/img/favicon.png" type="image/x-icon">
+  <link rel="shortcut icon" href="/assets/img/favicon.png" type="image/x-icon">
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+  <meta name="google-adsense-account" content="ca-pub-9136474966764887">
+  <meta name="title" content="Discordzik | Lista Polskich Serwerów i Botów Discord">
+  <meta name="keywords" content="Discord, Discordzik, Polskie serwery Discord, polskie serwery, serwery Discord, polski Discord, społeczność Discord, najlepsze serwery Discord, dołącz do serwera Discord, polskie społeczności online, polski czat, serwery do gier, polskie serwery gier, polski gaming, serwery Discord dla graczy, serwery Discord dla uczniów, polskie grupy Discord, Discord polska, forum Discord, polskie grupy gamingowe, serwery Discord do nauki, serwery Discord do rozmów, serwery Discord do grania, polskie boty Discord, boty Discord, najlepsze boty Discord, darmowe boty Discord, boty muzyczne Discord, boty moderacyjne Discord, boty do gier Discord, automatyzacja na Discordzie, boty do ankiet Discord, boty do zarządzania Discord, polskie boty muzyczne, polskie boty moderacyjne, polskie narzędzia Discord">
+  <meta name="description" content="Discordzik to najlepsze źródło polskich serwerów i botów Discord! Odkryj grupy tematyczne, gamingowe i edukacyjne, znajdź nowych znajomych i dołącz do społeczności pełnej pasjonatów z całej Polski.">
+  <meta name="theme-color" content="#5024f3">
+  <meta name="og:site_name" content="Discordzik.pl">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="<%= config.website.url %>">
+  <meta property="og:title" content="Discordzik | Lista Polskich Serwerów i Botów Discord">
+  <meta property="og:description" content="Discordzik to najlepsze źródło polskich serwerów i botów Discord! Odkryj grupy tematyczne, gamingowe i edukacyjne, znajdź nowych znajomych i dołącz do społeczności pełnej pasjonatów z całej Polski.">
+  <meta property="og:image" content="/assets/img/banner.png">
+  <meta property="og:image:secure_url" content="/assets/img/banner.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="<%= config.website.url %>">
+  <meta property="twitter:title" content="Discordzik | Lista Polskich Serwerów i Botów Discord">
+  <meta property="twitter:description" content="Discordzik to najlepsze źródło polskich serwerów i botów Discord! Odkryj grupy tematyczne, gamingowe i edukacyjne, znajdź nowych znajomych i dołącz do społeczności pełnej pasjonatów z całej Polski.">
+  <meta property="twitter:image" content="/assets/img/banner.png">
+  <meta property="twitter:image:width" content="1200">
+  <meta property="twitter:image:height" content="360">
+  <meta property="summary_large_image" content="/assets/img/banner.png">
+</head>
+
+
+
+
+<%- include('partials/head') %>
+
+<body>
+  <%- include('partials/spinner') %>
+  <main class="page-wrapper">
+    <%- include('partials/header') %>
+
+<section class="d-flex align-items-center min-vh-100 py-5 bg-light" style="background: radial-gradient(144.3% 173.7% at 71.41% 94.26%, rgba(99, 102, 241, 0.1) 0%, rgba(218, 70, 239, 0.05) 32.49%, rgba(241, 244, 253, 0.07) 82.52%);">
+  <div class="container my-5 text-md-start text-center">
+    <div class="row align-items-center">
+
+      <!-- Animation -->
+      <div class="col-xl-6 col-md-7 order-md-2 ms-n5">
+        <lottie-player src="assets/json/animation-404-v1.json" background="transparent.html" speed="1" loop="" autoplay=""></lottie-player>
+      </div>
+
+      <!-- Image (added here) -->
+      <div class="col-md-5 offset-xl-1 order-md-1 text-center text-md-start mb-4">
+        <img src="https://discordzik.pl/assets/img/404.png" alt="404 Illustration" class="img-fluid mb-4">
+        <h1 class="display-1 mb-sm-4 mt-n4 mt-sm-n5" style="font-size: 1.5rem;">Błąd 404: Dzik zrobił swoje.</h1>
+
+
+        <p class="mb-md-5 mb-4 mx-md-0 mx-auto pb-2 lead"><%= message %></p>
+        <% if (!user) { %>
+        <a href="/login" class="btn btn-lg btn-dark shadow-dark w-sm-auto w-100">
+          <i class="bx bx-log-in-circle me-2"></i>
+          Zaloguj
+        </a>
+        <% } %>
+        <a href="/" class="btn btn-lg btn-primary shadow-primary w-sm-auto w-100">
+          <i class="bx bx-home-alt me-2 ms-n1 lead"></i>
+          Strona główna
+        </a>
+        <!-- go back button -->
+        <a href="javascript:history.back()" class="btn btn-lg w-sm-auto w-100">
+          <i class="bx bx-left-arrow-alt me-2 ms-n1 lead"></i>
+          Wróć
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+  </main>
+
+
+  <%- include('partials/footer') %>
+</body>
+
+</html>

@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
+<head>
+  <title>Discordzik | Dodaj Serwer</title>
+  <link rel="icon" href="/assets/img/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="/assets/img/favicon.ico" type="image/x-icon">
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+  <meta name="google-adsense-account" content="ca-pub-9136474966764887">
+  <meta name="title" content="Discordzik | Dodaj Serwer">
+  <meta name="keywords" content="Discord, Discordzik, Polskie serwery Discord, polskie serwery, serwery Discord, polski Discord, społeczność Discord, najlepsze serwery Discord, dołącz do serwera Discord, polskie społeczności online, polski czat, serwery do gier, polskie serwery gier, polski gaming, serwery Discord dla graczy, serwery Discord dla uczniów, polskie grupy Discord, Discord polska, forum Discord, polskie grupy gamingowe, serwery Discord do nauki, serwery Discord do rozmów, serwery Discord do grania, polskie boty Discord, boty Discord, najlepsze boty Discord, darmowe boty Discord, boty muzyczne Discord, boty moderacyjne Discord, boty do gier Discord, automatyzacja na Discordzie, boty do ankiet Discord, boty do zarządzania Discord, polskie boty muzyczne, polskie boty moderacyjne, polskie narzędzia Discord">
+  <meta name="description" content="Discordzik to najlepsze źródło polskich serwerów i botów Discord! Odkryj grupy tematyczne, gamingowe i edukacyjne, znajdź nowych znajomych i dołącz do społeczności pełnej pasjonatów z całej Polski.">
+  <meta name="theme-color" content="#5024f3">
+  <meta name="og:site_name" content="Discordzik.pl">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="<%= config.website.url %>">
+  <meta property="og:title" content="Discordzik | Dodaj Serwer">
+  <meta property="og:description" content="Discordzik to najlepsze źródło polskich serwerów i botów Discord! Odkryj grupy tematyczne, gamingowe i edukacyjne, znajdź nowych znajomych i dołącz do społeczności pełnej pasjonatów z całej Polski.">
+  <meta property="og:image" content="/assets/img/banner.png">
+  <meta property="og:image:secure_url" content="/assets/img/banner.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="<%= config.website.url %>">
+  <meta property="twitter:title" content="Discordzik | Dodaj Serwer">
+  <meta property="twitter:description" content="Discordzik to najlepsze źródło polskich serwerów i botów Discord! Odkryj grupy tematyczne, gamingowe i edukacyjne, znajdź nowych znajomych i dołącz do społeczności pełnej pasjonatów z całej Polski.">
+  <meta property="twitter:image" content="/assets/img/banner.png">
+  <meta property="twitter:image:width" content="1200">
+  <meta property="twitter:image:height" content="360">
+  <meta property="summary_large_image" content="/assets/img/banner.png">
+</head>
+
+<%- include('../partials/head') %>
+
+<body>
+  <%- include('../partials/spinner') %>
+  <main class="page-wrapper">
+    <%- include('../partials/header') %>
+
+    <section class="container mt-1 mb-1 pt-2 pb-lg-1">
+      <div class="row gy-4"></div>
+    </section>
+
+<!-- Dodana sekcja z informacjami o funkcjach -->
+<section class="container mb-4">
+  <div class="alert alert-info d-flex align-items-center" role="alert">
+    <i class="fas fa-info-circle fs-4 me-3"></i>
+    <div class="w-100">
+      <h5 class="alert-heading mb-3">Przydatne informacje o funkcjach</h5>
+      <div class="d-flex flex-wrap gap-3">
+        <div class="d-flex align-items-center flex-grow-1" style="min-width: 250px;">
+          <span class="badge bg-primary d-inline-flex justify-content-center" style="width: 80px;">/bump</span>
+          <span class="ms-2">Użytkownicy mogą głosować na serwer używając tej komendy</span>
+        </div>
+        <div class="d-flex align-items-center flex-grow-1" style="min-width: 250px;">
+          <span class="badge bg-primary d-inline-flex justify-content-center" style="width: 80px;">/setrole</span>
+          <span class="ms-2">Ustaw progi nagród (role) za głosowanie</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+    <section class="container mb-5 pb-lg-5">
+
+      <div class="alert d-flex alert-warning" role="alert">
+        <i class="bx bx-error lead me-3"></i>
+        <div>
+          <h6 class="alert-heading mb-1">Uwaga!</h6>
+          <p class="mb-0">
+            Zamierzasz dodać nowy serwer na naszą strone
+            - <strong>Dodając serwer wyrażasz zgodę na nasze <a href="/tos" target="_blank">Warunki Korzystania</a> i <a href="/privacy" target="_blank">Polityke Prywatności</a></strong>
+          </p>
+        </div>
+      </div>
+
+      <div class="border-bottom py-5 ps-lg-2 ps-xxl-0">
+        <form class="needs-validation" id="form">
+          <div class="mb-4 row align-items-center was-validated">
+            <label class="col-md-2 col-form-label fs-sm" for="text-input">ID Serwera <code>*</code></label>
+            <div class="col-md-10">
+              <input class="form-control" type="text" name="serverID" id="serverID" placeholder="ID Serwera" required>
+              <div class="form-text">ID serwera, który chcesz dodać. <a href="https://www.youtube.com/watch?v=NLWtSHWKbAI" target="_blank">Poradnik</a></div>
+            </div>
+          </div>
+          <div class="mb-4 row align-items-center was-validated">
+            <label class="col-md-2 col-form-label fs-sm" for="text-input">Link Zaproszenia <code>*</code></label>
+            <div class="col-md-10">
+              <input class="form-control" type="text" name="inviteURL" id="inviteURL" placeholder="Link Zaproszenia" required>
+              <div class="form-text">Link zaproszenia do Twojego serwera.</div>
+            </div>
+          </div>
+		  
+		  <div class="mb-4 row align-items-center">
+            <label class="col-md-2 col-form-label fs-sm" for="text-input">Link Strony</label>
+            <div class="col-md-10">
+              <input class="form-control" type="text" name="stronaURL" id="stronaURL" placeholder="https://mojastrona.pl/">
+              <div class="form-text">Link Strony twojego serwera. (opcjonalne)</div>
+            </div>
+          </div>
+		  
+		   <div class="mb-4 row align-items-center">
+            <label class="col-md-2 col-form-label fs-sm" for="text-input">Link Patronite</label>
+            <div class="col-md-10">
+              <input class="form-control" type="text" name="patroniteURL" id="patroniteURL" placeholder="https://patronite.pl/xyz">
+              <div class="form-text">Link Patronite twojego serwera. (opcjonalne)</div>
+            </div>
+          </div>
+		  
+		  
+<section class="ps-lg-2 ps-xxl-0">
+    <h2 class="h4">Tagi <code>*</code></h2>
+    <div class="form-text">
+        Tagi służą do kategoryzowania Twojego serwera. Możesz wybrać do 12 tagów lub dodać własne.
+    </div>
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row row-cols-sm-4 row-cols-2 gy-2 mb-3">
+                <% for (let i = 0; i < global.config.website.serverTags.length; i++) { %>
+                <div class="col">
+                    <div class="form-check mb-0">
+                        <input type="checkbox" class="form-check-input" id="tag<%= global.config.website.serverTags[i] %>" name="tags" value="<%= global.config.website.serverTags[i] %>">
+                        <label for="s-daily-newsletter" class="form-check-label"><%= global.config.website.serverTags[i] %></label>
+                    </div>
+                </div>
+                <% } %>
+            </div>
+			
+            <h5 class="h5">Dodaj własny tag</h5>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" id="customTag" placeholder="Wpisz własny tag" maxlength="20">
+                <button class="btn btn-primary" type="button" id="addCustomTag">Dodaj</button>
+            </div>
+			
+            <h5 class="h5">Wybrane Tagi</h5>
+            <div class="row row-cols-sm-4 row-cols-2 gy-2 mb-3" id="selectedTags"></div>
+            <script>
+                document.querySelectorAll('[name="tags"]').forEach(item => {
+                    item.addEventListener('change', event => {
+                        let tags = document.getElementById('selectedTags');
+                        let tag = item.value.charAt(0).toUpperCase() + item.value.slice(1); // Pierwsza litera na dużą
+                        let selectedCount = tags.children.length;
+
+                        if (selectedCount >= 12 && item.checked) {
+                            alert("Maksymalna liczba tagów to 12!");
+                            item.checked = false;  // Cofnięcie zaznaczenia tagu
+                            return;
+                        }
+
+                        if (item.checked == true) {
+                            let div = document.createElement('div');
+                            div.className = 'col';
+                            div.innerHTML = `
+                            <div class="form-check mb-0">
+                                <input type="checkbox" class="form-check-input" id="tag${tag}" name="tags" value="${tag}" checked disabled>
+                                <label for="s-daily-newsletter" class="form-check-label">${tag}</label>
+                            </div>
+                            `;
+                            tags.appendChild(div);
+                        } else if (item.checked == false) {
+                            let div = document.getElementById('selectedTags').children;
+                            for (let i = 0; i < div.length; i++) {
+                                if (div[i].children[0].children[1].innerHTML == tag) {
+                                    div[i].remove();
+                                }
+                            }
+                        }
+                    });
+                });
+
+                if (document.getElementById('tags').children.length == 0) {
+                    let div = document.createElement('div');
+                    div.className = 'col';
+                    div.innerHTML = `
+                    <div class="form-check mb-0">
+                        <label for="s-daily-newsletter" class="form-check-label">Stary, nie wybrałeś nic..</label>
+                    </div>
+                    `;
+                    document.getElementById('tags').appendChild(div);
+                }
+            </script>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.getElementById('addCustomTag').addEventListener('click', function() {
+        let customTagInput = document.getElementById('customTag');
+        let customTag = customTagInput.value.trim();
+        let selectedTags = document.getElementById('selectedTags');
+        let selectedCount = selectedTags.children.length;
+
+        if (selectedCount >= 12) {
+            alert("Maksymalna liczba tagów to 12!");
+            return;
+        }
+
+        if (customTag.length > 20) {
+            alert("Maksymalna długość tagu to 20 znaków!");
+            return;
+        }
+
+        if (customTag) {
+            customTag = customTag.charAt(0).toUpperCase() + customTag.slice(1); // Pierwsza litera na dużą
+
+            if (!document.getElementById(`tag${customTag}`)) {
+                let div = document.createElement('div');
+                div.className = 'col';
+                div.innerHTML = `
+                    <div class="form-check mb-0">
+                        <input type="checkbox" class="form-check-input" id="tag${customTag}" name="tags" value="${customTag}" checked>
+                        <label class="form-check-label">${customTag}</label>
+                    </div>
+                `;
+                selectedTags.appendChild(div);
+                customTagInput.value = ''; // Wyczyść pole po dodaniu
+            }
+        }
+    });
+</script>
+
+
+
+
+
+
+          <section class="ps-lg-2 ps-xxl-0 was-validated mb-3">
+            <h2 class="h4">Krótki Opis <code>*</code></h2>
+            <div class="form-text">Krótki opis Twojego Serwera. (Nie obsługuje znaczników Markdown)</div>
+            <textarea class="form-control" style="height: 10rem" name="shortDesc" id="shortDesc" minlength="50" maxlength="200" placeholder="Krótki opis Twojego Serwera." required></textarea>
+          </section>
+
+<!-- Sekcja dla długiego opisu -->
+<section class="ps-lg-2 ps-xxl-0 mb-3 was-validated">
+  <h2 class="h4">Długi Opis <code>*</code></h2>
+  <div class="form-text">Długi opis Twojego serwera. Obsługuje Markdown.</div>
+  
+  <div class="border rounded overflow-hidden">
+    <!-- Toolbar dla podstawowego formatowania -->
+    <div class="bg-light p-2 d-flex flex-wrap gap-2 border-bottom">
+      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('**', '**')">
+        <i class="fas fa-bold"></i>
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('_', '_')">
+        <i class="fas fa-italic"></i>
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('[', '](url)')">
+        <i class="fas fa-link"></i>
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('\n- ', '')">
+        <i class="fas fa-list-ul"></i>
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('\n1. ', '')">
+        <i class="fas fa-list-ol"></i>
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('> ', '')">
+        <i class="fas fa-quote-right"></i>
+      </button>
+	  <button type="button" class="btn btn-sm btn-outline-primary" id="generateDescBtn">
+      <i class="fas fa-magic me-2"></i>Wygeneruj Opis z AI
+      </button>
+      <button type="button" id="togglePreviewBtn" class="btn btn-sm btn-outline-primary ms-auto">
+        <i class="fas fa-eye"></i><span class="ms-2">Podgląd</span>
+      </button>
+    </div>
+    
+<!-- Edytor -->
+<textarea class="form-control border-0" style="height: 30rem; min-height: 300px; resize: vertical;" 
+          name="longDesc" 
+          id="longDesc" 
+          minlength="200" 
+          maxlength="5000" 
+          required 
+          oninput="updateCounter()"><%= (locals.serverdata && serverdata.longDesc) ? serverdata.longDesc.replace(/</g, '&lt;').replace(/>/g, '&gt;') : '' %></textarea>
+    
+    <!-- Licznik znaków -->
+    <div class="bg-light p-2 border-top text-end">
+      <span id="charCounter">0</span>/5000 znaków
+    </div>
+  </div>
+  
+  <!-- Podgląd Markdown -->
+  <div id="markdownPreview" class="border p-3 mt-3 rounded bg-light" style="display: none;"></div>
+</section>
+
+<!-- Załaduj wymagane biblioteki -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/markdown-it@12.3.2/dist/markdown-it.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.6/purify.min.js"></script>
+
+<style>
+  #togglePreviewBtn.active {
+    background-color: #0d6efd;
+    color: white;
+  }
+  
+  #markdownPreview img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  #markdownPreview {
+    max-height: 500px;
+    overflow-y: auto;
+  }
+  
+</style>
+
+<script>
+  // Elementy DOM
+  const textarea = document.getElementById('longDesc');
+  const preview = document.getElementById('markdownPreview');
+  const charCounter = document.getElementById('charCounter');
+  const toggleBtn = document.getElementById('togglePreviewBtn');
+  let isPreviewVisible = false;
+
+  // Inicjalizacja licznika
+  updateCounter();
+
+  // Przypisanie event listenerów
+  toggleBtn.addEventListener('click', togglePreview);
+  textarea.addEventListener('input', updateCounter);
+
+  // Funkcje
+  function formatText(prefix, suffix) {
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = textarea.value.substring(start, end);
+    const beforeText = textarea.value.substring(0, start);
+    const afterText = textarea.value.substring(end);
+    
+    textarea.value = beforeText + prefix + selectedText + suffix + afterText;
+    textarea.selectionStart = start + prefix.length;
+    textarea.selectionEnd = end + prefix.length;
+    textarea.focus();
+    updateCounter();
+    
+    if (isPreviewVisible) {
+      updatePreview();
+    }
+  }
+
+  function togglePreview() {
+    isPreviewVisible = !isPreviewVisible;
+    preview.style.display = isPreviewVisible ? 'block' : 'none';
+    toggleBtn.classList.toggle('active', isPreviewVisible);
+    
+    if (isPreviewVisible) {
+      updatePreview();
+    }
+  }
+
+  function updatePreview() {
+    try {
+      if (!textarea.value.trim()) {
+        preview.innerHTML = '<div class="text-muted">Podgląd pojawi się tutaj...</div>';
+        return;
+      }
+
+      const markdownText = textarea.value;
+      const safeMarkdown = DOMPurify.sanitize(markdownText);
+      
+      const md = window.markdownit({
+        html: true,
+        linkify: true,
+        typographer: true,
+        breaks: true
+      });
+      
+      preview.innerHTML = md.render(safeMarkdown);
+      
+      // Obsługa linków
+      preview.querySelectorAll('a').forEach(link => {
+        link.setAttribute('target', '_blank');
+        link.setAttribute('rel', 'noopener noreferrer');
+      });
+      
+    } catch (error) {
+      console.error('Błąd podglądu:', error);
+      preview.innerHTML = '<div class="alert alert-danger">Błąd generowania podglądu. Sprawdź konsolę.</div>';
+    }
+  }
+
+  function updateCounter() {
+    const length = textarea.value.length;
+    charCounter.textContent = length;
+    
+    charCounter.classList.toggle('text-warning', length > 4500);
+    charCounter.classList.toggle('text-danger', length > 4900);
+  }
+
+  // Inicjalizacja podglądu jeśli jest tekst
+  if (textarea.value.trim()) {
+    updatePreview();
+  }
+</script>
+
+          <div id="results"></div>
+          <div class="tab-pane fade show active" id="preview1" role="tabpanel">
+            <button class="btn btn-primary" type="submit" id="submit">Wyślij</button>
+          </div>
+        </form>
+      </div>
+    </section>
+	
+<div class="modal fade" id="aiGenerateModal" tabindex="-1" aria-labelledby="aiGenerateModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="aiGenerateModalLabel">Generuj Opis z AI</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div id="aiLimitInfo" class="alert alert-warning mb-3">
+          <i class="fas fa-info-circle me-2"></i>
+          Możesz wygenerować opis <span id="remainingGenerations">2</span>/2 razy dziennie.
+        </div>
+        
+        <div class="mb-3">
+          <label for="aiPromptInput" class="form-label">Podpowiedź dla AI</label>
+          <textarea class="form-control" id="aiPromptInput" rows="3" 
+                   placeholder="Opisz swój serwer..." maxlength="500"></textarea>
+          <div class="form-text text-end"><span id="promptCounter">0</span>/500 znaków</div>
+        </div>
+        
+        <div class="mb-3">
+          <label class="form-label">Opcje</label>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="generateShortDesc" checked>
+            <label class="form-check-label" for="generateShortDesc">Wygeneruj krótki opis</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="generateLongDesc" checked>
+            <label class="form-check-label" for="generateLongDesc">Wygeneruj długi opis</label>
+          </div>
+        </div>
+        
+        <div id="aiGenerationStatus" class="d-none alert alert-info">
+          <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+          <span id="aiStatusText">Generowanie opisu...</span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+        <button type="button" class="btn btn-primary" id="generateWithAI">Generuj</button>
+      </div>
+    </div>
+  </div>
+</div>
+  </main>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <%- include('../partials/footer') %>
+</body>
+
+</html>
+
+<script>
+  // Initialize the modal
+  const aiGenerateModal = new bootstrap.Modal(document.getElementById('aiGenerateModal'));
+  let remainingGenerations = 2;
+  
+  // Show modal when button is clicked
+  document.getElementById('generateDescBtn').addEventListener('click', async () => {
+    // Check remaining generations
+    try {
+      const response = await fetch('/api/check-ai-usage', {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${window.authToken}` // Add if you use auth
+        }
+      });
+      
+      const data = await response.json();
+      remainingGenerations = data.remaining || 2;
+      
+      if (remainingGenerations <= 0) {
+        alert('Osiągnięto dzienny limit generowania. Spróbuj jutro.');
+        return;
+      }
+      
+      document.getElementById('remainingGenerations').textContent = remainingGenerations;
+      aiGenerateModal.show();
+      
+    } catch (error) {
+      console.error('Error checking usage:', error);
+      aiGenerateModal.show();
+    }
+  });
+  
+  // Character counter for prompt
+  document.getElementById('aiPromptInput').addEventListener('input', function() {
+    document.getElementById('promptCounter').textContent = this.value.length;
+  });
+  
+  // Handle generation
+  document.getElementById('generateWithAI').addEventListener('click', async () => {
+    if (remainingGenerations <= 0) {
+      alert('Osiągnięto dzienny limit generowania. Spróbuj jutro.');
+      return;
+    }
+    
+    const prompt = document.getElementById('aiPromptInput').value.trim();
+    const generateShort = document.getElementById('generateShortDesc').checked;
+    const generateLong = document.getElementById('generateLongDesc').checked;
+    const statusElement = document.getElementById('aiGenerationStatus');
+    const statusText = document.getElementById('aiStatusText');
+    
+    if (!generateShort && !generateLong) {
+      alert('Proszę wybrać przynajmniej jeden typ opisu do wygenerowania.');
+      return;
+    }
+    
+    // Show loading state
+    statusElement.classList.remove('d-none');
+    document.getElementById('generateWithAI').disabled = true;
+    
+    try {
+      const response = await fetch('/api/generate-description', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${window.authToken}` // Add if you use auth
+        },
+        body: JSON.stringify({
+          prompt: prompt,
+          generateShort: generateShort,
+          generateLong: generateLong
+        })
+      });
+      
+      const result = await response.json();
+      
+      if (result.error) {
+        throw new Error(result.error);
+      }
+      
+      // Apply generated descriptions
+      if (generateShort && result.shortDesc) {
+        document.getElementById('shortDesc').value = result.shortDesc;
+      }
+      
+      if (generateLong && result.longDesc) {
+        document.getElementById('longDesc').value = result.longDesc;
+        updateCounter();
+      }
+      
+      // Update remaining generations
+      remainingGenerations = result.remaining || 0;
+      document.getElementById('remainingGenerations').textContent = remainingGenerations;
+      
+      if (remainingGenerations <= 0) {
+        document.getElementById('aiLimitInfo').classList.add('alert-danger');
+        document.getElementById('aiLimitInfo').classList.remove('alert-warning');
+      }
+      
+      // Show success message
+      statusText.textContent = 'Opis wygenerowany pomyślnie!';
+      statusElement.classList.remove('alert-info');
+      statusElement.classList.add('alert-success');
+      
+      setTimeout(() => {
+        aiGenerateModal.hide();
+      }, 1500);
+      
+    } catch (error) {
+      console.error('Error generating description:', error);
+      statusText.textContent = `Błąd: ${error.message || 'Wystąpił problem'}`;
+      statusElement.classList.remove('alert-info');
+      statusElement.classList.add('alert-danger');
+    } finally {
+      setTimeout(() => {
+        statusElement.classList.add('d-none');
+        statusElement.classList.remove('alert-danger', 'alert-success');
+        statusElement.classList.add('alert-info');
+        statusText.textContent = 'Generowanie opisu...';
+        document.getElementById('generateWithAI').disabled = false;
+      }, 3000);
+    }
+  });
+</script>
+<script>
+  document.getElementById('form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const submitBtn = document.getElementById('submit');
+    submitBtn.disabled = true;
+    
+    try {
+      let tags = [];
+      document.querySelectorAll('[id^="tag"]').forEach(item => {
+        if (item.checked) {
+          tags.push(item.value);
+        }
+      });
+      tags = [...new Set(tags)];
+
+      let data = {
+        serverID: document.getElementById('serverID').value,
+        inviteURL: document.getElementById('inviteURL').value,
+        patroniteURL: document.getElementById('patroniteURL').value,
+        stronaURL: document.getElementById('stronaURL').value,
+        shortDesc: document.getElementById('shortDesc').value,
+        longDesc: document.getElementById('longDesc').value,
+        tags: tags,
+      }
+
+      const response = await fetch('/servers/new', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      
+      const json = await response.json();
+      
+      if (json.success === true) {  // Zmienione z json.error === false na json.success === true
+        document.getElementById('results').innerHTML = `
+          <div class="alert alert-success" role="alert">
+            ${json.message}
+          </div>
+        `;
+        // Clear form after successful submission
+        document.getElementById('form').reset();
+        document.getElementById('selectedTags').innerHTML = '';
+      } else {
+        document.getElementById('results').innerHTML = `
+          <div class="alert alert-danger" role="alert">
+            ${json.message || 'Wystąpił nieznany błąd.'}
+          </div>
+        `;
+      }
+    } catch (error) {
+      document.getElementById('results').innerHTML = `
+        <div class="alert alert-danger" role="alert">
+          Wystąpił błąd podczas przesyłania formularza. Spróbuj ponownie.
+        </div>
+      `;
+      console.error('Error:', error);
+    } finally {
+      setTimeout(() => {
+        submitBtn.disabled = false;
+      }, 2000);
+    }
+  });
+</script>

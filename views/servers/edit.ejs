@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Discordzik | Edytuj Serwer</title>
+  <link rel="icon" href="/assets/img/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="/assets/img/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+  <meta name="google-adsense-account" content="ca-pub-9136474966764887">
+  <meta name="title" content="Discordzik | Edytuj Serwer">
+  <meta name="keywords" content="Discord, Discordzik, Polskie serwery Discord, polskie serwery, serwery Discord, polski Discord, społeczność Discord, najlepsze serwery Discord, dołącz do serwera Discord, polskie społeczności online, polski czat, serwery do gier, polskie serwery gier, polski gaming, serwery Discord dla graczy, serwery Discord dla uczniów, polskie grupy Discord, Discord polska, forum Discord, polskie grupy gamingowe, serwery Discord do nauki, serwery Discord do rozmów, serwery Discord do grania, polskie boty Discord, boty Discord, najlepsze boty Discord, darmowe boty Discord, boty muzyczne Discord, boty moderacyjne Discord, boty do gier Discord, automatyzacja na Discordzie, boty do ankiet Discord, boty do zarządzania Discord, polskie boty muzyczne, polskie boty moderacyjne, polskie narzędzia Discord">
+  <meta name="description" content="Discordzik to najlepsze źródło polskich serwerów i botów Discord! Odkryj grupy tematyczne, gamingowe i edukacyjne, znajdź nowych znajomych i dołącz do społeczności pełnej pasjonatów z całej Polski.">
+  <meta name="theme-color" content="#5024f3">
+  <meta name="og:site_name" content="Discordzik.pl">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="<%= config.website.url %>">
+  <meta property="og:title" content="Discordzik | Edytuj Serwer">
+  <meta property="og:description" content="Discordzik to najlepsze źródło polskich serwerów i botów Discord! Odkryj grupy tematyczne, gamingowe i edukacyjne, znajdź nowych znajomych i dołącz do społeczności pełnej pasjonatów z całej Polski.">
+  <meta property="og:image" content="/assets/img/banner.png">
+  <meta property="og:image:secure_url" content="/assets/img/banner.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="<%= config.website.url %>">
+  <meta property="twitter:title" content="Discordzik | Edytuj Serwer">
+  <meta property="twitter:description" content="Discordzik to najlepsze źródło polskich serwerów i botów Discord! Odkryj grupy tematyczne, gamingowe i edukacyjne, znajdź nowych znajomych i dołącz do społeczności pełnej pasjonatów z całej Polski.">
+  <meta property="twitter:image" content="/assets/img/banner.png">
+  <meta property="twitter:image:width" content="1200">
+  <meta property="twitter:image:height" content="360">
+  <meta property="summary_large_image" content="/assets/img/banner.png">
+  <!-- Dodaj te linie w <head> -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/markdown-it@12.3.2/dist/markdown-it.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.6/purify.min.js"></script>
+</head>
+
+<%- include('../partials/head') %>
+
+<body>
+  <%- include('../partials/spinner') %>
+  <main class="page-wrapper">
+    <%- include('../partials/header') %>
+
+    <section class="container mt-1 mb-1 pt-1 pb-lg-1">
+      <div class="row gy-4"></div>
+    </section>
+
+    <section class="container mb-5 pb-lg-5">
+      <div class="mb-4 mb-lg-5">
+        <div class="accordion-item border-0 rounded-3 shadow-sm mb-3" style="padding: 10px;">
+          <figcaption class="card-footer d-flex align-items-center border-0" style="padding: 3px;">
+            <img src="<%= sbot.guilds.cache.get(serverdata.serverID)?.iconURL() || 'https://cdn.discordapp.com/embed/avatars/0.png' %>" width="60" class="rounded-circle" alt="Reaction Roles">
+            <div class="ps-3">
+              <h6 class="fw-semibold lh-base mb-0">
+                <%= sbot.guilds.cache.get(serverdata.serverID)?.name || 'Unknown Server' %>
+              </h6>
+              <span class="fs-sm text-muted"><%= serverdata.shortDesc %></span>
+            </div>
+          </figcaption>
+        </div>
+      </div>
+
+      <div class="alert d-flex alert-warning" role="alert">
+        <i class="bx bx-error lead me-3"></i>
+        <div>
+          <h6 class="alert-heading mb-1">Uwaga!</h6>
+          <p class="mb-0">
+            Zamierzasz edytować serwer <strong><%= sbot.guilds.cache.get(serverdata.serverID)?.name || 'Unknown Server' %></strong>. Upewnij się, że edytujesz właściwy serwer.
+          </p>
+        </div>
+      </div>
+
+      <div class="alert d-flex alert-primary d-none" role="alert">
+        <i class="bx bx-bell lead me-3"></i>
+        <div>
+          <h6 class="alert-heading mb-1">Zmiany!</h6>
+          <p class="mb-0">
+            Zmieniając informacje o serwerze, wyrażasz zgodę na <a href="/tos">Warunki usługi</a>.
+          </p>
+        </div>
+      </div>
+
+      <div class="border-bottom py-5 ps-lg-2 ps-xxl-0">
+
+        <form class="needs-validation">
+          <div class="mb-4 row align-items-center">
+            <label class="col-md-2 col-form-label fs-sm" for="text-input">Nazwa serwera</label>
+            <div class="col-md-10">
+              <input class="form-control" type="text" value="<%= sbot.guilds.cache.get(serverdata.serverID)?.name || 'Unknown Server' %>" disabled>
+              <div class="form-text">Nazwa Twojego serwera.</div>
+            </div>
+          </div>
+
+          <div class="mb-4 row align-items-center">
+            <label class="col-md-2 col-form-label fs-sm" for="text-input">ID Serwera </label>
+            <div class="col-md-10">
+              <input class="form-control" type="text" value="<%= serverdata.serverID %>" disabled>
+              <div class="form-text">Identyfikator klienta Twojego serwera.</div>
+            </div>
+          </div>
+
+          <div class="alert alert-info alert-dismissible fade show" role="alert">
+            <span class="fw-bold">Alert ostrzegawczy:</span> Wprowadzając błędne informacje, możesz spowodować zablokowanie dostępu swojego serwera do witryny.
+            <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          <div class="d-sm-flex">
+            <div class="w-100 me-4">
+              <div class="mb-3">
+                <label class="col-md-2 col-form-label fs-sm" for="text-input">Link Zaproszenia</label>
+                <div class="form-text">Link zaproszenia do Twojego serwera.</div>
+              </div>
+              <div class="mb-3 mb-sm-0">
+                <input class="form-control mb-4" type="text" name="inviteURL" id="inviteURL" value="<%= serverdata.inviteURL %>" placeholder="https://discord.gg/invite">
+              </div>
+            </div>
+          </div>
+		  
+		  <div class="d-sm-flex">
+            <div class="w-100 me-4">
+              <div class="mb-3">
+                <label class="col-md-2 col-form-label fs-sm" for="text-input">Link Strony</label>
+                <div class="form-text">Link Strony twojego serwera. (opcjonalne)</div>
+              </div>
+              <div class="mb-3 mb-sm-0">
+                <input class="form-control mb-4" type="text" name="stronaURL" id="stronaURL" value="<%= serverdata.stronaURL %>" placeholder="https://mojastrona.pl/">
+              </div>
+            </div>
+          </div>
+		  
+          <div class="d-sm-flex">
+            <div class="w-100 me-4">
+              <div class="mb-3">
+                <label class="col-md-2 col-form-label fs-sm" for="text-input">Link Patronite</label>
+                <div class="form-text">Link Patronite twojego serwera. (opcjonalne)</div>
+              </div>
+              <div class="mb-3 mb-sm-0">
+                <input class="form-control mb-4" type="text" name="patroniteURL" id="patroniteURL" value="<%= serverdata.patroniteURL %>" placeholder="https://patronite.pl/xyz">
+              </div>
+            </div>
+          </div>
+
+<%
+  const isUnlocked = ['PRO', 'GOLD'].includes(serverdata.status);
+%>
+
+<section class="ps-lg-2 ps-xxl-0 mb-3">
+  <h2 class="h4 d-flex align-items-center">
+    Link do Tła
+    <% if (serverdata.status === 'GOLD') { %>
+      <span class="gold-tag ms-2">GOLD</span>
+    <% } else if (serverdata.status === 'PRO') { %>
+      <span class="pro-tag ms-2">PRO</span>
+    <% } else { %>
+      <span class="locked-tag ms-2">WYMAGANY STATUS</span>
+    <% } %>
+  </h2>
+
+  <div class="form-text">
+    Dodaj link do niestandardowego tła dla swojego serwera.
+    Tylko formaty URL .jpg, .png, .webp są obsługiwane.
+    <% if (!isUnlocked) { %>
+      <div class="text-warning mt-1">Ta funkcja wymaga statusu PRO lub GOLD</div>
+    <% } %>
+  </div>
+
+  <input
+    type="url"
+    id="customBannerURL"
+    name="customBannerURL"
+    class="form-control"
+    placeholder="Wprowadź URL do tła"
+    style="background-color: #0b0f19; color: #f0f1f2;"
+    value="<%= serverdata.customBannerURL || '' %>"
+    <%= isUnlocked ? '' : 'disabled' %>
+  />
+</section>
+
+<style>
+.pro-tag {
+  display: inline-block;
+  background: linear-gradient(90deg, #ffa500, #ff4500);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.25rem;
+  animation: shimmerPro 2s infinite;
+  background-size: 400% 100%;
+}
+
+.gold-tag {
+  display: inline-block;
+  background: linear-gradient(90deg, #ffd700, #ffa500);
+  color: #000;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.25rem;
+  animation: shimmerGold 2s infinite;
+  background-size: 400% 100%;
+}
+
+.locked-tag {
+  display: inline-block;
+  background: #6c757d;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.25rem;
+  opacity: 0.7;
+}
+
+@keyframes shimmerPro {
+  0% { background-position: -200%; }
+  100% { background-position: 200%; }
+}
+
+@keyframes shimmerGold {
+  0% { background-position: -200%; }
+  100% { background-position: 200%; }
+}
+</style>
+
+<style>
+.beta-tag {
+  display: inline-block;
+  background: linear-gradient(90deg, #007bff, #00bfff);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.25rem;
+  animation: shimmerBeta 2s infinite linear;
+}
+
+@keyframes shimmerBeta {
+  0% {
+    background-position: -200%;
+  }
+  100% {
+    background-position: 200%;
+  }
+}
+
+.beta-tag {
+  background-size: 400% 100%;
+}
+
+</style>
+<section class="ps-lg-2 ps-xxl-0 mb-3">
+  <h2 class="h4 d-flex align-items-center">
+    Unikalny URL
+  </h2>
+  <div class="form-text">Dodaj unikalny URL dla swojego serwera. Może to być łatwiejszy sposób na dostęp do serwera.</div>
+  <div class="d-flex">
+    <input
+      type="text"
+      class="form-control"
+      value="discordzik.pl/server/"
+      disabled
+      style="background-color: #0b0f19; color: #f0f1f2; border-right: 0; width: 180px;" 
+    />
+    <input
+      type="text"
+      id="vanityURL"
+      name="vanityURL"
+      class="form-control"
+      placeholder="Wprowadź nazwę serwera"
+      style="background-color: #0b0f19; color: #f0f1f2; border-left: 0;"
+      value="<%= serverdata.vanityURL || '' %>"
+    />
+  </div>
+</section>
+<style>
+.gold-tag {
+  display: inline-block;
+  background: linear-gradient(90deg, #ffd700, #ff8c00);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.25rem;
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200%;
+  }
+  100% {
+    background-position: 200%;
+  }
+}
+
+.gold-tag {
+  background-size: 400% 100%;
+}
+
+    #customRoleInput {
+        transition: all 0.3s ease;
+    }
+	
+
+</style>
+
+
+<!-- Theme Selection Section -->
+<section class="ps-lg-2 ps-xxl-0 mb-4">
+  <h2 class="h4">Motyw</h2>
+  <div class="form-text">
+    Wybierz motyw dla strony swojego serwera. To zmieni kolorystykę i styl wyświetlania.
+  </div>
+  <!-- Show More/Less Themes Button -->
+  <div class="d-grid mt-3">
+    <button type="button" class="btn btn-outline-primary" id="toggleThemesBtn">
+      Pokaż więcej motywów
+    </button>
+  </div>
+  
+  <div class="row row-cols-1 row-cols-md-3 g-4 mt-2" id="mainThemesContainer">
+    <!-- Default Theme -->
+    <div class="col">
+      <div class="card h-100 theme-card <%= serverdata.theme === 'default' ? 'selected-theme' : '' %>" data-theme="default">
+        <div class="card-body">
+          <div class="theme-preview" style="background: linear-gradient(135deg, #5024f3 0%, #2a0cd8 100%); height: 100px; border-radius: 4px; margin-bottom: 1rem;"></div>
+          <h5 class="card-title">Domyślny</h5>
+          <p class="card-text text-muted">Standardowy motyw Discordzik</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Dark Theme -->
+    <div class="col">
+      <div class="card h-100 theme-card <%= serverdata.theme === 'dark' ? 'selected-theme' : '' %>" data-theme="dark">
+        <div class="card-body">
+          <div class="theme-preview" style="background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%); height: 100px; border-radius: 4px; margin-bottom: 1rem;"></div>
+          <h5 class="card-title">Ciemny</h5>
+          <p class="card-text text-muted">Minimalistyczny ciemny motyw</p>
+        </div>
+      </div>
+    </div>
+	
+    <!-- Pink Theme -->
+    <div class="col">
+      <div class="card h-100 theme-card <%= serverdata.theme === 'pink' ? 'selected-theme' : '' %>" data-theme="pink">
+        <div class="card-body">
+          <div class="theme-preview" style="background: linear-gradient(135deg, #3a1025 0%, #2a1025 100%); height: 100px; border-radius: 4px; margin-bottom: 1rem;"></div>
+          <h5 class="card-title">Ciemny Różowy</h5>
+          <p class="card-text text-muted">Minimalistyczny różowy motyw</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Additional Themes Container (hidden by default) -->
+  <div class="row row-cols-1 row-cols-md-3 g-4 mt-2 d-none" id="additionalThemesContainer">
+    <!-- Green Theme -->
+    <div class="col">
+      <div class="card h-100 theme-card <%= serverdata.theme === 'green' ? 'selected-theme' : '' %>" data-theme="green">
+        <div class="card-body">
+          <div class="theme-preview" style="background: linear-gradient(135deg, #0a1e14 0%, #0f2821 100%); height: 100px; border-radius: 4px; margin-bottom: 1rem;"></div>
+          <h5 class="card-title">Ciemny Zielony</h5>
+          <p class="card-text text-muted">Minimalistyczny zielony motyw</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Purple Theme -->
+    <div class="col">
+      <div class="card h-100 theme-card <%= serverdata.theme === 'purple' ? 'selected-theme' : '' %>" data-theme="purple">
+        <div class="card-body">
+          <div class="theme-preview" style="background: linear-gradient(135deg, #140a1e 0%, #1e0f28 100%); height: 100px; border-radius: 4px; margin-bottom: 1rem;"></div>
+          <h5 class="card-title">Ciemny Fioletowy</h5>
+          <p class="card-text text-muted">Minimalistyczny fioletowy motyw</p>
+        </div>
+      </div>
+    </div>
+
+<!-- Red Theme -->
+<div class="col">
+  <div class="card h-100 theme-card <%= serverdata.theme === 'red' ? 'selected-theme' : '' %>" data-theme="red">
+    <div class="card-body">
+      <div class="theme-preview" style="background: linear-gradient(135deg, #1e0a0a 0%, #2a0f0f 100%); height: 100px; border-radius: 4px; margin-bottom: 1rem;"></div>
+      <h5 class="card-title">Ciemny Czerwony</h5>
+      <p class="card-text text-muted">Minimalistyczny czerwony motyw</p>
+    </div>
+  </div>
+</div>
+
+    <% if (hasPro || hasGold) { %>
+      <div class="col">
+        <div class="card h-100 theme-card <%= serverdata.theme === 'cat-rain' ? 'selected-theme' : '' %>" data-theme="cat-rain">
+          <div class="card-body">
+            <div class="theme-preview" style="background-color: #0b0f19; height: 100px; border-radius: 4px; margin-bottom: 1rem; position: relative; overflow: hidden;">
+              <div class="cat-preview-container" style="position: absolute; width: 100%; height: 100%;"></div>
+            </div>
+            <h5 class="card-title">Deszcz Kotów <span class="pro-tag ms-1">PRO</span><span class="gold-tag ms-1">GOLD</span></h5>
+            <p class="card-text text-muted">Ekskluzywny koci motyw</p>
+          </div>
+        </div>
+      </div>
+    <% } else { %>
+      <div class="col">
+        <div class="card h-100 theme-card locked-theme" data-theme="cat-rain">
+          <div class="card-body">
+            <div class="theme-preview" style="background-color: #0b0f19; height: 100px; border-radius: 4px; margin-bottom: 1rem; position: relative; overflow: hidden;">
+              <div class="cat-preview-container" style="position: absolute; width: 100%; height: 100%;"></div>
+            </div>
+            <h5 class="card-title">Deszcz Kotów <span class="pro-tag ms-1">PRO</span><span class="gold-tag ms-1">GOLD</span></h5>
+            <p class="card-text text-muted">Ekskluzywny koci motyw</p>
+          </div>
+        </div>
+      </div>
+    <% } %>
+
+    <% if (hasPro || hasGold) { %>
+      <div class="col">
+        <div class="card h-100 theme-card <%= serverdata.theme === 'money-rain' ? 'selected-theme' : '' %>" data-theme="money-rain">
+          <div class="card-body">
+            <div class="theme-preview" style="background-color: #0b0f19; height: 100px; border-radius: 4px; margin-bottom: 1rem; position: relative; overflow: hidden;">
+              <div class="money-preview-container" style="position: absolute; width: 100%; height: 100%;"></div>
+            </div>
+            <h5 class="card-title">Deszcz Pieniędzy <span class="pro-tag ms-1">PRO</span><span class="gold-tag ms-1">GOLD</span></h5>
+            <p class="card-text text-muted">Ekskluzywny motyw finansowy</p>
+          </div>
+        </div>
+      </div>
+    <% } else { %>
+      <div class="col">
+        <div class="card h-100 theme-card locked-theme" data-theme="money-rain">
+          <div class="card-body">
+            <div class="theme-preview" style="background-color: #0b0f19; height: 100px; border-radius: 4px; margin-bottom: 1rem; position: relative; overflow: hidden;">
+              <div class="money-preview-container" style="position: absolute; width: 100%; height: 100%;"></div>
+            </div>
+            <h5 class="card-title">Deszcz Pieniędzy <span class="pro-tag ms-1">PRO</span><span class="gold-tag ms-1">GOLD</span></h5>
+            <p class="card-text text-muted">Ekskluzywny motyw finansowy</p>
+          </div>
+        </div>
+      </div>
+    <% } %>
+
+    <% if (hasPro || hasGold) { %>
+      <div class="col">
+        <div class="card h-100 theme-card <%= serverdata.theme === 'beer-rain' ? 'selected-theme' : '' %>" data-theme="beer-rain">
+          <div class="card-body">
+            <div class="theme-preview" style="background-color: #0b0f19; height: 100px; border-radius: 4px; margin-bottom: 1rem; position: relative; overflow: hidden;">
+              <div class="beer-preview-container" style="position: absolute; width: 100%; height: 100%;"></div>
+            </div>
+            <h5 class="card-title">Deszcz Procentowy <span class="pro-tag ms-1">PRO</span><span class="gold-tag ms-1">GOLD</span></h5>
+            <p class="card-text text-muted">Wysoko procentowy motyw</p>
+          </div>
+        </div>
+      </div>
+    <% } else { %>
+      <div class="col">
+        <div class="card h-100 theme-card locked-theme" data-theme="beer-rain">
+          <div class="card-body">
+            <div class="theme-preview" style="background-color: #0b0f19; height: 100px; border-radius: 4px; margin-bottom: 1rem; position: relative; overflow: hidden;">
+              <div class="beer-preview-container" style="position: absolute; width: 100%; height: 100%;"></div>
+            </div>
+            <h5 class="card-title">Deszcz Procentowy <span class="pro-tag ms-1">PRO</span><span class="gold-tag ms-1">GOLD</span></h5>
+            <p class="card-text text-muted">Wysoko procentowy motyw</p>
+          </div>
+        </div>
+      </div>
+    <% } %>
+  </div>
+
+  <!-- Hidden input for theme value -->
+  <input type="hidden" name="theme" id="themeInput" value="<%= serverdata.theme || 'default' %>">
+</section>
+
+<style>
+  .theme-card {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid transparent !important; /* Ensure border is reset */
+    user-select: none; /* Prevent text selection on click */
+  }
+  
+  .theme-card:hover:not(.locked-theme) {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  .theme-card.selected-theme {
+    border: 2px solid #5024f3 !important; /* High specificity for border */
+    box-shadow: 0 0 0 3px rgba(80, 36, 243, 0.2) !important; /* High specificity for shadow */
+  }
+  
+  .theme-card.locked-theme {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+  
+  .theme-card.locked-theme::after {
+    content: "🔒";
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 1.5rem;
+    z-index: 10;
+  }
+  
+  .theme-preview {
+    transition: all 0.3s ease;
+  }
+  
+  #toggleThemesBtn {
+    transition: all 0.3s ease;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+  }
+  
+  .shake-animation {
+    animation: shake 0.5s ease-in-out;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const themeCards = document.querySelectorAll('.theme-card');
+    const themeInput = document.getElementById('themeInput');
+    const additionalThemesContainer = document.getElementById('additionalThemesContainer');
+    const toggleThemesBtn = document.getElementById('toggleThemesBtn');
+    const hasPremium = <%= hasPro || hasGold %>;
+    const premiumThemes = ['cat-rain', 'money-rain', 'beer-rain'];
+
+    // Debug: Log initial theme
+    console.log('Initial theme:', themeInput.value);
+
+    // Toggle additional themes
+    toggleThemesBtn.addEventListener('click', function() {
+      const isHidden = additionalThemesContainer.classList.contains('d-none');
+      additionalThemesContainer.classList.toggle('d-none');
+      this.textContent = isHidden ? 'Pokaż mniej motywów' : 'Pokaż więcej motywów';
+    });
+
+    // Theme selection
+    themeCards.forEach(card => {
+      card.addEventListener('click', function(e) {
+        e.preventDefault(); // Prevent any default behavior
+        e.stopPropagation(); // Stop event bubbling to prevent conflicts
+        const selectedTheme = this.dataset.theme;
+
+        // Debug: Log clicked theme
+        console.log('Clicked theme:', selectedTheme);
+
+        // Check if theme is locked and user lacks premium access
+        if (premiumThemes.includes(selectedTheme) && !hasPremium) {
+          // Trigger shake animation for locked theme
+          this.classList.add('shake-animation');
+          setTimeout(() => {
+            this.classList.remove('shake-animation');
+          }, 500);
+          return;
+        }
+
+        // Remove selected class from all cards
+        themeCards.forEach(c => {
+          c.classList.remove('selected-theme');
+          // Debug: Log class removal
+          console.log('Removed selected-theme from:', c.dataset.theme);
+        });
+
+        // Add selected class to clicked card
+        this.classList.add('selected-theme');
+        // Debug: Log class addition
+        console.log('Added selected-theme to:', selectedTheme);
+
+        // Update hidden input value
+        themeInput.value = selectedTheme;
+        // Debug: Log updated input value
+        console.log('Updated themeInput value:', themeInput.value);
+
+        // Dispatch change event to trigger form submission or other logic
+        const changeEvent = new Event('change', { bubbles: true });
+        themeInput.dispatchEvent(changeEvent);
+      });
+    });
+
+    // Animations for premium theme previews
+    const addPreviewAnimation = (containerSelector, symbols, color = null) => {
+      const containers = document.querySelectorAll(containerSelector);
+      containers.forEach(container => {
+        for (let i = 0; i < 10; i++) {
+          const item = document.createElement('div');
+          item.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+          item.style.position = 'absolute';
+          item.style.left = Math.random() * 100 + '%';
+          item.style.top = '-20px';
+          item.style.fontSize = (14 + Math.random() * 10) + 'px';
+          item.style.animation = `preview-fall ${2 + Math.random() * 3}s linear infinite`;
+          item.style.animationDelay = Math.random() * 1 + 's';
+          item.style.opacity = 0.8;
+          item.style.zIndex = '10';
+          if (color) item.style.color = color;
+          item.style.textShadow = '1px 1px 3px rgba(0,0,0,0.5)';
+          container.appendChild(item);
+        }
+      });
+    };
+
+    // Add animations for premium themes
+    addPreviewAnimation('.cat-preview-container', ['🐱']);
+    addPreviewAnimation('.money-preview-container', ['💰', '💵', '💲', '🪙', '💸', '💴', '💶'], '#f1c40f');
+    addPreviewAnimation('.beer-preview-container', ['🍺', '🍻', '🍷', '🥂', '🍸', '🍹', '🍾']);
+
+    // Animation keyframes
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes preview-fall {
+        to { 
+          transform: translateY(120px) rotate(360deg); 
+          opacity: 0;
+        }
+      }
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+        20%, 40%, 60%, 80% { transform: translateX(5px); }
+      }
+    `;
+    document.head.appendChild(style);
+  });
+</script>
+
+
+<!-- Sekcja Administracja - Mobile Friendly -->
+<section class="ps-lg-2 ps-xxl-0 mb-4 mb-md-5">
+  <h2 class="h4 d-flex align-items-center">
+    Administracja
+  </h2>
+  <div class="form-text mb-3">Dodaj osoby do administracji serwera (właściciele, admini, moderatorzy itp.)</div>
+  
+  <div class="card mb-3 mb-md-4">
+    <div class="card-body p-3 p-md-4">
+      <!-- Formularz dodawania nowego członka administracji -->
+      <div class="row g-3 mb-3 mb-md-4">
+        <div class="col-12 col-md-4">
+          <label for="adminUserId" class="form-label">ID Użytkownika</label>
+          <input type="text" class="form-control" id="adminUserId" placeholder="123456789012345678">
+        </div>
+        <div class="col-12 col-md-4">
+          <label for="adminRole" class="form-label">Rola</label>
+          <select class="form-select" id="adminRole">
+            <option value="Właściciel" style="background-color: #f8f9fa; color: #212529;">Właściciel</option>
+            <option value="Admin" style="background-color: #f8f9fa; color: #212529;">Admin</option>
+            <option value="Moderator" style="background-color: #f8f9fa; color: #212529;">Moderator</option>
+            <option value="Developer" style="background-color: #f8f9fa; color: #212529;">Developer</option>
+            <option value="Inna" style="background-color: #f8f9fa; color: #212529;">Inna rola</option>
+          </select>
+          <input type="text" class="form-control mt-2 d-none" id="customRoleInput" placeholder="Wpisz nazwę roli (max 30 znaków)" maxlength="30">
+        </div>
+        <div class="col-12 col-md-4">
+          <label for="adminColor" class="form-label">Kolor (HEX)</label>
+          <div class="input-group">
+            <span class="input-group-text">#</span>
+            <input type="text" class="form-control" id="adminColor" placeholder="FF0000" maxlength="6">
+            <button class="btn btn-outline-secondary" type="button" id="colorPickerBtn" title="Wybierz kolor">
+              <i class="fas fa-eye-dropper"></i>
+            </button>
+          </div>
+        </div>
+        <div class="col-12">
+          <button class="btn btn-primary w-100 w-md-auto" type="button" id="addAdminBtn">
+            <i class="fas fa-plus me-2"></i>Dodaj do administracji
+          </button>
+        </div>
+      </div>
+      
+      <!-- Lista obecnych członków administracji -->
+      <h5 class="h5 mb-3">Obecna administracja</h5>
+      <div class="table-responsive">
+        <table class="table table-hover mb-0" id="adminTable">
+          <thead class="d-none d-md-table-header-group">
+            <tr>
+              <th>Użytkownik</th>
+              <th>Rola</th>
+              <th>Dodany przez</th>
+              <th>Data dodania</th>
+              <th>Akcje</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% if (serverdata.administration && serverdata.administration.length > 0) { %>
+              <% serverdata.administration.forEach((admin, index) => { %>
+                <tr data-user-id="<%= admin.userID %>">
+                  <td data-label="Użytkownik">
+                    <div class="d-flex align-items-center">
+                      <div class="rounded-circle me-2 flex-shrink-0" style="width: 30px; height: 30px; background-color: #<%= admin.color || '7289da' %>;"></div>
+                      <span class="text-truncate"><%= admin.userID %></span>
+                    </div>
+                  </td>
+                  <td data-label="Rola">
+                    <span class="badge d-inline-block text-truncate" style="max-width: 200px; background-color: #<%= admin.color || '7289da' %>;">
+                      <%= admin.role %>
+                    </span>
+                  </td>
+                  <td data-label="Akcje">
+                    <button class="btn btn-sm btn-outline-danger remove-admin" data-index="<%= index %>">
+                      <i class="fas fa-trash-alt"></i>
+                    </button>
+                  </td>
+                </tr>
+              <% }); %>
+            <% } else { %>
+              <tr>
+                <td colspan="5" class="text-center text-muted py-3">Brak dodanych administratorów</td>
+              </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Color picker modal -->
+<div class="modal fade" id="colorPickerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Wybierz kolor</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="color" id="colorPicker" value="#7289da" class="form-control form-control-color">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+                <button type="button" class="btn btn-primary" id="confirmColor">Zastosuj</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Skrypty dla sekcji administracji -->
+<script>
+$(document).ready(function() {
+    const adminTable = $('#adminTable');
+    const adminUserId = $('#adminUserId');
+    const adminRole = $('#adminRole');
+    const customRoleInput = $('#customRoleInput');
+    const adminColor = $('#adminColor');
+    const addAdminBtn = $('#addAdminBtn');
+    const colorPickerBtn = $('#colorPickerBtn');
+    const colorPickerModal = $('#colorPickerModal');
+    const colorPicker = $('#colorPicker');
+    const confirmColor = $('#confirmColor');
+    
+    // Obsługa zmiany wyboru roli
+    adminRole.change(function() {
+        if ($(this).val() === 'Inna') {
+            customRoleInput.removeClass('d-none');
+            customRoleInput.prop('required', true);
+        } else {
+            customRoleInput.addClass('d-none');
+            customRoleInput.prop('required', false);
+        }
+    });
+    
+    // Inicjalizacja color pickera
+    colorPickerBtn.click(function() {
+        colorPickerModal.modal('show');
+    });
+    
+    confirmColor.click(function() {
+        const color = colorPicker.val().substring(1); // Usuń # z początku
+        adminColor.val(color);
+        colorPickerModal.modal('hide');
+    });
+    
+    // Dodawanie nowego administratora
+    addAdminBtn.click(function() {
+        const userId = adminUserId.val().trim();
+        let role = adminRole.val();
+        let color = adminColor.val().trim();
+        
+        // Jeśli wybrano "Inna rola", użyj wartości z inputa
+        if (role === 'Inna') {
+            role = customRoleInput.val().trim();
+            if (!role) {
+                alert('Proszę podać nazwę roli');
+                return;
+            }
+        }
+        
+        // Walidacja
+        if (!userId) {
+            alert('Proszę podać ID użytkownika');
+            return;
+        }
+        
+        if (!/^\d{15,24}$/.test(userId)) {
+            alert('ID użytkownika musi składać się z 17-20 cyfr');
+            return;
+        }
+        
+        if (!role) {
+            alert('Proszę wybrać rolę');
+            return;
+        }
+        
+        // Domyślny kolor jeśli nie podano
+        if (!color) {
+            color = '7289da'; // Discordowy blurple
+        } else if (!/^[0-9A-Fa-f]{6}$/.test(color)) {
+            alert('Nieprawidłowy format koloru HEX (np. FF0000 dla czerwonego)');
+            return;
+        }
+        
+        // Sprawdź czy użytkownik już istnieje
+        if ($(`#adminTable tr[data-user-id="${userId}"]`).length > 0) {
+            alert('Ten użytkownik już jest na liście administracji');
+            return;
+        }
+        
+        // Dodaj do tabeli
+        const newRow = `
+            <tr data-user-id="${userId}">
+                <td>
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle me-2" style="width: 30px; height: 30px; background-color: #${color};"></div>
+                        <span>${userId}</span>
+                    </div>
+                </td>
+                <td>
+                    <span class="badge" style="background-color: #${color};">${role}</span>
+                </td>
+                <td>
+                    <button class="btn btn-sm btn-outline-danger remove-admin">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </td>
+            </tr>
+        `;
+        
+        if ($('#adminTable tbody tr:first-child td:first-child').text().includes('Brak dodanych administratorów')) {
+            $('#adminTable tbody').html(newRow);
+        } else {
+            $('#adminTable tbody').append(newRow);
+        }
+        
+        // Wyczyść formularz
+        adminUserId.val('');
+        adminColor.val('');
+        customRoleInput.val('').addClass('d-none');
+        adminRole.val('Właściciel'); // Reset do domyślnej wartości
+    });
+    
+    // Usuwanie administratora (reszta kodu pozostaje bez zmian)
+    adminTable.on('click', '.remove-admin', function() {
+        $(this).closest('tr').remove();
+        
+        if ($('#adminTable tbody tr').length === 0) {
+            $('#adminTable tbody').html(`
+                <tr>
+                    <td colspan="5" class="text-center text-muted">Brak dodanych administratorów</td>
+                </tr>
+            `);
+        }
+    });
+});
+</script>
+
+<section class="ps-lg-2 ps-xxl-0">
+  <h2 class="h4">Tagi</h2>
+  <div class="form-text">
+    Tagi służą do kategoryzowania Twojego serwera. Możesz wybrać do 12 tagów lub dodać własne.
+  </div>
+  <div class="card mb-4">
+    <div class="card-body">
+      <div class="row row-cols-sm-4 row-cols-2 gy-2 mb-3" id="availableTags">
+        <% 
+          const uniqueTags = [...new Set([...global.config.website.serverTags, ...serverdata.tags])];
+          uniqueTags.forEach(tag => { 
+        %>
+          <div class="col">
+            <div class="form-check mb-0">
+              <input type="checkbox" class="form-check-input tag-checkbox" id="tag<%= tag %>" name="tags" value="<%= tag %>" <% if (serverdata.tags.includes(tag)) { %> checked <% } %>>
+              <label for="tag<%= tag %>" class="form-check-label"><%= tag %></label>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+      
+      <h5 class="h5">Dodaj własny tag</h5>
+      <div class="input-group mb-3">
+        <input type="text" class="form-control" id="customTagInput" placeholder="Wpisz własny tag" maxlength="20">
+        <button class="btn btn-primary" type="button" id="addCustomTag">Dodaj</button>
+      </div>
+      
+      <h5 class="h5">Wybrane tagi</h5>
+      <div class="row row-cols-sm-4 row-cols-2 gy-2 mb-3" id="selectedTags"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Funkcja, która zmienia pierwszą literę tagu na dużą
+  function capitalizeFirstLetter(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  function updateSelectedTags() {
+    let selectedTags = document.getElementById('selectedTags');
+    selectedTags.innerHTML = '';
+    let checkedTags = document.querySelectorAll('.tag-checkbox:checked');
+    
+    if (checkedTags.length > 12) {
+      checkedTags[checkedTags.length - 1].checked = false;
+      alert('Możesz wybrać maksymalnie 12 tagów!');
+      return;
+    }
+    
+    checkedTags.forEach(item => {
+      let div = document.createElement('div');
+      div.className = 'col';
+      div.innerHTML = `
+        <div class="form-check mb-0">
+          <input type="checkbox" class="form-check-input" value="${item.value}" checked disabled>
+          <label class="form-check-label">${item.value}</label>
+        </div>`;
+      selectedTags.appendChild(div);
+    });
+  }
+
+  document.querySelectorAll('.tag-checkbox').forEach(item => {
+    item.addEventListener('change', updateSelectedTags);
+  });
+
+  document.getElementById('addCustomTag').addEventListener('click', function () {
+    let customTagInput = document.getElementById('customTagInput');
+    let tagValue = customTagInput.value.trim();
+
+    // Zmieniamy pierwszą literę na dużą
+    tagValue = capitalizeFirstLetter(tagValue);
+
+    if (tagValue === '') {
+      alert('Nie możesz dodać pustego tagu!');
+      return;
+    }
+
+    if (tagValue.length > 20) {
+      alert('Tag nie może mieć więcej niż 20 znaków!');
+      return;
+    }
+
+    if (document.querySelector(`input[value="${tagValue}"]`)) {
+      alert('Ten tag już istnieje!');
+      return;
+    }
+
+    if (document.querySelectorAll('.tag-checkbox:checked').length >= 12) {
+      alert('Możesz wybrać maksymalnie 12 tagów!');
+      return;
+    }
+
+    let newTag = document.createElement('div');
+    newTag.className = 'col';
+    newTag.innerHTML = `
+      <div class="form-check mb-0">
+        <input type="checkbox" class="form-check-input tag-checkbox" value="${tagValue}" checked>
+        <label class="form-check-label">${tagValue}</label>
+      </div>`;
+
+    document.getElementById('availableTags').appendChild(newTag);
+    newTag.querySelector('input').addEventListener('change', updateSelectedTags);
+    
+    updateSelectedTags();
+    customTagInput.value = '';
+  });
+
+  document.addEventListener("DOMContentLoaded", updateSelectedTags);
+</script>
+
+
+
+
+
+
+<!-- Sekcja dla krótkiego opisu -->
+<section class="ps-lg-2 ps-xxl-0 was-validated mb-3">
+  <h2 class="h4">Krótki Opis <code>*</code></h2>
+  <div class="form-text">Krótki opis Twojego serwera.</div>
+  <textarea class="form-control" style="height: 10rem" name="shortDesc" id="shortDesc" minLength="50" maxlength="200" required><%= serverdata.shortDesc %></textarea>
+</section>
+
+<!-- Sekcja dla długiego opisu -->
+<section class="ps-lg-2 ps-xxl-0 mb-3 was-validated">
+  <h2 class="h4">Długi Opis <code>*</code></h2>
+  <div class="form-text">Długi opis Twojego serwera. Obsługuje Markdown.</div>
+  
+  <div class="border rounded overflow-hidden">
+    <!-- Toolbar dla podstawowego formatowania -->
+    <div class="bg-light p-2 d-flex flex-wrap gap-2 border-bottom">
+      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('**', '**')">
+        <i class="fas fa-bold"></i>
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('_', '_')">
+        <i class="fas fa-italic"></i>
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('[', '](url)')">
+        <i class="fas fa-link"></i>
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('\n- ', '')">
+        <i class="fas fa-list-ul"></i>
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('\n1. ', '')">
+        <i class="fas fa-list-ol"></i>
+      </button>
+      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="formatText('> ', '')">
+        <i class="fas fa-quote-right"></i>
+      </button>
+<button type="button" id="togglePreviewBtn" class="btn btn-sm btn-outline-primary ms-auto">
+  <i class="fas fa-eye"></i><span class="ms-2">Podgląd</span>
+</button>
+    </div>
+    
+    <!-- Edytor -->
+    <textarea class="form-control border-0" style="height: 30rem; min-height: 300px; resize: vertical;" 
+              name="longDesc" 
+              id="longDesc" 
+              minlength="200" 
+              maxlength="5000" 
+              required 
+              oninput="updateCounter()"><%= serverdata.longDesc ? serverdata.longDesc.replace(/</g, '&lt;').replace(/>/g, '&gt;') : '' %></textarea>
+    
+    <!-- Licznik znaków -->
+    <div class="bg-light p-2 border-top text-end">
+      <span id="charCounter">0</span>/5000 znaków
+    </div>
+  </div>
+  
+  <!-- Podgląd Markdown -->
+  <div id="markdownPreview" class="border p-3 mt-3 rounded bg-light" style="display: none;"></div>
+</section>
+
+<!-- Załaduj wymagane biblioteki -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/markdown-it@12.3.2/dist/markdown-it.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.6/purify.min.js"></script>
+
+<style>
+  #togglePreviewBtn.active {
+    background-color: #0d6efd;
+    color: white;
+  }
+  
+  #markdownPreview img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  #markdownPreview {
+    max-height: 500px;
+    overflow-y: auto;
+  }
+</style>
+
+<script>
+  // Elementy DOM
+  const textarea = document.getElementById('longDesc');
+  const preview = document.getElementById('markdownPreview');
+  const charCounter = document.getElementById('charCounter');
+  const toggleBtn = document.getElementById('togglePreviewBtn');
+  let isPreviewVisible = false;
+
+  // Inicjalizacja licznika
+  updateCounter();
+
+  // Przypisanie event listenerów
+  toggleBtn.addEventListener('click', togglePreview);
+  textarea.addEventListener('input', updateCounter);
+
+  // Funkcje
+  function formatText(prefix, suffix) {
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const selectedText = textarea.value.substring(start, end);
+    const beforeText = textarea.value.substring(0, start);
+    const afterText = textarea.value.substring(end);
+    
+    textarea.value = beforeText + prefix + selectedText + suffix + afterText;
+    textarea.selectionStart = start + prefix.length;
+    textarea.selectionEnd = end + prefix.length;
+    textarea.focus();
+    updateCounter();
+    
+    if (isPreviewVisible) {
+      updatePreview();
+    }
+  }
+
+  function togglePreview() {
+    isPreviewVisible = !isPreviewVisible;
+    preview.style.display = isPreviewVisible ? 'block' : 'none';
+    toggleBtn.classList.toggle('active', isPreviewVisible);
+    
+    if (isPreviewVisible) {
+      updatePreview();
+    }
+  }
+
+  function updatePreview() {
+    try {
+      if (!textarea.value.trim()) {
+        preview.innerHTML = '<div class="text-muted">Podgląd pojawi się tutaj...</div>';
+        return;
+      }
+
+      const markdownText = textarea.value;
+      const safeMarkdown = DOMPurify.sanitize(markdownText);
+      
+      const md = window.markdownit({
+        html: true,
+        linkify: true,
+        typographer: true,
+        breaks: true
+      });
+      
+      preview.innerHTML = md.render(safeMarkdown);
+      
+      // Obsługa linków
+      preview.querySelectorAll('a').forEach(link => {
+        link.setAttribute('target', '_blank');
+        link.setAttribute('rel', 'noopener noreferrer');
+      });
+      
+    } catch (error) {
+      console.error('Błąd podglądu:', error);
+      preview.innerHTML = '<div class="alert alert-danger">Błąd generowania podglądu. Sprawdź konsolę.</div>';
+    }
+  }
+
+  function updateCounter() {
+    const length = textarea.value.length;
+    charCounter.textContent = length;
+    
+    charCounter.classList.toggle('text-warning', length > 4500);
+    charCounter.classList.toggle('text-danger', length > 4900);
+  }
+
+  // Inicjalizacja podglądu jeśli jest tekst
+  if (textarea.value.trim()) {
+    updatePreview();
+  }
+</script>
+
+<!-- Include Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/13.0.1/markdown-it.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.8/purify.min.js"></script>
+
+
+
+          <div id="results"></div>
+          <div class="tab-pane fade show active" id="preview1" role="tabpanel">
+            <button class="btn btn-primary" type="submit" id="saveChanges">Zapisz</button>
+            <a href="/server/<%= serverdata.serverID %>" class="btn btn-secondary my-1 me-1 d-none" type="button" id="secondButton"></a>
+          </div>
+        </form>
+      </div>
+    </section>
+
+  </main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/12.3.2/markdown-it.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.4.0/purify.min.js"></script>
+
+  
+  <%- include('../partials/footer') %>
+</body>
+
+</html>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+document.onclick = function(e) {
+    if (e.target.id == 'saveChanges') {
+        e.preventDefault();
+
+        let administration = [];
+        $('#adminTable tbody tr[data-user-id]').each(function() {
+            const userId = $(this).data('user-id');
+            const role = $(this).find('td:nth-child(2) .badge').text();
+            const color = $(this).find('td:nth-child(1) .rounded-circle').css('backgroundColor');
+            let hexColor = '7289da'; // Domyślny kolor
+
+            if (color) {
+                // Konwersja koloru z RGB na HEX
+                const rgb = color.match(/\d+/g);
+                if (rgb && rgb.length === 3) {
+                    hexColor = `#${((1 << 24) + (parseInt(rgb[0]) << 16) + (parseInt(rgb[1]) << 8) + parseInt(rgb[2])).toString(16).slice(1)}`;
+                }
+            }
+
+            // Pobierz nickname
+            const nickname = $(this).find('td:nth-child(3) .nickname').val(); // Załóżmy, że nickname jest w 3. kolumnie
+
+            administration.push({
+                userID: userId,
+                role: role,
+                color: hexColor.substring(1), // Usuń # z początku
+                addedBy: '<%= req.user.username %>',
+                addedAt: new Date()
+            });
+        });
+
+        // Gather co-owners
+        let coowner = [];
+        document.querySelectorAll('[id^="removeCoowners"]').forEach(item => {
+            let id = item.id.replace('removeCoowners', '');
+            coowner.push(id);
+        });
+
+        // Gather tags
+        let tags = [];
+        document.querySelectorAll('.tag-checkbox:checked').forEach(item => {
+            tags.push(item.value);
+        });
+
+        // Ensure PRO, BASIC, and GOLD tags are not removed
+        const specialTags = ['PRO', 'BASIC', 'GOLD'];
+        const currentTags = <%- JSON.stringify(serverdata.tags) %>; // Pobierz aktualne tagi z serwera
+        specialTags.forEach(tag => {
+            if (currentTags.includes(tag) && !tags.includes(tag)) {
+                tags.push(tag);
+            }
+        });
+
+        tags = [...new Set(tags)]; // Remove duplicates
+
+        // Gather shop items
+        let shop = [];
+        const shopItems = document.querySelectorAll('.shop-item');
+        shopItems.forEach(item => {
+            const index = item.dataset.index;
+            const name = document.querySelector(`[name="productName${index}"]`)?.value || '';
+            const description = document.querySelector(`[name="productDescription${index}"]`)?.value || '';
+            const price = parseFloat(document.querySelector(`[name="productPrice${index}"]`)?.value || 0);
+            const roleID = document.querySelector(`[name="productRoleID${index}"]`)?.value || '';
+
+            // Only add item if price is valid
+            if (!isNaN(price) && price >= 0) {
+                shop.push({
+                    name,
+                    description,
+                    price,
+                    roleID
+                });
+            }
+        });
+
+        // Prepare data object
+        let data = {
+            inviteURL: document.getElementById('inviteURL') ? document.getElementById('inviteURL').value : '',
+            patroniteURL: document.getElementById('patroniteURL') ? document.getElementById('patroniteURL').value : '',
+            stronaURL: document.getElementById('stronaURL') ? document.getElementById('stronaURL').value : '',
+            customBannerURL: document.getElementById('customBannerURL') ? document.getElementById('customBannerURL').value : '',
+            vanityURL: document.getElementById('vanityURL') ? document.getElementById('vanityURL').value : '',
+            shortDesc: document.getElementById('shortDesc') ? document.getElementById('shortDesc').value : '',
+            longDesc: document.getElementById('longDesc') ? document.getElementById('longDesc').value : '',
+            tags: tags,
+            administration: administration,
+            shop: shop,
+            theme: document.getElementById('themeInput').value
+        };
+
+        // Send the data to the server
+        fetch('/servers/edit/<%= serverdata.serverID %>', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
+        .then(res => res.json())
+        .then(json => {
+            if (json.error == false) {
+                document.getElementById('results').innerHTML = `<div class="alert alert-success">${json.message}</div>`;
+                setTimeout(() => window.location.reload(), 3000);
+            } else {
+                document.getElementById('results').innerHTML = `<div class="alert alert-danger">${json.message}</div>`;
+            }
+        });
+    }
+}
+</script>
+

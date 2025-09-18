@@ -1,0 +1,666 @@
+<aside class="col-lg-3 col-md-4 border-end pb-5 mt-n5">
+  <div class="position-sticky top-0">
+    <div class="text-center pt-5">
+      <!-- Avatar z efektem w zależności od rangi -->
+      <div class="d-table position-relative mx-auto mt-2 mt-lg-4 pt-5 mb-3">
+        <% 
+          let highestRank = 'default';
+          let profileEffect = '';
+          let nameEffect = '';
+          let guild = bot.guilds.cache.get(config.server.id);
+          let cache = guild ? guild.members.cache.get(member.id) : null;
+          
+          // Sprawdzanie właściciela (działa tylko dla właścicieli strony)
+          if (config.client.owners.includes(member.id)) {
+            highestRank = 'owner';
+            profileEffect = 'profile-owner-effect';
+            nameEffect = 'text-gold';
+          } 
+          // Dla innych użytkowników sprawdzamy role na serwerze
+          else if (cache) {
+            // Najpierw sprawdzamy administratora (uprawnienia, nie rolę)
+            if (cache.permissions.has('Administrator')) {
+              highestRank = 'admin';
+              profileEffect = 'profile-admin-effect';
+              nameEffect = 'text-red';
+            }
+            // Następnie sprawdzamy role w kolejności ważności
+			else if (cache.roles.cache.has(config.server.roles.Support)) {
+              highestRank = 'support';
+              profileEffect = 'profile-support-effect';
+              nameEffect = 'text-blue';
+            }
+            else if (cache.roles.cache.has(config.server.roles.botReviewer)) {
+              highestRank = 'reviewer';
+              profileEffect = 'profile-reviewer-effect';
+              nameEffect = 'text-blue';
+            }
+            else if (cache.roles.cache.has(config.server.roles.Partner)) {
+              highestRank = 'partner';
+              profileEffect = 'profile-partner-effect';
+              nameEffect = 'text-purple';
+            }
+            else if (cache.roles.cache.has(config.server.roles.Patron)) {
+              highestRank = 'patron';
+              profileEffect = 'profile-patron-effect';
+              nameEffect = 'text-pink';
+            }
+            else if (cache.roles.cache.has(config.server.roles.Booster)) {
+              highestRank = 'booster';
+              profileEffect = 'profile-booster-effect';
+              nameEffect = 'text-violet';
+            }
+            else if (cache.roles.cache.has(config.server.roles.bugHuntergold)) {
+              highestRank = 'gold-hunter';
+              profileEffect = 'profile-gold-hunter-effect';
+              nameEffect = 'text-gold';
+            }
+            else if (cache.roles.cache.has(config.server.roles.bugHunter)) {
+              highestRank = 'hunter';
+              profileEffect = 'profile-hunter-effect';
+              nameEffect = 'text-orange';
+            }
+            else if (cache.roles.cache.has(config.server.roles.botDeveloper)) {
+              highestRank = 'developer';
+              profileEffect = 'profile-developer-effect';
+              nameEffect = 'text-green';
+            }
+          }
+        %>
+        
+        <div class="profile-avatar-container <%= profileEffect %>">
+          <img src="<%= member.avatar ? member.avatarURL({ format: 'png', size: 512 }) : 'https://cdn.discordapp.com/embed/avatars/0.png' %>" class="d-block rounded-circle profile-avatar" width="120" alt="<%= member.username %>" />
+        </div>
+      </div>
+      
+      <!-- Nazwa użytkownika z efektem -->
+      <h2 class="h5 mb-1 <%= nameEffect %>"><%= member.username %></h2>
+      <p class="mb-3"><%= member.id %></p>
+      
+      <!-- Kontener na odznaki -->
+      <div class="d-flex flex-wrap justify-content-center gap-2 mb-3 px-3">
+        <!-- Właściciel -->
+        <% if (config.client.owners.includes(member.id)) { %>
+          <div class="badge-card" data-bs-toggle="tooltip" data-bs-placement="top" title="Właściciel strony">
+            <div class="badge-icon bg-gold">
+              <i class="bx bx-crown"></i>
+            </div>
+            <span class="badge-text">Właściciel</span>
+          </div>
+        <% } %>
+        
+        <% if (cache) { %>
+          <!-- Administrator -->
+          <% if (cache.permissions.has('Administrator')) { %>
+            <div class="badge-card" data-bs-toggle="tooltip" data-bs-placement="top" title="Administrator Strony">
+              <div class="badge-icon bg-red">
+                <i class="bx bx-shield-alt-2"></i>
+              </div>
+              <span class="badge-text">Admin</span>
+            </div>
+          <% } %>
+		  
+		  <!-- Support -->
+          <% if (cache.roles.cache.has(config.server.roles.Support)) { %>
+            <div class="badge-card" data-bs-toggle="tooltip" data-bs-placement="top" title="Support Strony">
+              <div class="badge-icon bg-blue2">
+                <i class="bx bx-support"></i>
+              </div>
+              <span class="badge-text">Support</span>
+            </div>
+          <% } %>
+          
+          <!-- Bot Reviewer -->
+          <% if (cache.roles.cache.has(config.server.roles.botReviewer)) { %>
+            <div class="badge-card" data-bs-toggle="tooltip" data-bs-placement="top" title="Weryfikator botów">
+              <div class="badge-icon bg-blue">
+                <i class="bx bx-user-check"></i>
+              </div>
+              <span class="badge-text">Weryfikator</span>
+            </div>
+          <% } %>
+          
+          <!-- Partner -->
+          <% if (cache.roles.cache.has(config.server.roles.Partner)) { %>
+            <div class="badge-card" data-bs-toggle="tooltip" data-bs-placement="top" title="Partner strony">
+              <div class="badge-icon bg-purple">
+                <i class="bx bx-bolt-circle"></i>
+              </div>
+              <span class="badge-text">Partner</span>
+            </div>
+          <% } %>
+          
+          <!-- Patron -->
+          <% if (cache.roles.cache.has(config.server.roles.Patron)) { %>
+            <div class="badge-card" data-bs-toggle="tooltip" data-bs-placement="top" title="Patron serwera">
+              <div class="badge-icon bg-pink">
+                <i class="bx bx-donate-heart"></i>
+              </div>
+              <span class="badge-text">Patron</span>
+            </div>
+          <% } %>
+          
+          <!-- Booster -->
+          <% if (cache.roles.cache.has(config.server.roles.Booster)) { %>
+            <div class="badge-card" data-bs-toggle="tooltip" data-bs-placement="top" title="Booster serwera">
+              <div class="badge-icon bg-violet">
+                <i class="bx bx-diamond"></i>
+              </div>
+              <span class="badge-text">Booster</span>
+            </div>
+          <% } %>
+          
+          <!-- Bug Hunter -->
+          <% if (cache.roles.cache.has(config.server.roles.bugHunter)) { %>
+            <div class="badge-card" data-bs-toggle="tooltip" data-bs-placement="top" title="Łowca błędów">
+              <div class="badge-icon bg-orange">
+                <i class="bx bx-bug"></i>
+              </div>
+              <span class="badge-text">Bug Hunter</span>
+            </div>
+          <% } %>
+          
+          <!-- Gold Bug Hunter -->
+          <% if (cache.roles.cache.has(config.server.roles.bugHuntergold)) { %>
+            <div class="badge-card" data-bs-toggle="tooltip" data-bs-placement="top" title="Złoty łowca błędów">
+              <div class="badge-icon bg-gold">
+                <i class="bx bx-planet"></i>
+              </div>
+              <span class="badge-text">Gold Hunter</span>
+            </div>
+          <% } %>
+         
+          <!-- Bot Developer -->
+          <% if (cache.roles.cache.has(config.server.roles.botDeveloper)) { %>
+            <div class="badge-card" data-bs-toggle="tooltip" data-bs-placement="top" title="Deweloper botów">
+              <div class="badge-icon bg-green">
+                <i class="bx bx-code-alt"></i>
+              </div>
+              <span class="badge-text">Deweloper</span>
+            </div>
+          <% } %>
+        <% } %>
+      </div>
+
+      <!-- Gablota odznak -->
+      <% 
+        // Pobierz odznaki użytkownika
+        let userBadgesForDisplay = typeof userBadges !== 'undefined' ? userBadges : [];
+      %>
+      <% if (userBadgesForDisplay.length > 0) { %>
+        <div class="badges-showcase mb-4">
+          <h6 class="text-center mb-3">
+            <i class="bx bx-medal me-2"></i>Odznaki
+          </h6>
+          <div class="badges-grid">
+            <% userBadgesForDisplay.slice(0, 6).forEach(userBadge => { %>
+              <div class="badge-showcase-item" 
+                   data-bs-toggle="tooltip" 
+                   data-bs-placement="top" 
+                   data-bs-html="true"
+                   title="<strong><%= userBadge.badge.name %></strong><br><%= userBadge.badge.description %><br><small class='text-muted'>Rzadkość: <%= 
+                     userBadge.badge.rarity === 'common' ? 'Pospolita' :
+                     userBadge.badge.rarity === 'uncommon' ? 'Niepospolita' :
+                     userBadge.badge.rarity === 'rare' ? 'Rzadka' :
+                     userBadge.badge.rarity === 'epic' ? 'Epicka' :
+                     userBadge.badge.rarity === 'legendary' ? 'Legendarna' :
+                     userBadge.badge.rarity
+                   %></small>">
+                <div class="badge-showcase-container rarity-<%= userBadge.badge.rarity %>" 
+                     style="--badge-color: <%= userBadge.badge.color %>; background: radial-gradient(circle at center, <%= userBadge.badge.color %>60 0%, <%= userBadge.badge.color %>30 20%, transparent 70%);">
+                  <img src="<%= userBadge.badge.imageUrl %>" alt="<%= userBadge.badge.name %>" class="badge-showcase-image">
+                  <div class="badge-showcase-name"><%= userBadge.badge.name %></div>
+                </div>
+              </div>
+            <% }); %>
+            <% if (userBadgesForDisplay.length > 6) { %>
+              <div class="badge-showcase-item more-badges" 
+                   data-bs-toggle="tooltip" 
+                   data-bs-placement="top" 
+                   title="Zobacz wszystkie odznaki">
+                <div class="badge-showcase-container">
+                  <span class="more-count">+<%= userBadgesForDisplay.length - 6 %></span>
+                </div>
+              </div>
+            <% } %>
+          </div>
+        </div>
+      <% } else { %>
+        <div class="badges-showcase mb-4">
+          <h6 class="text-center mb-3">
+            <i class="bx bx-medal me-2"></i>Odznaki
+          </h6>
+          <div class="no-badges text-center">
+            <i class="bx bx-medal fs-2 text-muted mb-2"></i>
+            <p class="small text-muted mb-0">Brak odznak</p>
+          </div>
+        </div>
+      <% } %>
+
+      <!-- Przycisk i menu konta - pokazujemy tylko jeśli użytkownik przegląda swój profil -->
+      <% if (user && req.user.id == member.id) { %>
+        <button type="button" class="btn btn-secondary w-100 d-md-none mt-n2 mb-3" data-bs-toggle="collapse" data-bs-target="#account-menu">
+          <i class="bx bxs-user-detail fs-xl me-2"></i>
+          Menu konta
+          <i class="bx bx-chevron-down fs-lg ms-1"></i>
+        </button>
+        
+        <div id="account-menu" class="list-group list-group-flush collapse d-md-block">
+          <a href="/profile/<%= member.id %>" class="list-group-item list-group-item-action d-flex align-items-center">
+            <i class="bx bx-cog fs-xl opacity-60 me-2"></i>
+            Szczegóły Konta
+          </a>
+
+          <% if (req.url == `/profile/${member.id}/comments`) { %>
+            <a href="/profile/<%= member.id %>/comments" class="list-group-item list-group-item-action d-flex align-items-center active">
+              <i class="bx bx-comment fs-xl opacity-60 me-2"></i>
+              Dziennik komentarzy
+            </a>
+          <% } else { %>
+            <a href="/profile/<%= member.id %>/comments" class="list-group-item list-group-item-action d-flex align-items-center">
+              <i class="bx bx-comment fs-xl opacity-60 me-2"></i>
+              Dziennik komentarzy
+            </a>
+          <% } %>
+		  
+		  <% if (req.url == `/profile/${member.id}/referrals`) { %>
+            <a href="/profile/<%= member.id %>/referrals" class="list-group-item list-group-item-action d-flex align-items-center active">
+              <i class="bx bx-link fs-xl opacity-60 me-2"></i>
+              Program poleceń
+            </a>
+          <% } else { %>
+            <a href="/profile/<%= member.id %>/referrals" class="list-group-item list-group-item-action d-flex align-items-center">
+              <i class="bx bx-link fs-xl opacity-60 me-2"></i>
+              Program poleceń
+            </a>
+          <% } %>
+
+          <% if (req.url == `/manage/profile`) { %>
+            <a href="/manage/profile" class="list-group-item list-group-item-action d-flex align-items-center active">
+              <i class="bx bx-lock fs-xl opacity-60 me-2"></i>
+              Zarządzaj profilem
+            </a>
+          <% } else { %>
+            <a href="/manage/profile" class="list-group-item list-group-item-action d-flex align-items-center">
+              <i class="bx bx-lock fs-xl opacity-60 me-2"></i>
+              Zarządzaj profilem
+            </a>
+          <% } %>
+          <a href="/logout" class="list-group-item list-group-item-action d-flex align-items-center">
+            <i class="bx bx-log-out fs-xl opacity-60 me-2"></i>
+            Wyloguj się
+          </a>
+        </div>
+      <% } %>
+    </div>
+  </div>
+
+  <style>
+    /* Style pozostają bez zmian */
+    .bg-gold { background: linear-gradient(135deg, #FFD700 0%, #D4AF37 100%); }
+    .bg-red { background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%); }
+    .bg-blue { background: linear-gradient(135deg, #00B4DB 0%, #0083B0 100%); }
+	.bg-blue2 { background: linear-gradient(135deg, #1E3C72 0%, #2A5298 100%); }
+
+    .bg-purple { background: linear-gradient(135deg, #8A2BE2 0%, #4B0082 100%); }
+    .bg-pink { background: linear-gradient(135deg, #FF758C 0%, #FF7EB3 100%); }
+    .bg-violet { background: linear-gradient(135deg, #6A11CB 0%, #2575FC 100%); }
+    .bg-green { background: linear-gradient(135deg, #11998E 0%, #38EF7D 100%); }
+    .bg-orange { background: linear-gradient(135deg, #FF8008 0%, #FFC837 100%); }
+    
+    .text-gold { color: #FFD700; text-shadow: 0 0 8px rgba(255, 215, 0, 0.4); }
+    .text-red { color: #FF416C; text-shadow: 0 0 8px rgba(255, 65, 108, 0.4); }
+    .text-blue { color: #00B4DB; text-shadow: 0 0 8px rgba(0, 180, 219, 0.4); }
+    .text-purple { color: #8A2BE2; text-shadow: 0 0 8px rgba(138, 43, 226, 0.4); }
+    .text-pink { color: #FF758C; text-shadow: 0 0 8px rgba(255, 117, 140, 0.4); }
+    .text-violet { color: #6A11CB; text-shadow: 0 0 8px rgba(106, 17, 203, 0.4); }
+    .text-green { color: #11998E; text-shadow: 0 0 8px rgba(17, 153, 142, 0.4); }
+    .text-orange { color: #FF8008; text-shadow: 0 0 8px rgba(255, 128, 8, 0.4); }
+    
+    .profile-avatar-container {
+      position: relative;
+      border-radius: 50%;
+      padding: 6px;
+      transition: all 0.3s ease;
+    }
+    
+    .profile-avatar {
+      border: 3px solid transparent;
+      transition: all 0.3s ease;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .profile-owner-effect {
+      background: linear-gradient(135deg, #FFD700 0%, #D4AF37 100%);
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+      animation: pulse-gold 2s infinite;
+    }
+    
+    .profile-admin-effect {
+      background: linear-gradient(135deg, #FF416C 0%, #FF4B2B 100%);
+      box-shadow: 0 0 20px rgba(255, 65, 108, 0.6);
+    }
+	
+.profile-support-effect {
+  background: linear-gradient(45deg, #1E3C72 0%, #2A5298 100%);
+  box-shadow: 0 0 25px rgba(30, 60, 114, 0.7);
+}
+
+    
+    .profile-reviewer-effect {
+      background: linear-gradient(135deg, #00B4DB 0%, #0083B0 100%);
+      box-shadow: 0 0 20px rgba(0, 180, 219, 0.6);
+    }
+    
+    .profile-partner-effect {
+      background: linear-gradient(135deg, #8A2BE2 0%, #4B0082 100%);
+      box-shadow: 0 0 20px rgba(138, 43, 226, 0.6);
+      animation: pulse-purple 3s infinite;
+    }
+    
+    .profile-patron-effect {
+      background: linear-gradient(135deg, #FF758C 0%, #FF7EB3 100%);
+      box-shadow: 0 0 20px rgba(255, 117, 140, 0.6);
+    }
+    
+    .profile-booster-effect {
+      background: linear-gradient(135deg, #6A11CB 0%, #2575FC 100%);
+      box-shadow: 0 0 20px rgba(106, 17, 203, 0.6);
+      animation: pulse-violet 2.5s infinite;
+    }
+    
+    .profile-developer-effect {
+      background: linear-gradient(135deg, #11998E 0%, #38EF7D 100%);
+      box-shadow: 0 0 20px rgba(17, 153, 142, 0.6);
+    }
+    
+    .profile-gold-hunter-effect {
+      background: linear-gradient(135deg, #FFD700 0%, #D4AF37 100%);
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+    }
+    
+    .profile-hunter-effect {
+      background: linear-gradient(135deg, #FF8008 0%, #FFC837 100%);
+      box-shadow: 0 0 20px rgba(255, 128, 8, 0.6);
+    }
+    
+    @keyframes pulse-gold {
+      0% { box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); }
+      50% { box-shadow: 0 0 30px rgba(255, 215, 0, 0.8); }
+      100% { box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); }
+    }
+    
+    @keyframes pulse-purple {
+      0% { box-shadow: 0 0 15px rgba(138, 43, 226, 0.6); }
+      50% { box-shadow: 0 0 30px rgba(138, 43, 226, 0.8); }
+      100% { box-shadow: 0 0 15px rgba(138, 43, 226, 0.6); }
+    }
+    
+    @keyframes pulse-violet {
+      0% { box-shadow: 0 0 15px rgba(106, 17, 203, 0.6); }
+      50% { box-shadow: 0 0 30px rgba(106, 17, 203, 0.8); }
+      100% { box-shadow: 0 0 15px rgba(106, 17, 203, 0.6); }
+    }
+    
+    .badge-card {
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 6px 10px 6px 6px;
+      gap: 8px;
+      transition: all 0.3s ease;
+      cursor: default;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+    
+    .badge-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+      background: rgba(255, 255, 255, 0.15);
+    }
+    
+    .badge-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 16px;
+    }
+    
+    .badge-text {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--bs-body-color);
+    }
+    
+    @media (max-width: 767.98px) {
+      .badge-card {
+        padding: 5px 8px 5px 5px;
+      }
+      .badge-icon {
+        width: 24px;
+        height: 24px;
+        font-size: 14px;
+      }
+      .badge-text {
+        font-size: 0.8rem;
+      }
+    }
+
+    /* Gablota odznak */
+    .badges-showcase {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .badges-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      justify-items: center;
+    }
+
+    .badge-showcase-item {
+      position: relative;
+      cursor: pointer;
+      width: 100%;
+      max-width: 70px;
+    }
+
+    .badge-showcase-container {
+      width: 100%;
+      min-height: 70px;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    /* Radial gradient effects for badge colors */
+    .badge-showcase-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at center, transparent 0%, transparent 100%);
+      border-radius: 12px;
+      z-index: -1;
+      transition: all 0.3s ease;
+    }
+
+    .badge-showcase-container[style*="background-color"]::before {
+      background: radial-gradient(circle at center, var(--badge-color, transparent) 0%, transparent 70%);
+      opacity: 0.3;
+    }
+
+    .badge-showcase-container:hover::before {
+      opacity: 0.5;
+      transform: scale(1.1);
+    }
+
+    .badge-showcase-container:hover {
+      transform: translateY(-3px) scale(1.08);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      background: radial-gradient(circle at center, var(--badge-color, rgba(255, 255, 255, 0.1))80 0%, var(--badge-color, rgba(255, 255, 255, 0.05))40 50%, transparent 90%) !important;
+    }
+
+    .badge-showcase-image {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      border-radius: 6px;
+      margin-bottom: 4px;
+    }
+
+    .badge-showcase-name {
+      font-size: 9px;
+      font-weight: 600;
+      text-align: center;
+      line-height: 1.1;
+      color: rgba(255, 255, 255, 0.9);
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-height: 20px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+
+    .no-badges {
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 12px;
+      border: 1px dashed rgba(255, 255, 255, 0.1);
+    }
+
+    /* Efekty rzadkości */
+    .rarity-common .badge-showcase-container {
+      border-color: #6c757d !important;
+      box-shadow: 0 2px 8px rgba(108, 117, 125, 0.3);
+    }
+
+    .rarity-common .badge-showcase-container:hover {
+      box-shadow: 0 4px 15px rgba(108, 117, 125, 0.5);
+    }
+
+    .rarity-uncommon .badge-showcase-container {
+      border-color: #28a745 !important;
+      box-shadow: 0 2px 8px rgba(40, 167, 69, 0.4);
+      animation: glow-uncommon 3s infinite;
+    }
+
+    .rarity-uncommon .badge-showcase-container:hover {
+      box-shadow: 0 6px 20px rgba(40, 167, 69, 0.6);
+    }
+
+    .rarity-rare .badge-showcase-container {
+      border-color: #007bff !important;
+      box-shadow: 0 2px 8px rgba(0, 123, 255, 0.5);
+      animation: glow-rare 2.5s infinite;
+    }
+
+    .rarity-rare .badge-showcase-container:hover {
+      box-shadow: 0 6px 20px rgba(0, 123, 255, 0.7);
+    }
+
+    .rarity-epic .badge-showcase-container {
+      border-color: #6f42c1 !important;
+      box-shadow: 0 2px 8px rgba(111, 66, 193, 0.6);
+      animation: glow-epic 2s infinite;
+    }
+
+    .rarity-epic .badge-showcase-container:hover {
+      box-shadow: 0 8px 25px rgba(111, 66, 193, 0.8);
+    }
+
+    .rarity-legendary .badge-showcase-container {
+      border-color: #fd7e14 !important;
+      box-shadow: 0 2px 8px rgba(253, 126, 20, 0.7);
+      animation: glow-legendary 1.5s infinite;
+      background: linear-gradient(45deg, rgba(253, 126, 20, 0.3), rgba(255, 193, 7, 0.3)) !important;
+    }
+
+    .rarity-legendary .badge-showcase-container:hover {
+      box-shadow: 0 10px 30px rgba(253, 126, 20, 0.9);
+    }
+
+    @keyframes glow-uncommon {
+      0%, 100% { box-shadow: 0 2px 8px rgba(40, 167, 69, 0.3); }
+      50% { box-shadow: 0 4px 16px rgba(40, 167, 69, 0.6); }
+    }
+
+    @keyframes glow-rare {
+      0%, 100% { box-shadow: 0 2px 8px rgba(0, 123, 255, 0.4); }
+      50% { box-shadow: 0 4px 16px rgba(0, 123, 255, 0.7); }
+    }
+
+    @keyframes glow-epic {
+      0%, 100% { box-shadow: 0 2px 8px rgba(111, 66, 193, 0.5); }
+      50% { box-shadow: 0 4px 20px rgba(111, 66, 193, 0.8); }
+    }
+
+    @keyframes glow-legendary {
+      0%, 100% { 
+        box-shadow: 0 2px 8px rgba(253, 126, 20, 0.6);
+        transform: scale(1);
+      }
+      50% { 
+        box-shadow: 0 6px 25px rgba(253, 126, 20, 0.9);
+        transform: scale(1.05);
+      }
+    }
+
+    .more-badges .badge-showcase-container {
+      background: rgba(255, 255, 255, 0.15);
+      border: 2px dashed rgba(255, 255, 255, 0.3);
+    }
+
+    .more-count {
+      font-size: 12px;
+      font-weight: bold;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    @media (max-width: 767.98px) {
+      .badge-showcase-container {
+        min-height: 60px;
+      }
+      
+      .badge-showcase-image {
+        width: 24px;
+        height: 24px;
+      }
+      
+      .badge-showcase-name {
+        font-size: 8px;
+      }
+      
+      .badges-grid {
+        gap: 8px;
+      }
+      
+      .badges-showcase {
+        padding: 12px;
+      }
+    }
+  </style>
+</aside>

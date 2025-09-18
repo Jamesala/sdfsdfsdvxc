@@ -1,0 +1,1462 @@
+                        <!DOCTYPE html>
+                        <html lang="pl">
+                        <head>
+                            <%- include('../partials/head.ejs') %>
+                            <title>Discordzik | Narzędzia dla serwerów Discord</title>
+                            <link rel="icon" href="/assets/img/favicon.png" type="image/x-icon">
+                            <link rel="shortcut icon" href="/assets/img/favicon.png" type="image/x-icon">
+                            <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+                            <meta name="google-adsense-account" content="ca-pub-9136474966764887">
+                            <meta name="title" content="Discordzik | Narzędzia dla serwerów Discord">
+                            <meta name="description" content="Narzędzia Discord dla właścicieli i administratorów serwerów. Rozwijaj swój serwer Discord z pomocą Discordzik.">
+                            <meta name="theme-color" content="#5024f3">
+                            <meta name="og:site_name" content="Discordzik.pl">
+                            <meta property="og:type" content="website">
+                            <meta property="og:url" content="<%= config.website.url %>">
+                            <meta property="og:title" content="Discordzik | Narzędzia dla serwerów Discord">
+                            <meta property="og:description" content="Narzędzia Discord dla właścicieli i administratorów serwerów. Rozwijaj swój serwer Discord z pomocą Discordzik.">
+                            <meta property="og:image" content="/assets/img/banner.png">
+                            <meta property="og:image:secure_url" content="/assets/img/banner.png">
+                            <meta property="og:image:width" content="1200">
+                            <meta property="og:image:height" content="630">
+                            <meta property="og:image:type" content="image/png">
+                            <meta property="twitter:card" content="summary_large_image">
+                            <meta property="twitter:url" content="<%= config.website.url %>">
+                            <meta property="twitter:title" content="Discordzik | Narzędzia dla serwerów Discord">
+                            <meta property="twitter:description" content="Narzędzia Discord dla właścicieli i administratorów serwerów. Rozwijaj swój serwer Discord z pomocą Discordzik.">
+                            <meta property="twitter:image" content="/assets/img/banner.png">
+                            <meta property="twitter:image:width" content="1200">
+                            <meta property="twitter:image:height" content="360">
+                            <meta property="summary_large_image" content="/assets/img/banner.png">
+                            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+                            <style>
+                                :root {
+                                    --primary-color: #5865f2;
+                                    --dark-bg: #1e1f29;
+                                    --darker-bg: #17181f;
+                                    --card-bg: rgba(255, 255, 255, 0.05);
+                                    --card-border: rgba(255, 255, 255, 0.1);
+                                }
+                                body {
+                                    background: var(--darker-bg) !important;
+                                    color: #fff;
+                                    font-family: 'Whitney', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                                }
+                                .tool-card {
+                                    background: var(--card-bg);
+                                    border: 1px solid var(--card-border);
+                                    border-radius: 12px;
+                                    padding: 0;
+                                    margin-bottom: 1.5rem;
+                                    transition: all 0.3s ease;
+                                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                                    overflow: hidden;
+                                }
+                                .tool-header {
+                                    display: flex;
+                                    align-items: center;
+                                    padding: 1.5rem;
+                                    cursor: pointer;
+                                    transition: background-color 0.2s ease;
+                                }
+                                .tool-header:hover {
+                                    background-color: rgba(255, 255, 255, 0.05);
+                                }
+                                .tool-icon {
+                                    font-size: 1.8rem;
+                                    margin-right: 0.8rem;
+                                    color: var(--primary-color);
+                                    transition: transform 0.3s ease, color 0.3s ease;
+                                }
+                                .tool-header:hover .tool-icon {
+                                    transform: scale(1.2) rotate(5deg);
+                                }
+                                .tool-content {
+                                    display: none;
+                                    padding: 0 1.5rem 1.5rem;
+                                }
+                                .tool-card.expanded .tool-content {
+                                    display: block;
+                                }
+                                .expand-icon {
+                                    margin-left: auto;
+                                    transition: transform 0.3s ease;
+                                }
+                                .tool-card.expanded .expand-icon {
+                                    transform: rotate(180deg);
+                                }
+                                .section-header {
+                                    display: flex;
+                                    align-items: center;
+                                    margin-bottom: 1.5rem;
+                                    padding-bottom: 0.5rem;
+                                    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                                }
+                                .section-icon {
+                                    font-size: 1.5rem;
+                                    margin-right: 0.8rem;
+                                    color: var(--primary-color);
+                                    transition: transform 0.3s ease, color 0.3s ease;
+                                }
+                                .section-header:hover .section-icon {
+                                    transform: scale(1.1);
+                                }
+                                .form-control, .form-select {
+                                    background-color: #2b2d31;
+                                    border: 1px solid rgba(255, 255, 255, 0.15);
+                                    color: white;
+                                    border-radius: 8px;
+                                    padding: 0.75rem 1rem;
+                                }
+                                .form-control:focus, .form-select:focus {
+                                    background-color: #2b2d31;
+                                    border-color: var(--primary-color);
+                                    color: white;
+                                    box-shadow: 0 0 0 0.2rem rgba(88, 101, 242, 0.25);
+                                }
+                                .form-control::placeholder {
+                                    color: rgba(255, 255, 255, 0.5);
+                                }
+                                .form-select option {
+                                    background-color: #2b2d31;
+                                    color: white;
+                                }
+                                .form-label {
+                                    font-weight: 600;
+                                    margin-bottom: 0.5rem;
+                                    display: flex;
+                                    align-items: center;
+                                }
+                                .form-label i {
+                                    margin-right: 0.5rem;
+                                    font-size: 0.9rem;
+                                    color: var(--primary-color);
+                                }
+                                .btn {
+                                    border-radius: 8px;
+                                    padding: 0.6rem 1.2rem;
+                                    font-weight: 600;
+                                    display: inline-flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                }
+                                .btn i {
+                                    margin-right: 0.5rem;
+                                }
+                                .btn-sm i {
+                                    margin-right: 0;
+                                }
+                                .ai-section, .template-section {
+                                    background: rgba(88, 101, 242, 0.1);
+                                    border-radius: 10px;
+                                    padding: 1rem;
+                                    margin-bottom: 1.5rem;
+                                    border: 1px solid rgba(88, 101, 242, 0.2);
+                                }
+                                .ai-section-header, .template-section-header {
+                                    display: flex;
+                                    align-items: center;
+                                    margin-bottom: 0;
+                                    cursor: pointer;
+                                }
+                                .ai-section-content, .template-section-content {
+                                    display: none;
+                                    margin-top: 1rem;
+                                }
+                                .ai-section.expanded .ai-section-content,
+                                .template-section.expanded .template-section-content {
+                                    display: block;
+                                }
+                                .ai-expand-icon, .template-expand-icon {
+                                    margin-left: auto;
+                                    transition: transform 0.3s ease;
+                                }
+                                .ai-section.expanded .ai-expand-icon,
+                                .template-section.expanded .template-expand-icon {
+                                    transform: rotate(180deg);
+                                }
+                                .embed-preview {
+                                    background: #2b2d31;
+                                    border-left: 4px solid var(--primary-color);
+                                    padding: 1.2rem;
+                                    border-radius: 4px 0 0 4px;
+                                    margin-top: 1.5rem;
+                                    color: #dcddde;
+                                    font-family: 'Whitney', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+                                }
+                                .embed-author {
+                                    display: flex;
+                                    align-items: center;
+                                    margin-bottom: 0.8rem;
+                                }
+                                .embed-author img {
+                                    width: 20px;
+                                    height: 20px;
+                                    border-radius: 50%;
+                                    margin-right: 0.5rem;
+                                }
+                                .embed-title {
+                                    font-weight: 600;
+                                    color: #00aff4;
+                                    margin-bottom: 0.8rem;
+                                    font-size: 1.1rem;
+                                }
+                                .embed-description {
+                                    margin-bottom: 0.8rem;
+                                    line-height: 1.5;
+                                    white-space: pre-wrap;
+                                }
+                                .embed-description strong {
+                                    font-weight: 700;
+                                }
+                                .embed-description em {
+                                    font-style: italic;
+                                }
+                                .embed-description u {
+                                    text-decoration: underline;
+                                }
+                                .embed-description s {
+                                    text-decoration: line-through;
+                                }
+                                .embed-description blockquote {
+                                    border-left: 4px solid #4f545c;
+                                    padding-left: 1rem;
+                                    margin: 0.5rem 0;
+                                    color: #b9bbbe;
+                                }
+                                .embed-field {
+                                    margin-bottom: 0.8rem;
+                                }
+                                .embed-field-name {
+                                    font-weight: 600;
+                                    margin-bottom: 0.25rem;
+                                }
+                                .embed-footer {
+                                    font-size: 0.8rem;
+                                    color: #72767d;
+                                    margin-top: 0.8rem;
+                                    display: flex;
+                                    align-items: center;
+                                }
+                                .embed-footer img {
+                                    width: 16px;
+                                    height: 16px;
+                                    border-radius: 50%;
+                                    margin-right: 0.5rem;
+                                }
+                                .bot-indicator {
+                                    display: flex;
+                                    align-items: center;
+                                    margin-bottom: 0.8rem;
+                                    font-size: 0.9rem;
+                                    color: #b9bbbe;
+                                }
+                                .bot-indicator img {
+                                    width: 20px;
+                                    height: 20px;
+                                    border-radius: 50%;
+                                    margin-right: 0.5rem;
+                                }
+                                .rules-output {
+                                    background: rgba(255, 255, 255, 0.08);
+                                    border: 1px solid rgba(255, 255, 255, 0.15);
+                                    border-radius: 8px;
+                                    padding: 1.2rem;
+                                    margin-top: 1rem;
+                                    white-space: pre-line;
+                                    max-height: 400px;
+                                    overflow-y: auto;
+                                    color: #dcddde;
+                                    line-height: 1.6;
+                                }
+                                .usage-counter {
+                                    font-size: 0.85rem;
+                                    color: rgba(255, 255, 255, 0.7);
+                                    margin-top: 0.5rem;
+                                }
+                                .usage-counter i {
+                                    margin-right: 0.3rem;
+                                    color: var(--primary-color);
+                                }
+                                select.form-select {
+                                    background-color: #2b2d31;
+                                    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+                                }
+                                .template-actions {
+                                    display: flex;
+                                    gap: 0.5rem;
+                                }
+                                .template-actions .btn {
+                                    flex: 1;
+                                }
+                                .color-input-wrapper {
+                                    display: flex;
+                                    align-items: center;
+                                }
+                                .color-input-wrapper input[type="color"] {
+                                    width: 50px;
+                                    height: 40px;
+                                    margin-right: 10px;
+                                    border: none;
+                                    border-radius: 6px;
+                                    cursor: pointer;
+                                }
+                                .color-input-wrapper input[type="text"] {
+                                    flex: 1;
+                                }
+                                .embed-item {
+                                    background: rgba(255, 255, 255, 0.05);
+                                    border: 1px solid rgba(255, 255, 255, 0.1);
+                                    border-radius: 8px;
+                                    padding: 1rem;
+                                    margin-bottom: 1rem;
+                                    position: relative;
+                                }
+                                .embed-item-header {
+                                    display: flex;
+                                    justify-content: space-between;
+                                    align-items: center;
+                                    margin-bottom: 1rem;
+                                }
+                                .embed-item-title {
+                                    font-weight: 600;
+                                    color: var(--primary-color);
+                                    margin-right: 1rem;
+                                }
+                                .embed-item-actions {
+                                    display: flex;
+                                    gap: 0.5rem;
+                                }
+                                .embed-item-actions .btn {
+                                    padding: 0.3rem 0.6rem;
+                                }
+                                .preview-container {
+                                    position: relative;
+                                }
+                                .preview-sticky {
+                                    position: sticky;
+                                    top: 20px;
+                                    max-height: calc(100vh - 40px);
+                                    overflow-y: auto;
+                                }
+                                .message-content-preview {
+                                    padding: 1rem;
+                                    border-radius: 6px;
+                                    margin-bottom: 1rem;
+                                    color: #dcddde;
+                                    min-height: 50px;
+                                    white-space: pre-wrap;
+                                }
+                                .message-content-preview strong {
+                                    font-weight: 700;
+                                }
+                                .message-content-preview em {
+                                    font-style: italic;
+                                }
+                                .message-content-preview u {
+                                    text-decoration: underline;
+                                }
+                                .message-content-preview s {
+                                    text-decoration: line-through;
+                                }
+                                .message-content-preview blockquote {
+                                    border-left: 4px solid #4f545c;
+                                    padding-left: 1rem;
+                                    margin: 0.5rem 0;
+                                    color: #b9bbbe;
+                                }
+                                .webhook-info {
+                                    display: flex;
+                                    align-items: center;
+                                    margin-bottom: 0.8rem;
+                                    font-size: 0.9rem;
+                                    color: #b9bbbe;
+                                }
+                                .webhook-info img {
+                                    width: 40px;
+                                    height: 40px;
+                                    border-radius: 50%;
+                                    margin-right: 0.5rem;
+                                }
+                                .formatting-toolbar {
+                                    display: flex;
+                                    gap: 0.5rem;
+                                    margin-bottom: 0.5rem;
+                                }
+                                .formatting-toolbar .btn {
+                                    padding: 0.3rem 0.6rem;
+                                    font-size: 0.9rem;
+                                }
+                                .formatting-toolbar .btn i {
+                                    margin-right: 0;
+                                }
+                                @media (max-width: 768px) {
+                                    .tool-header {
+                                        padding: 1rem;
+                                    }
+                                    .tool-content {
+                                        padding: 0 1rem 1rem;
+                                    }
+                                    .ai-section, .template-section {
+                                        padding: 1rem;
+                                    }
+                                    .preview-sticky {
+                                        position: relative;
+                                        top: auto;
+                                        max-height: none;
+                                    }
+                                    .formatting-toolbar {
+                                        flex-wrap: wrap;
+                                    }
+                                }
+                                /* Coming soon section */
+                                .coming-soon {
+                                    opacity: 0.7;
+                                    position: relative;
+                                }
+                                .coming-soon::after {
+                                    content: "Wkrótce";
+                                    position: absolute;
+                                    top: 10px;
+                                    right: 10px;
+                                    background: var(--primary-color);
+                                    color: white;
+                                    font-size: 0.7rem;
+                                    font-weight: bold;
+                                    padding: 3px 8px;
+                                    border-radius: 12px;
+                                }
+                            </style>
+                        </head>
+                        <body class="bg-dark text-white">
+                        <%- include('../partials/spinner') %>
+                            <%- include('../partials/header.ejs') %>
+                            <div class="container mt-5">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h1 class="text-center mb-4"><i class="fas fa-tools me-2"></i>Narzędzia dla właścicieli serwerów</h1>
+                                        <p class="text-center text-muted mb-5">Zaawansowane narzędzia dla zarządzających serwerami Discord</p>
+                                    </div>
+                                </div>
+                                <!-- Embed Generator Card -->
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="tool-card" id="embedGeneratorCard">
+                                            <div class="tool-header">
+                                                <i class="tool-icon fas fa-code"></i>
+                                                <div>
+                                                    <h3 class="mb-0">Generator Wiadomości Discord</h3>
+                                                    <p class="text-muted mb-0"><i class="fas fa-info-circle me-1"></i>Twórz wiadomości z embedami i wysyłaj je przez webhook</p>
+                                                </div>
+                                                <i class="expand-icon fas fa-chevron-down"></i>
+                                            </div>
+                                            <div class="tool-content">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <!-- AI Generator Section -->
+                                                        <div class="ai-section" id="aiSection">
+                                                            <div class="ai-section-header">
+                                                                <i class="section-icon fas fa-magic"></i>
+                                                                <h5 class="mb-0">Generator AI</h5>
+                                                                <i class="ai-expand-icon fas fa-chevron-down"></i>
+                                                            </div>
+                                                            <div class="ai-section-content">
+                                                                <div class="mb-3">
+                                                                    <label class="form-label"><i class="fas fa-comment-dots"></i>Opis embedu</label>
+                                                                    <textarea class="form-control" id="aiDescription" rows="2" placeholder="Opisz jaki embed chcesz stworzyć (np. 'Ogłoszenie o wydarzeniu gamingowym na jutro wieczorem')"></textarea>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between align-items-center">
+                                                                    <button type="button" class="btn btn-primary" onclick="generateEmbedWithAI()">
+                                                                        <i class="fas fa-magic"></i> Generuj przez AI
+                                                                    </button>
+                                                                    <div class="usage-counter">
+                                                                        <i class="fas fa-tachometer-alt"></i>Pozostało: <span id="aiEmbedUsageRemaining">5</span>/5
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- Template Management -->
+                                                        <div class="template-section" id="templateSection">
+                                                            <div class="template-section-header">
+                                                                <i class="section-icon fas fa-save"></i>
+                                                                <h5 class="mb-0">Zarządzanie szablonami</h5>
+                                                                <i class="template-expand-icon fas fa-chevron-down"></i>
+                                                            </div>
+                                                            <div class="template-section-content">
+                                                                <div class="mb-3">
+                                                                    <label class="form-label"><i class="fas fa-list"></i>Wybierz szablon</label>
+                                                                    <select class="form-select mb-2" id="templateSelect">
+                                                                        <option value="">Wybierz szablon...</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="form-label"><i class="fas fa-tag"></i>Nazwa nowego szablonu</label>
+                                                                    <input type="text" class="form-control mb-2" id="templateName" placeholder="Nazwa szablonu" maxlength="50">
+                                                                </div>
+                                                                <div class="template-actions">
+                                                                    <button type="button" class="btn btn-success" onclick="loadTemplate()">
+                                                                        <i class="fas fa-download"></i> Załaduj
+                                                                    </button>
+                                                                    <button type="button" class="btn btn-warning" onclick="saveTemplate()">
+                                                                        <i class="fas fa-save"></i> Zapisz
+                                                                    </button>
+                                                                    <button type="button" class="btn btn-danger" onclick="deleteSelectedTemplate()">
+                                                                        <i class="fas fa-trash"></i> Usuń
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <form id="embedForm">
+                                                            <!-- Webhook Settings -->
+                                                            <div class="mb-3">
+                                                                <label class="form-label"><i class="fas fa-link"></i>URL Webhooka Discord</label>
+                                                                <input type="url" class="form-control" id="webhookUrl" placeholder="https://discord.com/api/webhooks/..." required>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label"><i class="fas fa-user"></i>Nazwa webhooka (opcjonalne)</label>
+                                                                        <input type="text" class="form-control" id="webhookName" placeholder="Nazwa bota">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label"><i class="fas fa-image"></i>Avatar webhooka (opcjonalne)</label>
+                                                                        <input type="url" class="form-control" id="webhookAvatar" placeholder="https://...">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- Message Content -->
+                                                            <div class="mb-3">
+                                                                <label class="form-label"><i class="fas fa-message"></i>Treść wiadomości (opcjonalne)</label>
+                                                                <div class="formatting-toolbar">
+                                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="wrapText('messageContent', '**', '**')" title="Pogrubienie">
+                                                                        <i class="fas fa-bold"></i>
+                                                                    </button>
+                                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="wrapText('messageContent', '*', '*')" title="Kursywa">
+                                                                        <i class="fas fa-italic"></i>
+                                                                    </button>
+                                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="wrapText('messageContent', '__', '__')" title="Podkreślenie">
+                                                                        <i class="fas fa-underline"></i>
+                                                                    </button>
+                                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="wrapText('messageContent', '~~', '~~')" title="Przekreślenie">
+                                                                        <i class="fas fa-strikethrough"></i>
+                                                                    </button>
+                                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addBlockQuote('messageContent', '> ')" title="Cytat jednolinijkowy">
+                                                                        <i class="fas fa-quote-left"></i>
+                                                                    </button>
+                                                                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addBlockQuote('messageContent', '>>> ')" title="Cytat wielolinijkowy">
+                                                                        <i class="fas fa-quote-right"></i>
+                                                                    </button>
+                                                                </div>
+                                                                <textarea class="form-control" id="messageContent" rows="4" placeholder="Treść wiadomości nad embedami."></textarea>
+                                                            </div>
+                                                            <!-- Embeds Section -->
+                                                            <div class="mb-3">
+                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                    <label class="form-label mb-0"><i class="fas fa-layer-group"></i>Embedy</label>
+                                                                    <button type="button" class="btn btn-sm btn-primary" onclick="addEmbed()">
+                                                                        <i class="fas fa-plus"></i> Dodaj embed
+                                                                    </button>
+                                                                </div>
+                                                                <div id="embedsContainer">
+                                                                    <!-- Embeds will be added here dynamically -->
+                                                                </div>
+                                                            </div>
+                                                            <div class="d-grid gap-2 d-md-flex">
+                                                                <button type="submit" class="btn btn-success">
+                                                                    <i class="fas fa-paper-plane"></i> Wyślij Webhook
+                                                                </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="preview-container">
+                                                            <div class="preview-sticky">
+                                                                <div class="section-header">
+                                                                    <i class="section-icon fas fa-eye"></i>
+                                                                    <h5 class="mb-0">Podgląd wiadomości</h5>
+                                                                </div>
+                                                                <div id="previewContainer">
+                                                                    <div class="webhook-info">
+                                                                        <img src="https://support.discord.com/hc/user_images/l12c7vKVRCd-XLIdDkLUDg.png" alt="Bot Avatar" id="previewWebhookAvatar">
+                                                                        <span id="previewWebhookName">Bot</span>&nbsp;<span style="color: #72767d;">Dziś o <span id="current-time"></span></span>
+                                                                    </div>
+                                                                    <div id="messageContentPreview" class="message-content-preview" style="display: none;"></div>
+                                                                    <div id="embedsPreview">
+                                                                        <div class="embed-preview">
+                                                                            <div class="embed-description">Wypełnij formularz aby zobaczyć podgląd twojej wiadomości.</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Rules Generator Card -->
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="tool-card" id="rulesGeneratorCard">
+                                            <div class="tool-header">
+                                                <i class="tool-icon fas fa-gavel"></i>
+                                                <div>
+                                                    <h3 class="mb-0">Generator Zasad Serwera</h3>
+                                                    <p class="text-muted mb-0"><i class="fas fa-info-circle me-1"></i>Generuj profesjonalne zasady dla swojego serwera Discord używając AI</p>
+                                                </div>
+                                                <i class="expand-icon fas fa-chevron-down"></i>
+                                            </div>
+                                            <div class="tool-content">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <form id="rulesForm">
+                                                            <div class="mb-3">
+                                                                <label class="form-label"><i class="fas fa-server"></i>Typ serwera</label>
+                                                                <select class="form-select" id="serverType" required>
+                                                                    <option value="">Wybierz typ serwera...</option>
+                                                                    <option value="Gaming">🎮 Gaming</option>
+                                                                    <option value="Społeczność">👥 Społeczność</option>
+                                                                    <option value="Edukacyjny">🎓 Edukacyjny</option>
+                                                                    <option value="Technologia">💻 Technologia</option>
+                                                                    <option value="Hobby">🎨 Hobby</option>
+                                                                    <option value="Roleplay">🎭 Roleplay</option>
+                                                                    <option value="Muzyka">🎵 Muzyka</option>
+                                                                    <option value="Sztuka">🖼️ Sztuka</option>
+                                                                    <option value="Biznes">💼 Biznes</option>
+                                                                    <option value="Wsparcie">🤝 Wsparcie</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="mb-3">
+                                                                <label class="form-label"><i class="fas fa-info-circle"></i>Dodatkowe informacje (opcjonalne)</label>
+                                                                <textarea class="form-control" id="additionalInfo" rows="3" placeholder="Opisz specyfikę swojego serwera, szczególne zasady, grupę docelową itp."></textarea>
+                                                            </div>
+                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                <button type="submit" class="btn btn-primary">
+                                                                    <i class="fas fa-magic"></i> Generuj Reguły
+                                                                </button>
+                                                                <div class="usage-counter">
+                                                                    <i class="fas fa-tachometer-alt"></i>Pozostało: <span id="aiUsageRemaining">5</span>/5
+                                                                </div>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="section-header">
+                                                            <i class="section-icon fas fa-file-alt"></i>
+                                                            <h5 class="mb-0">Wygenerowane reguły</h5>
+                                                        </div>
+                                                        <div id="rulesOutput" class="rules-output">
+                                                            Wybierz typ serwera i kliknij "Generuj Reguły" aby otrzymać spersonalizowane zasady.
+                                                        </div>
+                                                        <button type="button" class="btn btn-outline-secondary mt-3 w-100" id="copyRulesBtn" style="display: none;" onclick="copyRules()">
+                                                            <i class="fas fa-copy"></i> Kopiuj reguły
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Placeholder for additional tools -->
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="tool-card coming-soon">
+                                            <div class="tool-header">
+                                                <i class="tool-icon fas fa-list-check"></i>
+                                                <div>
+                                                    <h4 class="mb-0">Moderacja</h4>
+                                                    <p class="text-muted mb-0"><i class="fas fa-info-circle me-1"></i>Więcej narzędzi będzie niedługo</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="tool-card coming-soon">
+                                            <div class="tool-header">
+                                                <i class="tool-icon fas fa-chart-line"></i>
+                                                <div>
+                                                    <h4 class="mb-0">Analityka</h4>
+                                                    <p class="text-muted mb-0"><i class="fas fa-info-circle me-1"></i>Statystyki i analiza serwera</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="tool-card coming-soon">
+                                            <div class="tool-header">
+                                                <i class="tool-icon fas fa-robot"></i>
+                                                <div>
+                                                    <h4 class="mb-0">Automatyzacja</h4>
+                                                    <p class="text-muted mb-0"><i class="fas fa-info-circle me-1"></i>Automatyzacja zadań na serwerze</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <%- include('../partials/footer.ejs') %>
+                            <script>
+                                let embedCounter = 0;
+                                let embeds = [];
+                                // Set current time for preview
+                                function updateCurrentTime() {
+                                    const now = new Date();
+                                    const hours = now.getHours().toString().padStart(2, '0');
+                                    const minutes = now.getMinutes().toString().padStart(2, '0');
+                                    document.getElementById('current-time').textContent = `${hours}:${minutes}`;
+                                }
+                                updateCurrentTime();
+                                setInterval(updateCurrentTime, 60000);
+                                // Add first embed on page load
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    addEmbed();
+                                    // Fetch and display templates on load
+                                    fetchTemplates();
+                                });
+                                // Parse Markdown for message content and embed description
+                                function parseMarkdown(text) {
+                                    // Split text into lines to handle block quotes correctly
+                                    const lines = text.split('\n');
+                                    let html = '';
+                                    let inMultiBlockQuote = false;
+                                    lines.forEach((line, index) => {
+                                        // Handle multi-line block quote (>>>)
+                                        if (line.trim().startsWith('>>> ') && !inMultiBlockQuote) {
+                                            inMultiBlockQuote = true;
+                                            html += '<blockquote>';
+                                            html += line.replace(/^>>> /, '');
+                                        } else if (inMultiBlockQuote && (index === lines.length - 1 || lines[index + 1].trim().startsWith('>>> '))) {
+                                            html += line;
+                                            html += '</blockquote>';
+                                            inMultiBlockQuote = false;
+                                        } else if (inMultiBlockQuote) {
+                                            html += line;
+                                        } else {
+                                            // Handle single-line block quote (> )
+                                            if (line.trim().startsWith('> ')) {
+                                                html += `<blockquote>${line.replace(/^> /, '')}</blockquote>`;
+                                            } else {
+                                                // Handle inline formatting
+                                                let formattedLine = line
+                                                    .replace(/\*\*([^\*]+)\*\*/g, '<strong>$1</strong>')
+                                                    .replace(/\*([^\*]+)\*/g, '<em>$1</em>')
+                                                    .replace(/__([^_]+)__/g, '<u>$1</u>')
+                                                    .replace(/~~([^~]+)~~/g, '<s>$1</s>');
+                                                html += formattedLine;
+                                            }
+                                        }
+                                        // Add line break except for the last line
+                                        if (index < lines.length - 1) {
+                                            html += '<br>';
+                                        }
+                                    });
+                                    return html;
+                                }
+                                // Formatting toolbar functions
+                                function wrapText(textareaId, startTag, endTag) {
+                                    const textarea = document.getElementById(textareaId);
+                                    const start = textarea.selectionStart;
+                                    const end = textarea.selectionEnd;
+                                    const selectedText = textarea.value.substring(start, end) || 'tekst';
+                                    const newText = `${textarea.value.substring(0, start)}${startTag}${selectedText}${endTag}${textarea.value.substring(end)}`;
+                                    textarea.value = newText;
+                                    textarea.focus();
+                                    textarea.setSelectionRange(start + startTag.length, start + startTag.length + selectedText.length);
+                                    updatePreview();
+                                }
+                                function addBlockQuote(textareaId, prefix) {
+                                    const textarea = document.getElementById(textareaId);
+                                    const start = textarea.selectionStart;
+                                    const end = textarea.selectionEnd;
+                                    const selectedText = textarea.value.substring(start, end);
+                                    let newText;
+                                    if (selectedText) {
+                                        // If text is selected, prepend prefix to the first line
+                                        const lines = selectedText.split('\n');
+                                        lines[0] = `${prefix}${lines[0]}`;
+                                        newText = `${textarea.value.substring(0, start)}${lines.join('\n')}${textarea.value.substring(end)}`;
+                                    } else {
+                                        // If no text is selected, add prefix at cursor
+                                        newText = `${textarea.value.substring(0, start)}${prefix}${textarea.value.substring(start)}`;
+                                    }
+                                    textarea.value = newText;
+                                    textarea.focus();
+                                    textarea.setSelectionRange(start + prefix.length, start + prefix.length);
+                                    updatePreview();
+                                }
+                                // Add new embed
+                                function addEmbed() {
+                                    const embedId = `embed_${embedCounter++}`;
+                                    const embedsContainer = document.getElementById('embedsContainer');
+                                    const embedDiv = document.createElement('div');
+                                    embedDiv.className = 'embed-item';
+                                    embedDiv.id = embedId;
+                                    embedDiv.innerHTML = `
+                                        <div class="embed-item-header">
+                                            <span class="embed-item-title">Embed ${embedCounter}</span>
+                                            <div class="embed-item-actions">
+                                                <button type="button" class="btn btn-sm btn-danger" onclick="removeEmbed('${embedId}')">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label"><i class="fas fa-heading"></i>Tytuł</label>
+                                            <input type="text" class="form-control embed-field" data-field="title" data-embed="${embedId}" placeholder="Tytuł embed">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label"><i class="fas fa-align-left"></i>Opis</label>
+                                            <div class="formatting-toolbar">
+                                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="wrapText('embedDescription_${embedId}', '**', '**')" title="Pogrubienie">
+                                                    <i class="fas fa-bold"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="wrapText('embedDescription_${embedId}', '*', '*')" title="Kursywa">
+                                                    <i class="fas fa-italic"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="wrapText('embedDescription_${embedId}', '__', '__')" title="Podkreślenie">
+                                                    <i class="fas fa-underline"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="wrapText('embedDescription_${embedId}', '~~', '~~')" title="Przekreślenie">
+                                                    <i class="fas fa-strikethrough"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addBlockQuote('embedDescription_${embedId}', '> ')" title="Cytat jednolinijkowy">
+                                                    <i class="fas fa-quote-left"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="addBlockQuote('embedDescription_${embedId}', '>>> ')" title="Cytat wielolinijkowy">
+                                                    <i class="fas fa-quote-right"></i>
+                                                </button>
+                                            </div>
+                                            <textarea class="form-control embed-field" id="embedDescription_${embedId}" data-field="description" data-embed="${embedId}" rows="4" placeholder="Opis embed."></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label"><i class="fas fa-palette"></i>Kolor (hex)</label>
+                                            <div class="color-input-wrapper">
+                                                <input type="color" class="form-control embed-color" data-embed="${embedId}" value="#5865f2">
+                                                <input type="text" class="form-control embed-color-text embed-field" data-field="color" data-embed="${embedId}" placeholder="#5865f2" value="#5865f2">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label"><i class="fas fa-user"></i>Autor - Nazwa</label>
+                                                    <input type="text" class="form-control embed-field" data-field="authorName" data-embed="${embedId}" placeholder="Nazwa autora">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label"><i class="fas fa-image"></i>Autor - Avatar URL</label>
+                                                    <input type="url" class="form-control embed-field" data-field="authorIcon" data-embed="${embedId}" placeholder="https://...">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label"><i class="fas fa-image"></i>Thumbnail URL</label>
+                                            <input type="url" class="form-control embed-field" data-field="thumbnailUrl" data-embed="${embedId}" placeholder="https://...">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label"><i class="fas fa-image"></i>Obraz URL</label>
+                                            <input type="url" class="form-control embed-field" data-field="imageUrl" data-embed="${embedId}" placeholder="https://...">
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label"><i class="fas fa-font"></i>Footer - Tekst</label>
+                                                    <input type="text" class="form-control embed-field" data-field="footerText" data-embed="${embedId}" placeholder="Footer">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label class="form-label"><i class="fas fa-image"></i>Footer - Ikona URL</label>
+                                                    <input type="url" class="form-control embed-field" data-field="footerIcon" data-embed="${embedId}" placeholder="https://...">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    `;
+                                    embedsContainer.appendChild(embedDiv);
+                                    // Add event listeners for this embed
+                                    addEmbedEventListeners(embedId);
+                                    updatePreview();
+                                }
+                                // Remove embed
+                                function removeEmbed(embedId) {
+                                    if (document.querySelectorAll('.embed-item').length <= 1) {
+                                        alert('Musisz mieć przynajmniej jeden embed');
+                                        return;
+                                    }
+                                    document.getElementById(embedId).remove();
+                                    updatePreview();
+                                }
+                                // Add event listeners for embed fields
+                                function addEmbedEventListeners(embedId) {
+                                    const embedElement = document.getElementById(embedId);
+                                    // Color sync
+                                    const colorInput = embedElement.querySelector('.embed-color');
+                                    const colorTextInput = embedElement.querySelector('.embed-color-text');
+                                    colorInput.addEventListener('input', function() {
+                                        colorTextInput.value = this.value;
+                                        updatePreview();
+                                    });
+                                    colorTextInput.addEventListener('input', function() {
+                                        if (this.value.startsWith('#')) {
+                                            colorInput.value = this.value;
+                                            updatePreview();
+                                        }
+                                    });
+                                    // All fields auto-update
+                                    embedElement.querySelectorAll('.embed-field').forEach(field => {
+                                        field.addEventListener('input', updatePreview);
+                                    });
+                                }
+                                // Webhook customization listeners
+                                document.getElementById('webhookName').addEventListener('input', updatePreview);
+                                document.getElementById('webhookAvatar').addEventListener('input', updatePreview);
+                                document.getElementById('messageContent').addEventListener('input', updatePreview);
+                                // Check AI usage on page load
+                                async function initializePageData() {
+                                    try {
+                                        // Load AI usage
+                                        const usageResponse = await fetch('/api/check-tools-ai-usage');
+                                        if (usageResponse.ok) {
+                                            const usageData = await usageResponse.json();
+                                            if (usageData.success) {
+                                                document.getElementById('aiUsageRemaining').textContent = usageData.remaining;
+                                                document.getElementById('aiEmbedUsageRemaining').textContent = usageData.remaining;
+                                            }
+                                        }
+                                    } catch (error) {
+                                        console.warn('Failed to load AI usage:', error);
+                                    }
+                                    
+                                    // Load templates separately to avoid one failure affecting the other
+                                    await fetchTemplates();
+                                }
+                                
+                                // Initialize page data
+                                initializePageData();
+                                // Update preview function
+                                function updatePreview() {
+                                    const webhookName = document.getElementById('webhookName').value || 'Bot';
+                                    const webhookAvatar = document.getElementById('webhookAvatar').value || 'https://support.discord.com/hc/user_images/l12c7vKVRCd-XLIdDkLUDg.png';
+                                    const messageContent = document.getElementById('messageContent').value;
+                                    // Update webhook info
+                                    document.getElementById('previewWebhookName').textContent = webhookName;
+                                    document.getElementById('previewWebhookAvatar').src = webhookAvatar;
+                                    // Update message content
+                                    const messagePreview = document.getElementById('messageContentPreview');
+                                    if (messageContent.trim()) {
+                                        messagePreview.innerHTML = parseMarkdown(messageContent);
+                                        messagePreview.style.display = 'block';
+                                    } else {
+                                        messagePreview.style.display = 'none';
+                                        messagePreview.innerHTML = '';
+                                    }
+                                    // Update embeds preview
+                                    const embedsPreview = document.getElementById('embedsPreview');
+                                    embedsPreview.innerHTML = '';
+                                    const embedItems = document.querySelectorAll('.embed-item');
+                                    if (embedItems.length === 0) {
+                                        embedsPreview.innerHTML = '<div class="embed-preview"><div class="embed-description" style="padding: 0.5rem;">Dodaj przynajmniej jeden embed aby zobaczyć podgląd.</div></div>';
+                                        return;
+                                    }
+
+                                    let hasContent = false;
+                                    embedItems.forEach((embedItem, index) => {
+                                        const embedId = embedItem.id;
+                                        const embedDiv = document.createElement('div');
+                                        embedDiv.className = 'embed-preview';
+                                        embedDiv.style.marginBottom = '1rem';
+                                        const fields = {};
+                                        embedItem.querySelectorAll('.embed-field').forEach(field => {
+                                            const fieldName = field.dataset.field;
+                                            fields[fieldName] = field.value;
+                                        });
+                                        const color = fields.color || '#5865f2';
+                                        let embedHtml = '';
+                                        let embedHasContent = false;
+
+                                        if (fields.authorName && fields.authorName.trim()) {
+                                            embedHtml += `<div class="embed-author">`;
+                                            if (fields.authorIcon) embedHtml += `<img src="${fields.authorIcon}" alt="Author">`;
+                                            embedHtml += `<span>${fields.authorName}</span></div>`;
+                                            embedHasContent = true;
+                                        }
+                                        if (fields.title && fields.title.trim()) {
+                                            embedHtml += `<div class="embed-title">${fields.title}</div>`;
+                                            embedHasContent = true;
+                                        }
+                                        if (fields.description && fields.description.trim()) {
+                                            embedHtml += `<div class="embed-description">${parseMarkdown(fields.description)}</div>`;
+                                            embedHasContent = true;
+                                        }
+                                        if (fields.thumbnailUrl && fields.thumbnailUrl.trim()) {
+                                            embedHtml += `<img src="${fields.thumbnailUrl}" alt="Thumbnail" style="max-width: 80px; float: right; margin-left: 1rem; border-radius: 4px;">`;
+                                            embedHasContent = true;
+                                        }
+                                        if (fields.imageUrl && fields.imageUrl.trim()) {
+                                            embedHtml += `<div style="margin-top: 1rem;"><img src="${fields.imageUrl}" alt="Image" style="max-width: 100%; border-radius: 4px;"></div>`;
+                                            embedHasContent = true;
+                                        }
+                                        if (fields.footerText && fields.footerText.trim()) {
+                                            embedHtml += `<div class="embed-footer">`;
+                                            if (fields.footerIcon) embedHtml += `<img src="${fields.footerIcon}" alt="Footer">`;
+                                            embedHtml += `<span>${fields.footerText}</span></div>`;
+                                            embedHasContent = true;
+                                        }
+
+                                        if (!embedHasContent) {
+                                            embedHtml = `<div class="embed-description" style="padding: 0.5rem; opacity: 0.6;">Embed ${index + 1} - wypełnij pola aby zobaczyć podgląd</div>`;
+                                        } else {
+                                            hasContent = true;
+                                        }
+
+                                        embedDiv.innerHTML = embedHtml;
+                                        embedDiv.style.borderLeftColor = color;
+
+                                        // Dodaj minimalny padding jeśli embed ma treść
+                                        if (embedHasContent) {
+                                            embedDiv.style.padding = '1rem';
+                                        } else {
+                                            embedDiv.style.padding = '0.5rem';
+                                        }
+
+                                        embedsPreview.appendChild(embedDiv);
+                                    });
+                                }
+                                // Form submission
+                                document.getElementById('embedForm').addEventListener('submit', async function(e) {
+                                    e.preventDefault();
+                                    const webhookUrl = document.getElementById('webhookUrl').value;
+                                    const messageContent = document.getElementById('messageContent').value;
+                                    const webhookName = document.getElementById('webhookName').value;
+                                    const webhookAvatar = document.getElementById('webhookAvatar').value;
+                                    const embedsData = [];
+                                    document.querySelectorAll('.embed-item').forEach(embedItem => {
+                                        const embedData = {};
+                                        const fields = {};
+                                        embedItem.querySelectorAll('.embed-field').forEach(field => {
+                                            fields[field.dataset.field] = field.value;
+                                        });
+                                        if (fields.title) embedData.title = fields.title;
+                                        if (fields.description) embedData.description = fields.description;
+                                        if (fields.color) {
+                                            const colorValue = fields.color.replace('#', '');
+                                            embedData.color = parseInt(colorValue, 16);
+                                        }
+                                        if (fields.thumbnailUrl) embedData.thumbnail = { url: fields.thumbnailUrl };
+                                        if (fields.imageUrl) embedData.image = { url: fields.imageUrl };
+                                        if (fields.authorName) {
+                                            embedData.author = { name: fields.authorName };
+                                            if (fields.authorIcon) embedData.author.icon_url = fields.authorIcon;
+                                        }
+                                        if (fields.footerText) {
+                                            embedData.footer = { text: fields.footerText };
+                                            if (fields.footerIcon) embedData.footer.icon_url = fields.footerIcon;
+                                        }
+                                        // Only add embed if it has some content
+                                        if (Object.keys(embedData).length > 0) {
+                                            embedsData.push(embedData);
+                                        }
+                                    });
+                                    try {
+                                        const response = await fetch('/api/send-webhook', {
+                                            method: 'POST',
+                                            headers: { 'Content-Type': 'application/json' },
+                                            body: JSON.stringify({
+                                                webhookUrl,
+                                                embedsData,
+                                                messageContent: messageContent || undefined,
+                                                webhookName: webhookName || undefined,
+                                                webhookAvatar: webhookAvatar || undefined
+                                            })
+                                        });
+                                        const result = await response.json();
+                                        if (result.success) {
+                                            alert('Wiadomość została wysłana pomyślnie!');
+                                        } else {
+                                            alert('Błąd: ' + result.error);
+                                        }
+                                    } catch (error) {
+                                        alert('Wystąpił błąd podczas wysyłania');
+                                    }
+                                });
+                                // Rules form submission
+                                document.getElementById('rulesForm').addEventListener('submit', async function(e) {
+                                    e.preventDefault();
+                                    const serverType = document.getElementById('serverType').value;
+                                    const additionalInfo = document.getElementById('additionalInfo').value;
+                                    const button = e.target.querySelector('button[type="submit"]');
+                                    const originalText = button.innerHTML;
+                                    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generowanie...';
+                                    button.disabled = true;
+                                    try {
+                                        const response = await fetch('/api/generate-rules', {
+                                            method: 'POST',
+                                            headers: { 'Content-Type': 'application/json' },
+                                            body: JSON.stringify({ serverType, additionalInfo })
+                                        });
+                                        const result = await response.json();
+                                        if (result.success) {
+                                            document.getElementById('rulesOutput').textContent = result.rules;
+                                            document.getElementById('copyRulesBtn').style.display = 'block';
+                                            document.getElementById('aiUsageRemaining').textContent = result.remaining;
+                                        } else {
+                                            alert('Błąd: ' + result.error);
+                                        }
+                                    } catch (error) {
+                                        alert('Wystąpił błąd podczas generowania reguł');
+                                    } finally {
+                                        button.innerHTML = originalText;
+                                        button.disabled = false;
+                                    }
+                                });
+                                function copyRules() {
+                                    const rulesText = document.getElementById('rulesOutput').textContent;
+                                    navigator.clipboard.writeText(rulesText).then(() => {
+                                        const btn = document.getElementById('copyRulesBtn');
+                                        const originalText = btn.innerHTML;
+                                        btn.innerHTML = '<i class="fas fa-check"></i> Skopiowano!';
+                                        setTimeout(() => {
+                                            btn.innerHTML = originalText;
+                                        }, 2000);
+                                    });
+                                }
+                                // AI Embed Generation
+                                async function generateEmbedWithAI() {
+                                    const description = document.getElementById('aiDescription').value.trim();
+                                    if (!description) {
+                                        alert('Proszę opisać jaki embed chcesz stworzyć');
+                                        return;
+                                    }
+                                    const button = event.target;
+                                    const originalText = button.innerHTML;
+                                    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generowanie...';
+                                    button.disabled = true;
+                                    try {
+                                        const response = await fetch('/api/generate-embed', {
+                                            method: 'POST',
+                                            headers: { 'Content-Type': 'application/json' },
+                                            body: JSON.stringify({ description })
+                                        });
+                                        const result = await response.json();
+                                        if (result.success) {
+                                            // Clear existing embeds and add the generated one
+                                            document.getElementById('embedsContainer').innerHTML = '';
+                                            embedCounter = 0;
+                                            addEmbed();
+                                            // Fill the first embed with generated data
+                                            const firstEmbed = document.querySelector('.embed-item');
+                                            const embedData = result.embedData;
+                                            if (embedData.title) {
+                                                firstEmbed.querySelector('[data-field="title"]').value = embedData.title;
+                                            }
+                                            if (embedData.description) {
+                                                firstEmbed.querySelector('[data-field="description"]').value = embedData.description;
+                                            }
+                                            if (embedData.color) {
+                                                const colorHex = typeof embedData.color === 'number'
+                                                    ? '#' + embedData.color.toString(16).padStart(6, '0')
+                                                    : '#' + embedData.color.replace('#', '');
+                                                firstEmbed.querySelector('.embed-color').value = colorHex;
+                                                firstEmbed.querySelector('.embed-color-text').value = colorHex;
+                                            }
+                                            if (embedData.author?.name) {
+                                                firstEmbed.querySelector('[data-field="authorName"]').value = embedData.author.name;
+                                            }
+                                            if (embedData.footer?.text) {
+                                                firstEmbed.querySelector('[data-field="footerText"]').value = embedData.footer.text;
+                                            }
+                                            updatePreview();
+                                            document.getElementById('aiEmbedUsageRemaining').textContent = result.remaining;
+                                            document.getElementById('aiDescription').value = '';
+                                            alert('Embed został wygenerowany! Możesz go jeszcze edytować przed wysłaniem.');
+                                        } else {
+                                            alert('Błąd: ' + result.error);
+                                        }
+                                    } catch (error) {
+                                        alert('Wystąpił błąd podczas generowania embed');
+                                    } finally {
+                                        button.innerHTML = originalText;
+                                        button.disabled = false;
+                                    }
+                                }
+                                // Template Management
+                                function loadTemplatesList(templates) {
+                                    console.log('Loading templates list:', templates); // Debug log
+                                    const select = document.getElementById('templateSelect');
+                                    select.innerHTML = '<option value="">Wybierz szablon...</option>';
+                                    
+                                    if (!templates || !Array.isArray(templates)) {
+                                        console.error('Templates is not an array:', templates);
+                                        return;
+                                    }
+                                    
+                                    templates.forEach((template, index) => {
+                                        if (!template.name) {
+                                            console.warn('Template missing name:', template);
+                                            return;
+                                        }
+                                        const option = document.createElement('option');
+                                        option.value = index;
+                                        option.textContent = template.name;
+                                        select.appendChild(option);
+                                    });
+                                    window.userTemplates = templates;
+                                    console.log('Templates loaded successfully:', templates.length);
+                                }
+                                async function loadTemplate(templateName) {
+                                    const selectElement = document.getElementById('templateSelect');
+                                    const selectIndex = selectElement.value;
+                                    if (selectIndex === '' || !window.userTemplates) {
+                                        alert('Wybierz szablon do załadowania');
+                                        return;
+                                    }
+                                    const template = window.userTemplates[selectIndex];
+                                    const templateData = template.templateData || template.embedData; // backwards compatibility
+                                    
+                                    // Load webhook settings - zawsze ustaw wartość, nawet jeśli pusta
+                                    document.getElementById('webhookName').value = templateData.webhookName || '';
+                                    document.getElementById('webhookAvatar').value = templateData.webhookAvatar || '';
+                                    document.getElementById('messageContent').value = templateData.messageContent || '';
+                                    
+                                    // Load embeds
+                                    const embedsContainer = document.getElementById('embedsContainer');
+                                    embedsContainer.innerHTML = '';
+                                    embedCounter = 0;
+                                    
+                                    // Sprawdź czy są embedy w szablonie
+                                    const embedsToLoad = templateData.embeds || [];
+                                    
+                                    // Jeśli nie ma embedów lub jest pusty array, dodaj jeden pusty embed
+                                    if (embedsToLoad.length === 0) {
+                                        addEmbed();
+                                    } else {
+                                        // Załaduj wszystkie embedy z szablonu
+                                        embedsToLoad.forEach(embedData => {
+                                            addEmbed();
+                                            const embedItem = document.querySelectorAll('.embed-item')[embedCounter - 1];
+                                            
+                                            // Bezpiecznie ustaw wszystkie pola
+                                            embedItem.querySelector('[data-field="title"]').value = embedData.title || '';
+                                            embedItem.querySelector('[data-field="description"]').value = embedData.description || '';
+                                            
+                                            // Obsługa koloru
+                                            const color = embedData.color || '#5865f2';
+                                            const colorHex = typeof color === 'number'
+                                                ? '#' + color.toString(16).padStart(6, '0')
+                                                : (color.startsWith('#') ? color : '#' + color);
+                                            embedItem.querySelector('.embed-color').value = colorHex;
+                                            embedItem.querySelector('.embed-color-text').value = colorHex;
+                                            
+                                            // Autor
+                                            embedItem.querySelector('[data-field="authorName"]').value = embedData.author?.name || '';
+                                            embedItem.querySelector('[data-field="authorIcon"]').value = embedData.author?.icon_url || '';
+                                            
+                                            // Media
+                                            embedItem.querySelector('[data-field="thumbnailUrl"]').value = embedData.thumbnail?.url || '';
+                                            embedItem.querySelector('[data-field="imageUrl"]').value = embedData.image?.url || '';
+                                            
+                                            // Footer
+                                            embedItem.querySelector('[data-field="footerText"]').value = embedData.footer?.text || '';
+                                            embedItem.querySelector('[data-field="footerIcon"]').value = embedData.footer?.icon_url || '';
+                                        });
+                                    }
+                                    
+                                    updatePreview();
+                                }
+                                async function saveTemplate() {
+                                    const name = document.getElementById('templateName').value.trim();
+                                    if (!name) {
+                                        alert('Podaj nazwę szablonu');
+                                        return;
+                                    }
+                                    // Get current template data
+                                    const templateData = {
+                                        webhookName: document.getElementById('webhookName').value || '',
+                                        webhookAvatar: document.getElementById('webhookAvatar').value || '',
+                                        messageContent: document.getElementById('messageContent').value || '',
+                                        embeds: []
+                                    };
+                                    
+                                    // Zawsze zapisuj wszystkie embedy, nawet jeśli są puste
+                                    document.querySelectorAll('.embed-item').forEach(embedItem => {
+                                        const embedData = {};
+                                        const fields = {};
+                                        
+                                        // Pobierz wszystkie pola, nawet jeśli są puste
+                                        embedItem.querySelectorAll('.embed-field').forEach(field => {
+                                            fields[field.dataset.field] = field.value || '';
+                                        });
+                                        
+                                        // Zapisz wszystkie pola, bez względu na to czy są wypełnione
+                                        embedData.title = fields.title || '';
+                                        embedData.description = fields.description || '';
+                                        embedData.color = fields.color || '#5865f2';
+                                        
+                                        if (fields.thumbnailUrl) {
+                                            embedData.thumbnail = { url: fields.thumbnailUrl };
+                                        }
+                                        if (fields.imageUrl) {
+                                            embedData.image = { url: fields.imageUrl };
+                                        }
+                                        if (fields.authorName || fields.authorIcon) {
+                                            embedData.author = { 
+                                                name: fields.authorName || '',
+                                                icon_url: fields.authorIcon || ''
+                                            };
+                                        }
+                                        if (fields.footerText || fields.footerIcon) {
+                                            embedData.footer = { 
+                                                text: fields.footerText || '',
+                                                icon_url: fields.footerIcon || ''
+                                            };
+                                        }
+                                        
+                                        // Zawsze dodaj embed do listy
+                                        templateData.embeds.push(embedData);
+                                    });
+                                    
+                                    // Usuń sprawdzanie czy szablon ma treść - pozwól zapisać nawet pusty szablon
+                                    try {
+                                        const response = await fetch('/api/save-template', {
+                                            method: 'POST',
+                                            headers: { 
+                                                'Content-Type': 'application/json',
+                                                'Cache-Control': 'no-cache'
+                                            },
+                                            credentials: 'same-origin',
+                                            body: JSON.stringify({ name, templateData })
+                                        });
+                                        
+                                        if (!response.ok) {
+                                            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                                        }
+                                        
+                                        const result = await response.json();
+                                        if (result.success) {
+                                            alert('Szablon został zapisany!');
+                                            document.getElementById('templateName').value = '';
+                                            // Refresh templates list with delay to ensure database is updated
+                                            setTimeout(() => {
+                                                fetchTemplates();
+                                            }, 500);
+                                        } else {
+                                            alert('Błąd: ' + result.error);
+                                        }
+                                    } catch (error) {
+                                        console.error('Template save error:', error);
+                                        alert('Wystąpił błąd podczas zapisywania szablonu: ' + error.message);
+                                    }
+                                }
+                                async function fetchTemplates() {
+                                    try {
+                                        console.log('Fetching templates...'); // Debug log
+                                        const response = await fetch('/api/get-templates', {
+                                            method: 'GET',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'Cache-Control': 'no-cache'
+                                            },
+                                            credentials: 'same-origin'
+                                        });
+                                        
+                                        console.log('Response status:', response.status, response.statusText);
+                                        
+                                        if (!response.ok) {
+                                            const errorText = await response.text();
+                                            console.error('Response error text:', errorText);
+                                            throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`);
+                                        }
+                                        
+                                        const data = await response.json();
+                                        console.log('Templates response:', data); // Debug log
+                                        
+                                        if (data.success) {
+                                            loadTemplatesList(data.templates);
+                                            console.log(`Successfully loaded ${data.templates.length} templates`);
+                                        } else {
+                                            console.error('Template fetch error:', data.error);
+                                            loadTemplatesList([]);
+                                            console.warn('Loading empty template list due to API error');
+                                        }
+                                    } catch (error) {
+                                        console.error('Error fetching templates:', error.message);
+                                        console.error('Full error:', error);
+                                        loadTemplatesList([]);
+                                        console.warn('Templates loading failed, continuing with empty list');
+                                        
+                                        // Pokazuj alert tylko jeśli to nie jest problem z brakiem szablonów
+                                        if (!error.message.includes('404') && !error.message.includes('No templates')) {
+                                            console.error('Critical error loading templates - showing user alert');
+                                        }
+                                    }
+                                }
+                                async function deleteTemplate(templateName) {
+                                    if (!confirm(`Czy na pewno chcesz usunąć szablon "${templateName}"? Ta akcja jest nieodwracalna.`)) {
+                                        return;
+                                    }
+                                    try {
+                                        const response = await fetch(`/api/delete-template/${encodeURIComponent(templateName)}`, {
+                                            method: 'DELETE',
+                                            headers: { 'Content-Type': 'application/json' }
+                                        });
+                                        const result = await response.json();
+                                        if (result.success) {
+                                            alert('Szablon został usunięty');
+                                            fetchTemplates(); // Refresh the list
+                                        } else {
+                                            alert('Błąd: ' + result.error);
+                                        }
+                                    } catch (error) {
+                                        console.error('Error deleting template:', error);
+                                        alert('Wystąpił błąd podczas usuwania szablonu');
+                                    }
+                                }
+                                function deleteSelectedTemplate() {
+                                    const selectElement = document.getElementById('templateSelect');
+                                    const selectIndex = selectElement.value;
+                                    if (selectIndex === '' || !window.userTemplates) {
+                                        alert('Wybierz szablon do usunięcia');
+                                        return;
+                                    }
+                                    const templateName = window.userTemplates[selectIndex].name;
+                                    deleteTemplate(templateName);
+                                }
+                                // Toggle tool cards
+                                document.querySelectorAll('.tool-header').forEach(header => {
+                                    header.addEventListener('click', function(e) {
+                                        const card = this.closest('.tool-card');
+                                        const isExpanded = card.classList.contains('expanded');
+                                        document.querySelectorAll('.tool-card.expanded').forEach(otherCard => {
+                                            if (otherCard !== card) {
+                                                otherCard.classList.remove('expanded');
+                                            }
+                                        });
+                                        if (!isExpanded) {
+                                            card.classList.add('expanded');
+                                        } else {
+                                            card.classList.remove('expanded');
+                                        }
+                                    });
+                                });
+                                // Toggle sections
+                                document.querySelectorAll('.ai-section-header').forEach(header => {
+                                    header.addEventListener('click', function(e) {
+                                        const section = this.closest('.ai-section');
+                                        section.classList.toggle('expanded');
+                                        e.stopPropagation();
+                                    });
+                                });
+                                document.querySelectorAll('.template-section-header').forEach(header => {
+                                    header.addEventListener('click', function(e) {
+                                        const section = this.closest('.template-section');
+                                        section.classList.toggle('expanded');
+                                        e.stopPropagation();
+                                    });
+                                });
+                            </script>
+                        </body>
+                        </html>

@@ -1,0 +1,1023 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <title>Ranking Polskich Serwerów Discord 2025 | Discordzik.pl</title>
+  <link rel="icon" href="/assets/img/favicon.png" type="image/x-icon">
+  <link rel="shortcut icon" href="/assets/img/favicon.png" type="image/x-icon">
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-adsense-account" content="ca-pub-9136474966764887">
+
+  <!-- SEO Meta Tags -->
+  <meta name="title" content="Ranking Polskich Serwerów Discord 2025 | Discordzik.pl">
+  <meta name="description" content="Sprawdź ranking najlepszych polskich serwerów Discord na Discordzik.pl! Znajdź serwery gamingowe, edukacyjne i społecznościowe. Dołącz już dziś!">
+  <meta name="keywords" content="ranking serwerów discord, polskie serwery discord, najlepsze discordy, serwery gamingowe, społeczności discord">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#5024f3">
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:site_name" content="Discordzik.pl">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://discordzik.pl/servers">
+  <meta property="og:title" content="Ranking Polskich Serwerów Discord 2025 | Discordzik.pl">
+  <meta property="og:description" content="Sprawdź ranking najlepszych polskich serwerów Discord na Discordzik.pl! Znajdź serwery gamingowe, edukacyjne i społecznościowe. Dołącz już dziś!">
+  <meta property="og:image" content="/assets/img/banner.png">
+  <meta property="og:image:secure_url" content="/assets/img/banner.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:alt" content="Ranking polskich serwerów Discord na Discordzik.pl">
+
+  <!-- Twitter Card Meta Tags -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://discordzik.pl/servers">
+  <meta property="twitter:title" content="Ranking Polskich Serwerów Discord 2025 | Discordzik.pl">
+  <meta property="twitter:description" content="Sprawdź ranking najlepszych polskich serwerów Discord na Discordzik.pl! Znajdź serwery gamingowe, edukacyjne i społecznościowe. Dołącz już dziś!">
+  <meta property="twitter:image" content="/assets/img/banner.png">
+  <meta property="twitter:image:alt" content="Ranking polskich serwerów Discord na Discordzik.pl">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Ranking Polskich Serwerów Discord 2025 | Discordzik.pl",
+    "description": "Sprawdź ranking najlepszych polskich serwerów Discord na Discordzik.pl! Znajdź serwery gamingowe, edukacyjne i społecznościowe. Dołącz już dziś!",
+    "url": "https://discordzik.pl/servers",
+    "mainEntity": {
+      "@type": "ItemList",
+      "name": "Ranking Polskich Serwerów Discord",
+      "description": "Lista najlepszych polskich serwerów Discord, w tym serwery gamingowe, edukacyjne i społecznościowe.",
+      "itemListElement": [
+        <% servers.sort((a, b) => b.votes - a.votes).slice(0, 5).map((a, index) => { %>
+        {
+          "@type": "ListItem",
+          "position": <%= index + 1 %>,
+          "item": {
+            "@type": "Organization",
+            "name": "<%= sbot.guilds.cache.get(a.serverID)?.name || 'Unknown' %>",
+            "url": "https://discordzik.pl/server/<%= a.serverID %>",
+            "description": "<%= a.shortDesc || 'Brak opisu' %>",
+            "image": "<%= sbot.guilds.cache.get(a.serverID)?.iconURL() || 'https://cdn.discordapp.com/embed/avatars/0.png' %>"
+          }
+        }<%= index < 4 ? ',' : '' %>
+        <% }) %>
+      ]
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Discordzik.pl",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "/assets/img/logo.png"
+      }
+    },
+    "breadcrumb": {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Strona Główna",
+          "item": "https://discordzik.pl"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Ranking Serwerów Discord",
+          "item": "https://discordzik.pl/servers"
+        }
+      ]
+    }
+  }
+  </script>
+</head>
+
+
+<%- include('partials/head') %>
+
+<body>
+  <%- include('partials/spinner') %>
+  <main class="page-wrapper border-bottom">
+    <%- include('partials/header') %>
+    <!-- Hero -->
+<!-- Hero Section with Search -->
+<!-- Hero Section -->
+<section class="position-relative py-5 bg-dark text-white">
+  <!-- Animated Gradient BG -->
+  <div class="position-absolute top-0 start-0 w-100 h-100 bg-gradient-primarys">
+    <div class="animated-balls"></div>
+  </div>
+
+  <!-- Content -->
+  <div class="container position-relative zindex-2 py-lg-5 text-center">
+    <div class="d-flex flex-column pt-lg-4 pt-xl-5">
+      <h5 class="my-2 text-uppercase line-height">Discordzik.pl</h5>
+      <h1 class="display-3 fw-bold mb-4">
+        Najlepsze Polskie Serwery Discord
+      </h1>
+      <p class="fs-lg mb-5">
+        Odkryj i dołącz do tysięcy polskich serwerów Discord dopasowanych do Twoich zainteresowań.
+      </p>
+
+      <!-- Search Container -->
+      <div class="discordzik-search-container mx-auto mb-4" style="max-width: 100%; width: 800px;">
+        <div class="input-group shadow-lg">
+          <input class="form-control discordzik-search-input" type="text" id="searchServer" 
+                 placeholder="Wpisz nazwę serwera, tag lub kategorię..." 
+                 aria-label="Szukaj serwera" autocomplete="off">
+          <button class="btn btn-primary discordzik-search-btn" type="button" id="searchServerBtn">
+            <i class="fas fa-search me-2"></i> Szukaj
+          </button>
+        </div>
+        <div class="discordzik-suggestions-box mt-2 text-start bg-dark rounded p-2 d-none" id="searchSuggestions"></div>
+      </div>
+      
+      <div id="searchResults" class="mt-4"></div>
+
+<!-- Tags Section -->
+<div class="tags-section my-4">
+  <h4 class="text-uppercase mb-3">Popularne Tagi:</h4>
+  <div class="d-flex justify-content-center flex-wrap gap-2">
+    <% tags.slice(0, 9).forEach(tag => { %>
+      <a href="/servers/<%= tag.tag %>" class="badge text-decoration-none text-white py-2 px-3 discordzik-hover-scale"
+         style="background: rgba(var(--si-primary-rgb), var(--si-bg-opacity)) !important; backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 10px; transition: transform 0.3s, background 0.3s;">
+        <%= tag.tag %> (<%= tag.count %>)
+      </a>
+    <% }); %>
+  </div>
+</div>
+
+      <span class="fs-sm">
+        Łączymy, <span class="text-primary fw-semibold" id="user-count">800 000+</span> osób na polskich serwerach Discord!
+      </span>
+
+      <div class="mt-3 d-flex justify-content-center gap-3 flex-wrap">
+        <a href="https://discordzik.pl/servers/new" class="btn btn-success mb-3 discordzik-hover-scale" id="addServerBtn">
+          <i class="fas fa-plus me-2"></i> Dodaj serwer
+        </a>
+      </div>
+      
+      <!-- Carousel -->
+      <div class="discordzik-carousel-container d-flex align-items-center justify-content-center mb-5 overflow-hidden">
+        <div class="discordzik-carousel d-flex discordzik-animate-slide">
+          <% for (let i = 0; i < 15; i++) { %>
+          <div class="discordzik-avatar-container mx-2 discordzik-hover-scale"
+               style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(8px); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 50%; padding: 5px;">
+            <% const user = bot.users.cache.filter(u => !u.bot && u.avatar).random(); %>
+            <img src="<%= user.displayAvatarURL({ format: 'png', size: 128 }) %>" 
+                 alt="Awatar użytkownika <%= user.username %> na Discord6500 na Discordzie"
+                 class="rounded-circle discordzik-avatar-img" style="width: 60px; height: 60px;" loading="lazy">
+          </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Original servers list (hidden during search) -->
+<div id="originalServersList">
+  <!-- Tutaj istniejąca lista serwerów -->
+  <% if (servers.length === 0) { %>
+    <div class="alert alert-info text-center">
+      <i class="fas fa-info-circle me-2"></i>
+      Nie znaleziono serwerów. Może chcesz dodać swój jako pierwszy?
+    </div>
+  <% } else { %>
+    <!-- Renderuj istniejącą listę serwerów -->
+  <% } %>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.getElementById('searchServer');
+  const searchBtn = document.getElementById('searchServerBtn');
+  const searchResults = document.getElementById('searchResults');
+  const suggestionsBox = document.getElementById('searchSuggestions');
+  const originalServersList = document.getElementById('originalServersList');
+  
+  // Funkcja do czyszczenia wyników
+  function clearResults() {
+    searchResults.innerHTML = '';
+    suggestionsBox.classList.add('d-none');
+    originalServersList.style.display = 'block';
+  }
+  
+  // Funkcja do mieszania tablicy
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+  
+  // Obsługa wyszukiwania
+  async function handleSearch() {
+    const query = searchInput.value.trim();
+    clearResults();
+    
+    if (query.length < 2) {
+        searchResults.innerHTML = `
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                Wpisz co najmniej 2 znaki
+            </div>
+        `;
+        return;
+    }
+    
+    // Pokazanie ładowania
+    const originalBtnContent = searchBtn.innerHTML;
+    searchBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span> Szukanie...';
+    searchBtn.disabled = true;
+    
+    try {
+        const response = await fetch(`/servers/find`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ query: query })
+        });
+        
+        if (!response.ok) {
+            throw new Error(response.status === 429 
+                ? 'Za dużo prób wyszukiwania. Spróbuj za chwilę.' 
+                : 'Błąd odpowiedzi serwera');
+        }
+        
+        const data = await response.json();
+        
+        if (data.error) {
+            throw new Error(data.message);
+        }
+        
+        displayResults(data);
+    } catch (error) {
+        console.error('Search error:', error);
+        searchResults.innerHTML = `
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                ${error.message || 'Wystąpił błąd podczas wyszukiwania'}
+            </div>
+        `;
+    } finally {
+        searchBtn.innerHTML = '<i class="fas fa-search me-2"></i> Szukaj';
+        searchBtn.disabled = false;
+    }
+  }
+
+  // Wyświetlanie wyników
+  function displayResults(data) {
+    if (!data.servers || data.servers.length === 0) {
+        searchResults.innerHTML = `
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle me-2"></i>
+                Nie znaleziono serwerów pasujących do wyszukiwania.
+                <div class="mt-2">
+                    <a href="/servers/new" class="btn btn-sm btn-outline-light">Dodaj swój serwer</a>
+                </div>
+            </div>
+        `;
+        return;
+    }
+
+    // Ukryj oryginalną listę
+    originalServersList.style.display = 'none';
+
+    let html = `
+        <div class="row g-4">
+            <div class="col-12">
+                <h4 class="text-start">Znalezione serwery (${data.servers.length})</h4>
+            </div>
+    `;
+
+  data.servers.forEach(server => {
+          const isPro = server.status === 'PRO';
+          const isGold = server.status === 'GOLD';
+		  const isBasic = server.status === 'BASIC';
+          const isNsfw = server.tags?.includes('NSFW');
+          html += `
+            <div class="col-md-6 col-lg-4">
+              <a href="/server/${server.serverID}" class="text-decoration-none">
+                <div class="discordzik-server-card position-relative">
+                  ${isPro ? `<span class="badge discordzik-badge-top-left discordzik-badge-pro"><i class="fas fa-star"></i></span>` : ''}
+                  ${isGold ? `<span class="badge discordzik-badge-top-left discordzik-badge-gold"><i class="fas fa-crown"></i></span>` : ''}
+				  ${isBasic ? `<span class="badge discordzik-badge-top-left discordzik-badge-basic"><i class="fas fa-rocket"></i></span>` : ''}
+                  ${isNsfw ? `<span class="badge discordzik-badge-top-left discordzik-badge-nsfw">NSFW</span>` : ''}
+                  <div class="p-3">
+                    <div class="d-flex align-items-center">
+                      <img src="${server.icon || 'https://cdn.discordapp.com/embed/avatars/0.png'}" 
+                           class="discordzik-server-icon me-3"
+                           alt="Ikona serwera Discord ${server.name}"
+                           loading="lazy">
+                      <div class="flex-grow-1">
+                        <h5 class="discordzik-server-name text-white">${server.name}</h5>
+                        <p class="discordzik-server-desc">${server.shortDesc || 'Brak opisu'}</p>
+                      </div>
+                    </div>
+                    ${server.tags?.length ? `
+                    <div class="tag-containers d-flex flex-wrap justify-content-center align-items-center gap-1 mt-2 ps-0">
+                      ${server.tags.slice(0, 3).map(tag => `
+                        <span class="badge bg-primary">${tag}</span>
+                      `).join('')}
+                    </div>
+                    ` : ''}
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                      <span class="badge bg-info">
+                        <i class="fas fa-thumbs-up me-1"></i> ${server.votes || 0}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+        `;
+    });
+
+    html += `</div>`;
+    searchResults.innerHTML = html;
+  }
+  
+  // Podpowiedzi podczas pisania
+  function fetchSuggestions(query) {
+    if (query.length < 1) {
+        suggestionsBox.classList.add('d-none');
+        return;
+    }
+    
+    const popularTags = [
+        'Anime', 'Minecraft', 'Fortnite', 'NSFW', 'Gry', 'Rozrywka', 
+        'E-Sport', 'Cutecore', 'SFW', 'LGBT', 'Randki', 'Technologia',
+        'Społeczność', 'Horror', 'Hobby', 'Wsparcie', 'League of Legends',
+        'Valorant', 'CS2', 'Genshin Impact', 'Among Us', 'Discord'
+    ];
+    
+    const filteredTags = popularTags.filter(tag => 
+        tag.toLowerCase().includes(query.toLowerCase())
+    ).slice(0, 5);
+    
+    if (filteredTags.length > 0) {
+        suggestionsBox.innerHTML = filteredTags.map(tag => `
+            <div class="discordzik-suggestion-item" data-suggestion="${tag.replace(/"/g, '&quot;')}">
+                <i class="fas fa-tag me-2"></i> ${tag}
+            </div>
+        `).join('');
+        
+        suggestionsBox.innerHTML += `
+            <div class="discordzik-suggestion-item" data-suggestion="${query.replace(/"/g, '&quot;')}">
+                <i class="fas fa-search me-2"></i> Szukaj "${query}"
+            </div>
+        `;
+        
+        suggestionsBox.classList.remove('d-none');
+        
+        // Dodajemy event listeners do nowo utworzonych elementów
+        document.querySelectorAll('.discordzik-suggestion-item').forEach(item => {
+            item.addEventListener('click', function() {
+                const suggestion = this.getAttribute('data-suggestion');
+                searchInput.value = suggestion;
+                suggestionsBox.classList.add('d-none');
+                handleSearch();
+            });
+        });
+    } else {
+        suggestionsBox.innerHTML = `
+            <div class="discordzik-suggestion-item" data-suggestion="${query.replace(/"/g, '&quot;')}">
+                <i class="fas fa-search me-2"></i> Szukaj "${query}"
+            </div>
+        `;
+        suggestionsBox.classList.remove('d-none');
+        
+        // Dodajemy event listener do pojedynczego elementu
+        document.querySelector('.discordzik-suggestion-item').addEventListener('click', function() {
+            const suggestion = this.getAttribute('data-suggestion');
+            searchInput.value = suggestion;
+            suggestionsBox.classList.add('d-none');
+            handleSearch();
+        });
+    }
+  }
+  
+  // Event listeners
+  searchBtn.addEventListener('click', handleSearch);
+  searchInput.addEventListener('input', () => fetchSuggestions(searchInput.value.trim()));
+  searchInput.addEventListener('keyup', (e) => {
+    if (e.key === 'Enter') handleSearch();
+  });
+  
+  // Zamknij podpowiedzi po kliknięciu gdzie indziej
+  document.addEventListener('click', (e) => {
+    if (!searchInput.contains(e.target) && !suggestionsBox.contains(e.target)) {
+        suggestionsBox.classList.add('d-none');
+    }
+  });
+});
+</script>
+
+
+
+    </section>
+	    <section class="container py-3">
+	<div id="promoPlaceholder"></div>
+    </section>
+
+    <!-- Promoted Servers Section -->
+    <section class="container">
+      <h2 class="h2 h2 text-left">
+        <i class='bx bxs-star'></i> Promowane Serwery
+      </h2>
+      <span class="fs-sm text-left d-block mb-3">Serwery, które wspierają nas.</span>
+      <div class="slider" id="bot-cards-wrapper">
+        <!-- Karty serwerów będą generowane tutaj przez JS -->
+      </div>
+    </section>
+    <script src="/assets/js/bot-cards.js"></script>
+
+<style>
+body {
+    font-family: Manrope, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #20232a;
+}
+
+.container {
+    padding: 1rem;
+}
+
+.server-cards-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.server-card-link {
+    text-decoration: none;
+    color: inherit;
+    width: 280px; /* Stała szerokość */
+}
+
+.server-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    padding: 15px;
+    height: 380px; /* Stała wysokość */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    margin: 1rem;
+    text-align: center;
+    background-color: #151822;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.server-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.server-card img {
+    border-radius: 50%;
+    border: 3px solid gray;
+    padding: 4px;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin: 0 auto 15px;
+}
+
+.server-card img.pro-border {
+    border-color: orange;
+    box-shadow: 0 0 10px orange;
+    animation: glowPro 1.5s infinite alternate;
+}
+
+@keyframes glowPro {
+    0% { box-shadow: 0 0 5px orange; }
+    100% { box-shadow: 0 0 15px orange; }
+}
+
+.server-card img.gold-border {
+    border-color: gold;
+    box-shadow: 0 0 10px gold;
+    animation: glowGold 1.5s infinite alternate;
+}
+
+@keyframes glowGold {
+    0% { box-shadow: 0 0 5px gold; }
+    100% { box-shadow: 0 0 15px gold; }
+}
+
+.server-card img.basic-border {
+    border-color: blue;
+    box-shadow: 0 0 10px blue;
+    animation: glowBasic 1.5s infinite alternate;
+}
+
+@keyframes glowBasic {
+    0% { box-shadow: 0 0 5px blue; }
+    100% { box-shadow: 0 0 15px blue; }
+}
+
+.badge-top-left {
+    position: absolute;
+    top: -22px;
+    left: -22px;
+    color: black;
+    padding: 0.3rem 0.6rem;
+    border-radius: 35px;
+    font-size: 30px;
+    z-index: 2;
+}
+
+.badge-gold {
+    color: gold;
+    animation: pulseGold 1.5s infinite alternate;
+}
+
+.badge-pro {
+    color: orange;
+    animation: pulsePro 1.5s infinite alternate;
+}
+
+.badge-basic {
+    color: blue;
+    animation: pulseBasic 1.5s infinite alternate;
+}
+
+.badge-nsfw {
+    background-color: red;
+    color: white;
+    border-radius: 5px;
+    animation: shakeNSFW 1s infinite alternate;
+}
+
+@keyframes pulseGold {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.2); }
+}
+
+@keyframes pulsePro {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(10deg); }
+}
+
+@keyframes pulseBasic {
+    0% { opacity: 0.8; }
+    100% { opacity: 1; }
+}
+
+@keyframes shakeNSFW {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+    100% { transform: translateX(0); }
+}
+
+.votes-badge {
+    position: absolute;
+    top: 35px;
+    right: 10px;
+    background-color: transparent;
+    padding: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    color: #009cbc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.votes-badge i {
+    font-size: 24px;
+    color: #009cbc;
+}
+
+.votes-number {
+    font-size: 14px;
+    margin-top: 2px;
+    font-weight: bold;
+    color: white;
+}
+
+.server-rank {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 5px 8px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.server-rank.diamond {
+    background-color: #b9f2ff;
+    color: #000;
+}
+
+.server-rank.gold {
+    background-color: #ffd700;
+    color: #000;
+}
+
+.server-rank.silver {
+    background-color: #c0c0c0;
+    color: #000;
+}
+
+.server-rank.bronze {
+    background-color: #cd7f32;
+    color: #000;
+}
+
+.server-rank.hidden {
+    display: none;
+}
+
+.server-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.server-info h6 {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.server-info p {
+    color: #6c757d;
+    margin-bottom: 1rem;
+    font-size: 13px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex-grow: 1;
+}
+
+.tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.3rem;
+    margin-bottom: 10px;
+}
+
+.tag-container .badge {
+    background-color: #1e212b;
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 5px;
+    font-size: 10px;
+}
+
+.member-count-badge {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px 8px;
+    border-radius: 5px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    z-index: 1;
+}
+
+.member-count-badge i {
+    font-size: 16px;
+}
+
+/* Responsywność */
+@media (max-width: 576px) {
+    .server-card-link {
+        width: 100%;
+    }
+    
+    .server-card {
+        height: auto;
+        min-height: 380px;
+    }
+}
+</style>
+
+<section class="container text-center">
+    <div class="py-2">
+        <h1 class="h2 text-center"><i class='bx bxs-like'></i> Najwyżej Oceniane Serwery</h1>
+        <span class="fs-sm text-center d-block mb-3">Serwery z największą liczbą głosów</span>
+        <div class="server-cards-wrapper">
+            <% servers.sort((a, b) => b.votes - a.votes).slice(0, 32).map((a, index) => { %>
+            <a href="/server/<%= a.serverID %>" class="server-card-link">
+                <div class="server-card">
+                    <div class="server-rank <%= index === 0 ? 'diamond' : index === 1 ? 'gold' : index === 2 ? 'silver' : index === 3 ? 'bronze' : 'hidden' %>">
+                        <%= index + 1 %>
+                    </div>
+                    
+                    <% if (a.status === 'PRO') { %>
+                    <span class="badge-top-left badge-pro"><i class="fas fa-star"></i> </span>
+                    <% } else if (a.status === 'GOLD') { %>
+                    <span class="badge-top-left badge-gold"><i class="fas fa-crown"></i> </span>
+                    <% } %>
+                    
+                    <div class="member-count-badge">
+                        <i class="bx bx-server"></i>
+                        <span><%= sbot.guilds.cache.get(a.serverID)?.memberCount.toLocaleString() || 'Unknown' %></span>
+                    </div>
+                    
+                    <span class="votes-badge">
+                        <i class="fas fa-thumbs-up"></i>
+                        <span class="votes-number"><%= a.votes.toLocaleString() %></span>
+                    </span>
+                    
+                    <img src="<%= sbot.guilds.cache.get(a.serverID)?.iconURL() || 'https://cdn.discordapp.com/embed/avatars/0.png' %>" 
+                         alt="<%= a.username %>" 
+                         class="<%= a.status === 'PRO' ? 'pro-border' : a.status === 'GOLD' ? 'gold-border' : a.status === 'BASIC' ? 'basic-border' : '' %>">
+                    
+                    <div class="server-info">
+                        <h6><%= sbot.guilds.cache.get(a.serverID)?.name || 'Unknown' %></h6>
+                        <p><%= a.shortDesc || 'Brak opisu' %></p>
+                    </div>
+                    
+                    <div class="tag-container">
+                        <% a.tags.slice(0, 3).map(t => { %>
+                        <span class="badge"><%= t %></span>
+                        <% }) %>
+                        <% if (a.tags.length > 3) { %>
+                        <span class="badge"><i class="bx bx-plus-circle"></i> <%= a.tags.length - 3 %> więcej</span>
+                        <% } %>
+                    </div>
+                </div>
+            </a>
+            <% }) %>
+        </div>
+    </div>
+    <a href="/allservers" class="btn btn-outline-primary my-1 mb-3 w-100" type="button">Zobacz wszystkie</a>
+</section>
+
+    <section class="container py-3">
+	<div id="promoPlaceholder2"></div>
+    </section>
+
+<body>
+
+
+
+    <section class="container">
+      <div class="py-2">
+        <!-- <div class="offset-xl-1"> -->
+        <h1 class="h2 text-left">
+          <h1 class="h2 text-left">Nowe Serwery</h1>
+          <span class="fs-sm text-left d-block mb-3">Nowo dodane serwery</span>
+          <div class="accordion">
+            <% servers.sort((a, b) => b.Date - a.Date).slice(0, 10).map(a => {%>
+            <% if (sbot.guilds.cache.get(a.serverID)) { %>
+            <a href="/server/<%= a.serverID %>" style="text-decoration: none; color: inherit">
+              <div class="accordion-item border-0 rounded-3 shadow-sm mb-3" style="padding: 10px;">
+                <figcaption class="card-footer d-flex align-items-center border-0  mt-lg-0" style="padding: 3px;">
+                  <img src="<%= sbot.guilds.cache.get(a.serverID)?.iconURL() || 'https://cdn.discordapp.com/embed/avatars/0.png' %>" width="60" class="rounded-circle" alt="<%= a.username %>">
+                  <div class="ps-3">
+                    <h6 class="fw-semibold lh-base mb-0">
+                      <span class="fw-semibold me-2 mb-2">
+                        <%= sbot.guilds.cache.get(a.serverID)?.name || 'Unknown' %>
+                      </span>
+                      <span class="badge bg-faded-success text-success me-2 mb-2">NOWY!</span>
+                      <span class="badge bg-secondary me-2 mb-2">Dodane <%= a.Date.toLocaleString() %></span>
+                      <span class="badge bg-faded-info text-info me-2 mb-2">Głosów: <%= a.votes.toLocaleString() %></span>
+                      <% a.tags.slice(0, 3).map(t => { %>
+                      <span class="badge bg-secondary me-2 mb-2"><%= t %></span>
+                      <% }) %>
+                      <% if (a.tags.length > 3) { %>
+                      <span class="badge bg-secondary me-2 mb-2"><i class="bx bx-plus-circle"></i> <%= a.tags.length - 3 %> więcej</span>
+                      <% } %>
+                    </h6>
+                    <span class="fs-sm text-muted"><%= a.shortDesc %></span>
+                  </div>
+                </figcaption>
+              </div>
+            </a>
+            <% } %>
+            <% }) %>
+          </div>
+          <!-- </div> -->
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="container py-5 mb-lg-2">
+      <h1 class="h2 text-center pb-4">Często Zadawane Pytania</h1>
+      <hr class="mx-auto" style="max-width: 60px;">
+      <div class="py-2 py-md-4 py-lg-5">
+        <div class="accordion" id="faq">
+          <div class="accordion-item border-0 rounded-3 shadow-sm mb-3">
+            <h2 class="accordion-header" id="q1-heading">
+              <button class="accordion-button shadow-none rounded-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q1" aria-expanded="true" aria-controls="q1">
+                Co to jest Discordzik.pl?
+              </button>
+            </h2>
+            <div id="q1" class="accordion-collapse collapse" aria-labelledby="q1-heading" data-bs-parent="#faq">
+              <div class="accordion-body fs-sm pt-0">
+                <p>Discordzik.pl to platforma, która gromadzi polskie serwery i boty Discord. Umożliwiamy użytkownikom znalezienie i dołączenie do serwerów tematycznych, gamingowych, edukacyjnych i wielu innych.</p>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item border-0 rounded-3 shadow-sm mb-3">
+            <h2 class="accordion-header" id="q3-heading">
+              <button class="accordion-button shadow-none rounded-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q3" aria-expanded="true" aria-controls="q3">
+                Czy korzystanie z Discordzik.pl jest darmowe?
+              </button>
+            </h2>
+            <div id="q3" class="accordion-collapse collapse" aria-labelledby="q3-heading" data-bs-parent="#faq">
+              <div class="accordion-body fs-sm pt-0">
+                <p>Tak, korzystanie z naszej strony jest całkowicie darmowe. Możesz przeglądać i dołączać do serwerów bez żadnych opłat.</p>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item border-0 rounded-3 shadow-sm mb-3">
+            <h2 class="accordion-header" id="q2-heading">
+              <button class="accordion-button shadow-none rounded-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q2" aria-expanded="false" aria-controls="q2">
+                Jak mogę dodać mój serwer lub bota do listy?
+              </button>
+            </h2>
+            <div id="q2" class="accordion-collapse collapse" aria-labelledby="q2-heading" data-bs-parent="#faq">
+              <div class="accordion-body fs-sm pt-0">
+                <p>Idź do <a href="/bots/new">dodaj bota</a> lub <a href="/servers/new">dodaj serwer</a> i wypełnij formularz informacjami. Po wysłaniu formularza nasz zespół sprawdzi i zatwierdzi go.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="container py-5">
+      <h2 class="h2 mb-4 pt-lg-2 pb-lg-3 py-1 text-center">Polskie Discordy</h2>
+    </section>
+
+  </main>
+
+
+  <%- include('partials/footer') %>
+</body>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+	 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const promotions = [
+            {
+                link: "https://bit.ly/marvel_rivals_gg3",
+                image: "https://discordzik.pl/assets/extra/banner-1500x100-generic.png"
+            }
+        ];
+
+        // Select a random promo
+        const promo = promotions[Math.floor(Math.random() * promotions.length)];
+
+        // Create elements
+        let promoContainer = document.createElement('div');
+        promoContainer.className = 'promo-box'; // Rename to bypass AdBlock
+
+        let promoLink = document.createElement('a');
+        promoLink.href = promo.link;
+        promoLink.target = '_blank';
+        promoLink.rel = 'noopener noreferrer';
+
+        let promoImage = document.createElement('img');
+        promoImage.src = promo.image;
+        promoImage.alt = 'Special Offer';
+        promoImage.style.width = "100%"; // Adjust as needed
+
+        // Append elements
+        promoLink.appendChild(promoImage);
+        promoContainer.appendChild(promoLink);
+
+        // Insert into the placeholder
+        let placeholder = document.getElementById('promoPlaceholder');
+        if (placeholder) {
+            placeholder.appendChild(promoContainer);
+        }
+    });
+</script>
+  <script>
+    // Funkcja do ładowania skryptów asynchronicznie
+    function loadScript(src, integrity, crossorigin, defer) {
+      var script = document.createElement('script');
+      script.src = src;
+      if (integrity) script.integrity = integrity;
+      if (crossorigin) script.crossOrigin = crossorigin;
+      if (defer) script.defer = true;
+      document.body.appendChild(script);
+    }
+    
+    // Załaduj niekrytyczne skrypty
+    loadScript('https://code.jquery.com/jquery-3.6.0.min.js', null, null, true);
+    loadScript('https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.min.js', null, null, true);
+	loadScript('/assets/js/bot-cards.js', null, 'anonymous', true);
+    
+    // Google Tag Manager
+    loadScript('https://www.googletagmanager.com/gtag/js?id=G-LKN9HV310X', null, null, true);
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-LKN9HV310X');
+    
+    // Google Ads
+    loadScript('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9136474966764887', null, 'anonymous', true);
+    
+    // Iubenda
+
+    loadScript('//cdn.iubenda.com/cs/iubenda_cs.js', null, 'anonymous', true);
+    
+    // Animated balls
+    document.addEventListener('DOMContentLoaded', function() {
+      const container = document.querySelector('.animated-balls');
+      const colors = ['#6366f1', '#8b5cf6', '#d946ef'];
+      const ballCount = 8;
+      
+      for (let i = 0; i < ballCount; i++) {
+        const ball = document.createElement('div');
+        ball.className = 'ball';
+        
+        const size = Math.random() * 200 + 100;
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        const duration = Math.random() * 10 + 10;
+        const delay = Math.random() * 5;
+        
+        ball.style.width = `${size}px`;
+        ball.style.height = `${size}px`;
+        ball.style.left = `${x}%`;
+        ball.style.top = `${y}%`;
+        ball.style.background = color;
+        ball.style.animation = `float ${duration}s infinite ${delay}s, colorChange ${duration * 1.5}s infinite ${delay}s`;
+        
+        container.appendChild(ball);
+      }
+    });
+  </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const promotions = [
+      {
+        link: "https://webep1.com/c/12604/67f870e8d10a241ca3ee2eff?bid=67a9e4875c0bd9e7343f5d14&r=aHR0cHM6Ly9yb21ldC5wbC8",
+        image: "https://discordzik.pl/assets/extra/romet.png"
+      },
+      {
+        link: "https://webep1.com/c/12040/67f870e8d10a241ca3ee2eff?bid=67acae89db402d1e0115e086&r=aHR0cHM6Ly93d3cuYnJvbi5wbC9waXN0b2xldC1uYS1rdWxlLWd1bW93ZS1pLXBpZXByem93ZS1iZWVtYW4tcHJvdGVjdC1icDUwLWNvbWJvLWthbC01MC04LXN0cnphbG93eS1jbzItMTJnLWJwNTBj",
+        image: "https://discordzik.pl/assets/extra/bronpl.png"
+      },
+	  {
+        link: "https://webep1.com/c/13117/67f870e8d10a241ca3ee2eff?bid=68774d179c4d1c5847b39f53&r=aHR0cHM6Ly9kaWFibG9jaGFpcnMuY29tLw",
+        image: "https://discordzik.pl/assets/extra/diablo.png"
+      }
+    ];
+
+    const promo = promotions[Math.floor(Math.random() * promotions.length)];
+    let promoContainer = document.createElement('div');
+    promoContainer.className = 'promo-box';
+
+    let promoLink = document.createElement('a');
+    promoLink.href = promo.link;
+    promoLink.target = '_blank';
+    promoLink.rel = 'noopener noreferrer';
+
+    let promoImage = document.createElement('img');
+    promoImage.src = promo.image;
+    promoImage.alt = 'Oferta specjalna Discordzik.pl';
+    promoImage.style.width = "100%";
+    promoImage.loading = "lazy";
+
+    promoLink.appendChild(promoImage);
+    promoContainer.appendChild(promoLink);
+
+    let placeholder = document.getElementById('promoPlaceholder2');
+    if (placeholder) {
+      placeholder.appendChild(promoContainer);
+    }
+  });
+</script>
+</html>

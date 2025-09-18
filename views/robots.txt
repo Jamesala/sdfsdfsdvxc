@@ -1,0 +1,32 @@
+User-agent: *
+Allow: /$
+Allow: /server/
+Allow: /bots/
+Allow: /categories/
+Disallow: /dashboard/
+Disallow: /account/
+Disallow: /api/
+Disallow: /admin/
+Disallow: /private/
+Disallow: /bots/new/
+Disallow: /servers/new/
+Disallow: /profile/
+Disallow: /*/edit/
+Disallow: /*/delete/
+Disallow: /*?*
+Disallow: /404/
+Disallow: /blocked/
+Disallow: /auth/
+
+# Legal pages (optional to disallow - they help SEO)
+Disallow: /tos/
+Disallow: /privacy/
+Disallow: /cookies/
+
+# Crawl directives
+Crawl-delay: 2
+Clean-param: ref /server/
+Clean-param: source /bot/
+
+# Sitemaps
+Sitemap: https://discordzik.pl/sitemap_index.xml

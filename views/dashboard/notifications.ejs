@@ -1,0 +1,312 @@
+<!-- views/dashboard/notifications.ejs -->
+<!DOCTYPE html>
+<html lang="pl" class="dark-mode">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zarządzanie Powiadomieniami | Panel Administracyjny</title>
+  <%- include('../partials/head.ejs') %>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css">
+  <style>
+    .notification-card {
+      border-left: 4px solid;
+      transition: all 0.3s ease;
+    }
+    
+    .notification-card.info {
+      border-left-color: #7289da;
+    }
+    
+    .notification-card.warning {
+      border-left-color: #faa61a;
+    }
+    
+    .notification-card.error {
+      border-left-color: #f04747;
+    }
+    
+    .notification-card.success {
+      border-left-color: #43b581;
+    }
+    
+    .badge-type {
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    
+    .badge-info {
+      background: rgba(114, 137, 218, 0.2);
+      color: #7289da;
+    }
+    
+    .badge-warning {
+      background: rgba(250, 166, 26, 0.2);
+      color: #faa61a;
+    }
+    
+    .badge-error {
+      background: rgba(240, 71, 71, 0.2);
+      color: #f04747;
+    }
+    
+    .badge-success {
+      background: rgba(67, 181, 129, 0.2);
+      color: #43b581;
+    }
+    
+    .form-control-custom {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: white;
+      transition: all 0.3s ease;
+    }
+    
+    .form-control-custom:focus {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(114, 137, 218, 0.5);
+      box-shadow: 0 0 0 3px rgba(114, 137, 218, 0.2);
+      color: white;
+    }
+    
+    .icon-preview {
+      font-size: 1.5rem;
+      margin-right: 10px;
+    }
+    
+    .datetime-picker {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: white;
+      padding: 8px;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+
+<body class="bg-dark text-light">
+  <%- include('./partials/header.ejs') %>
+  <%- include('./partials/aside.ejs') %>
+
+  <main class="docs-container pt-5 pb-3 pb-lg-4">
+    <div class="container-fluid px-xxl-5 px-lg-4 pt-4 pt-lg-5 pb-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="ps-lg-2 ps-xxl-0 mt-2 mt-lg-0 pt-4 pb-2 mb-3 mb-xl-4 animate__animated animate__fadeIn">
+          <i class="fas fa-bell me-3"></i>Zarządzanie Powiadomieniami
+        </h1>
+        <div class="text-muted">
+          Aktywne: <span class="text-white"><%= notifications.filter(n => n.isActive).length %></span>
+        </div>
+      </div>
+
+      <!-- Add Notification Form -->
+      <div class="card bg-dark-2 border-0 mb-5 p-4 animate__animated animate__fadeIn">
+        <h4 class="mb-4"><i class="fas fa-plus-circle me-2"></i>Dodaj nowe powiadomienie</h4>
+        <form action="/dashboard/notifications" method="POST">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="title" class="form-label">Tytuł</label>
+              <input type="text" name="title" id="title" class="form-control form-control-custom" required
+                     placeholder="Tytuł powiadomienia">
+            </div>
+            <div class="col-md-6">
+              <label for="type" class="form-label">Typ</label>
+              <select name="type" id="type" class="form-select form-control-custom" required>
+                <option value="info">Informacja</option>
+                <option value="warning">Ostrzeżenie</option>
+                <option value="error">Błąd</option>
+                <option value="success">Sukces</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="icon" class="form-label">Ikona (Font Awesome)</label>
+              <div class="input-group">
+                <span class="input-group-text bg-dark border-dark">
+                  <i id="iconPreview" class="fas fa-info-circle"></i>
+                </span>
+                <input type="text" name="icon" id="icon" class="form-control form-control-custom" 
+                       placeholder="np. fas fa-exclamation-triangle" value="fas fa-info-circle">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="expiresAt" class="form-label">Wygaśnięcie (opcjonalne)</label>
+              <input type="datetime-local" name="expiresAt" id="expiresAt" class="form-control datetime-picker">
+            </div>
+            <div class="col-12">
+              <label for="content" class="form-label">Treść</label>
+              <textarea name="content" id="content" rows="3" class="form-control form-control-custom" required
+                        placeholder="Treść powiadomienia"></textarea>
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary mt-2">
+                <i class="fas fa-save me-2"></i>Zapisz powiadomienie
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Notifications List -->
+      <div class="card bg-dark-2 border-0 p-4 animate__animated animate__fadeIn">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h4><i class="fas fa-list me-2"></i>Lista powiadomień</h4>
+          <div>
+            <div class="input-group">
+              <span class="input-group-text bg-dark border-dark text-muted">
+                <i class="fas fa-search"></i>
+              </span>
+              <input type="text" class="form-control form-control-custom" id="searchNotifications" placeholder="Wyszukaj powiadomienia...">
+            </div>
+          </div>
+        </div>
+        
+        <% if (notifications.length < 1) { %>
+          <div class="empty-state text-center py-5">
+            <div class="empty-state-icon mb-3">
+              <i class="fas fa-bell-slash fa-3x text-muted"></i>
+            </div>
+            <h3 class="h5">Brak powiadomień!</h3>
+            <p class="text-muted">Nie ma żadnych powiadomień do wyświetlenia.</p>
+          </div>
+        <% } else { %>
+          <div class="table-responsive">
+            <table class="table table-dark table-hover align-middle mb-0">
+              <thead class="bg-dark-3">
+                <tr>
+                  <th width="50px">#</th>
+                  <th>Tytuł</th>
+                  <th>Typ</th>
+                  <th>Status</th>
+                  <th>Data utworzenia</th>
+                  <th class="text-end">Akcje</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% notifications.forEach((notif, index) => { %>
+                <tr class="notification-row <%= notif.type %>" id="notif_<%= notif._id %>">
+                  <th scope="row"><%= index + 1 %></th>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <i class="<%= notif.icon %> icon-preview"></i>
+                      <div>
+                        <div class="fw-bold"><%= notif.title %></div>
+                        <small class="text-muted" title="<%= notif.content %>">
+                          <%= notif.content.length > 50 ? notif.content.substring(0, 50) + '...' : notif.content %>
+                        </small>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="badge badge-<%= notif.type %> badge-type">
+                      <%= notif.type.charAt(0).toUpperCase() + notif.type.slice(1) %>
+                    </span>
+                  </td>
+                  <td>
+                    <% if (notif.isActive) { %>
+                      <span class="badge bg-success">Aktywne</span>
+                    <% } else { %>
+                      <span class="badge bg-secondary">Nieaktywne</span>
+                    <% } %>
+                  </td>
+                  <td>
+                    <div class="ban-date">
+                      <%= new Date(notif.createdAt).toLocaleDateString() %>
+                      <small class="ban-time">
+                        <%= new Date(notif.createdAt).toLocaleTimeString() %>
+                      </small>
+                    </div>
+                  </td>
+                  <td class="text-end">
+                    <div class="btn-group">
+                      <a href="/dashboard/notifications/toggle/<%= notif._id %>" class="btn btn-sm <%= notif.isActive ? 'btn-warning' : 'btn-success' %>">
+                        <i class="fas <%= notif.isActive ? 'fa-eye-slash' : 'fa-eye' %>"></i>
+                      </a>
+                      <button class="btn btn-sm btn-danger" onclick="confirmDelete('<%= notif._id %>')">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </main>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content bg-dark border-dark">
+        <div class="modal-header border-dark">
+          <h5 class="modal-title">Potwierdzenie usunięcia</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Czy na pewno chcesz usunąć to powiadomienie? Tej akcji nie można cofnąć.</p>
+        </div>
+        <div class="modal-footer border-dark">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+          <a id="confirmDeleteBtn" href="#" class="btn btn-danger">
+            <i class="fas fa-trash me-1"></i> Usuń
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Icon preview
+    document.getElementById('icon').addEventListener('input', function() {
+      document.getElementById('iconPreview').className = this.value;
+    });
+    
+    // Type change
+    document.getElementById('type').addEventListener('change', function() {
+      const iconMap = {
+        'info': 'fas fa-info-circle',
+        'warning': 'fas fa-exclamation-triangle',
+        'error': 'fas fa-times-circle',
+        'success': 'fas fa-check-circle'
+      };
+      
+      if (!document.getElementById('icon').value || 
+          document.getElementById('icon').value === document.getElementById('iconPreview').className) {
+        document.getElementById('icon').value = iconMap[this.value];
+        document.getElementById('iconPreview').className = iconMap[this.value];
+      }
+    });
+
+    // Search functionality
+    document.getElementById("searchNotifications").addEventListener("input", function() {
+      const search = this.value.toLowerCase();
+      const rows = document.querySelectorAll("tbody tr");
+      
+      rows.forEach(row => {
+        const title = row.querySelector('td:nth-child(2) .fw-bold').textContent.toLowerCase();
+        const content = row.querySelector('td:nth-child(2) small').textContent.toLowerCase();
+        
+        if (title.includes(search) || content.includes(search)) {
+          row.style.display = "table-row";
+          row.classList.add('animate__animated', 'animate__fadeIn');
+        } else {
+          row.style.display = "none";
+        }
+      });
+    });
+
+    // Delete confirmation
+    function confirmDelete(notifId) {
+      const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+      const confirmBtn = document.getElementById('confirmDeleteBtn');
+      
+      confirmBtn.href = `/dashboard/notifications/delete/${notifId}`;
+      deleteModal.show();
+    }
+  </script>
+</body>
+</html>

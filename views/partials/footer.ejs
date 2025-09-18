@@ -1,0 +1,407 @@
+
+<footer class="footer pt-5 pb-4 pb-lg-5 mt-2 mt-md-0">
+  <div class="container pt-lg-4">
+    <div class="row pb-5">
+      <!-- Sekcja logo i opis -->
+      <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+        <div class="navbar-brand text-dark p-0 me-0 mb-3 mb-lg-4">
+          <img src="/assets/img/logo.png" alt="logo" class="me-2" width="42">
+          Discordzik.pl
+        </div>
+        <p class="fs-sm pb-lg-3 mb-4">Discordzik to najlepsze źródło polskich serwerów Discord! Odkryj grupy tematyczne, gamingowe i edukacyjne, znajdź nowych znajomych i dołącz do społeczności pełnej pasjonatów z całej Polski.</p>
+      </div>
+      
+      <!-- Sekcja linków -->
+      <div class="col-lg-8 col-md-6">
+        <div class="row">
+          <!-- Przydatne linki -->
+          <div class="col-md-4 col-6 mb-4 mb-md-0">
+            <h6 class="mb-3">
+              <a href="#useful-links" class="d-block text-dark dropdown-toggle d-lg-none py-2" data-bs-toggle="collapse">Przydatne Linki</a>
+              <span class="d-none d-lg-block">Przydatne Linki</span>
+            </h6>
+            <div id="useful-links" class="collapse d-lg-block" data-bs-parent="#footer-links">
+              <ul class="nav flex-column">
+                <li class="nav-item mb-2">
+                  <a href="/tos" class="nav-link d-inline-block px-0 pt-1 pb-2">
+                    <i class="bx bx-file fs-md me-2"></i> Warunki korzystania
+                  </a>
+                </li>
+                <li class="nav-item mb-2">
+                  <a href="/privacy" class="nav-link d-inline-block px-0 pt-1 pb-2">
+                    <i class="bx bx-shield fs-md me-2"></i> Polityka prywatności
+                  </a>
+                </li>
+                <li class="nav-item mb-2">
+                  <a href="/allservers" class="nav-link d-inline-block px-0 pt-1 pb-2">
+                    <i class="bx bx-server fs-md me-2"></i> Wszystkie serwery
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a href="/servers/new" class="nav-link d-inline-block px-0 pt-1 pb-2">
+                    <i class="bx bx-plus-circle fs-md me-2"></i> Dodaj nowy serwer
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          
+          <!-- Inne -->
+          <div class="col-md-4 col-6 mb-4 mb-md-0">
+            <h6 class="mb-3">Inne</h6>
+            <ul class="nav flex-column">
+              <li class="nav-item mb-2">
+                <a href="https://www.facebook.com/discordzik" class="fw-medium d-flex align-items-center">
+                  <i class="bx bxl-facebook fs-md me-2"></i> Facebook
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="/boost" class="fw-medium d-flex align-items-center">
+                  <i class="bx bx-heart fs-md me-2"></i> Donate
+                </a>
+              </li>
+            </ul>
+          </div>
+          
+          <!-- Pomoc -->
+          <div class="col-md-4 col-12">
+            <h6 class="mb-3">Pomoc</h6>
+            <ul class="nav flex-column">
+			   <li class="nav-item mb-2">
+                <a href="/tickets" class="fw-medium d-flex align-items-center">
+                  <i class="bx bx-envelope fs-md me-2"></i> Kontakt (Otwórz ticket)
+                </a>
+              </li>
+              <li class="nav-item mb-2">
+                <a href="/discord" class="fw-medium d-flex align-items-center">
+                  <i class="bx bxl-discord fs-md me-2"></i> Serwer Discord
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="https://richfeature.com/Discordzik/kb" class="fw-medium d-flex align-items-center">
+                  <i class="bx bx-help-circle fs-md me-2"></i> Baza Wiedzy
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Stopka copyright -->
+    <div class="row pt-4 mt-2">
+      <div class="col-md-12 text-center text-md-start">
+        <p class="fs-xs mb-0">
+          <a href="https://www.dmca.com/Protection/Status.aspx?ID=6f339c04-4d0d-49c4-b9f2-2d7a21616329&refurl=https://discordzik.pl/" title="DMCA.com Protection Status" class="dmca-badge"> 
+            <img src="https://images.dmca.com/Badges/dmca_protected_sml_120n.png?ID=6f339c04-4d0d-49c4-b9f2-2d7a21616329" alt="DMCA.com Protection Status" />
+          </a>
+          <script src="https://images.dmca.com/Badges/DMCABadgeHelper.min.js"></script>
+          © 2025 Discordzik.pl. Wszelkie prawa zastrzeżone.
+        </p>
+		<p class="fs-xs mb-0">Ta strona nie jest powiązana z Discord Inc.
+		</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Back to top button -->
+<a href="#top" class="btn-scroll-top" data-scroll>
+  <span class="btn-scroll-top-tooltip text-muted fs-sm me-2">Top</span>
+  <i class="btn-scroll-top-icon bx bx-chevron-up"></i>
+</a>
+
+<!-- Powiadomienia na stronie -->
+<div id="notifications-container" class="notifications-container"></div>
+
+<style>
+  .notifications-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    max-width: 380px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .notification {
+    position: relative;
+    padding: 18px 20px;
+    margin-left: auto;
+    border-radius: 14px;
+    color: white;
+    display: flex;
+    align-items: flex-start;
+    animation: fadeInUp 0.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    opacity: 0;
+    transform: translateY(20px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+  
+  .notification::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+    z-index: -1;
+  }
+  
+  .notification.hide {
+    animation: fadeOutRight 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards;
+  }
+  
+  .notification.info {
+    background: rgba(114, 137, 218, 0.2);
+  }
+  
+  .notification.warning {
+    background: rgba(250, 166, 26, 0.2);
+  }
+  
+  .notification.error {
+    background: rgba(240, 71, 71, 0.2);
+  }
+  
+  .notification.success {
+    background: rgba(67, 181, 129, 0.2);
+  }
+  
+  .notification-icon {
+    margin-right: 14px;
+    font-size: 1.6rem;
+    margin-top: 2px;
+    flex-shrink: 0;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  }
+  
+  .notification.info .notification-icon {
+    color: #8fa3ff;
+  }
+  
+  .notification.warning .notification-icon {
+    color: #ffd166;
+  }
+  
+  .notification.error .notification-icon {
+    color: #ff6b6b;
+  }
+  
+  .notification.success .notification-icon {
+    color: #7ae582;
+  }
+  
+  .notification-content {
+    flex: 1;
+  }
+  
+  .notification-title {
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-size: 1.05rem;
+    letter-spacing: 0.2px;
+  }
+  
+  .notification-message {
+    opacity: 0.9;
+    font-size: 0.92rem;
+    line-height: 1.4;
+  }
+  
+  .notification-close {
+    all: unset;
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+    font-size: 1rem;
+    margin-left: 12px;
+    transition: all 0.2s ease;
+    padding: 2px;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  
+  .notification-close:hover {
+    color: white;
+    background: rgba(255,255,255,0.15);
+  }
+  
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeOutRight {
+    to {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+  }
+  
+  .notification:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+  }
+  
+  .notification-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    background: rgba(255,255,255,0.2);
+    overflow: hidden;
+  }
+  
+  .notification-progress::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    animation: progress 10s linear forwards;
+  }
+  
+  .notification.info .notification-progress::after {
+    background: #8fa3ff;
+  }
+  
+  .notification.warning .notification-progress::after {
+    background: #ffd166;
+  }
+  
+  .notification.error .notification-progress::after {
+    background: #ff6b6b;
+  }
+  
+  .notification.success .notification-progress::after {
+    background: #7ae582;
+  }
+  
+  @keyframes progress {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+  }
+
+  /* Ukrywanie na małych ekranach */
+  @media (max-width: 768px) {
+    .notifications-container {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // Funkcja sprawdzająca czy to urządzenie mobilne
+  function isMobileDevice() {
+    return window.innerWidth <= 768;
+  }
+
+  // Funkcja do ładowania i wyświetlania powiadomień
+  async function loadNotifications() {
+    try {
+      // Nie ładuj powiadomień na mobile
+      if (isMobileDevice()) return;
+      
+      const response = await fetch('/api/notifications/active');
+      if (!response.ok) throw new Error('Network response was not ok');
+      
+      const notifications = await response.json();
+      const container = document.getElementById('notifications-container');
+      
+      notifications.forEach(notif => {
+        const notificationEl = document.createElement('div');
+        notificationEl.className = `notification ${notif.type}`;
+        notificationEl.innerHTML = `
+          <i class="${notif.icon} notification-icon"></i>
+          <div class="notification-content">
+            <div class="notification-title">${notif.title}</div>
+            <div class="notification-message">${notif.content}</div>
+          </div>
+          <button class="notification-close" aria-label="Zamknij" onclick="this.parentElement.classList.add('hide')">
+            <i class="fas fa-times"></i>
+          </button>
+          <div class="notification-progress"></div>
+        `;
+        
+        container.appendChild(notificationEl);
+        
+        // Automatyczne ukrywanie po 10 sekundach
+        setTimeout(() => {
+          notificationEl.classList.add('hide');
+          setTimeout(() => notificationEl.remove(), 400);
+        }, 10000);
+      });
+    } catch (error) {
+      console.error('Error loading notifications:', error);
+    }
+  }
+  
+  // Obsługa zmiany rozmiaru okna
+  function handleResize() {
+    if (isMobileDevice()) {
+      const container = document.getElementById('notifications-container');
+      if (container) container.style.display = 'none';
+    } else {
+      const container = document.getElementById('notifications-container');
+      if (container) container.style.display = 'flex';
+    }
+  }
+
+  // Inicjalizacja
+  document.addEventListener('DOMContentLoaded', function() {
+    loadNotifications();
+    window.addEventListener('resize', handleResize);
+  });
+
+  // Obsługa kliknięcia poza powiadomieniem
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.notification') && !e.target.closest('#notifications-container')) {
+      document.querySelectorAll('.notification').forEach(notif => {
+        notif.classList.add('hide');
+        setTimeout(() => notif.remove(), 400);
+      });
+    }
+  });
+</script>
+
+<script src="/assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/assets/vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
+<script src="/assets/vendor/rellax/rellax.min.js"></script>
+<script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
+<script src="/assets/vendor/parallax-js/dist/parallax.min.js"></script>
+<script src="/assets/vendor/prismjs/components/prism-core.min.js"></script>
+<script src="/assets/vendor/prismjs/components/prism-markup.min.js"></script>
+<script src="/assets/vendor/prismjs/components/prism-clike.min.js"></script>
+<script src="/assets/vendor/prismjs/plugins/toolbar/prism-toolbar.min.js"></script>
+<script src="/assets/vendor/prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+<script src="/assets/vendor/prismjs/plugins/line-numbers/prism-line-numbers.min.js"></script>
+
+<link rel="stylesheet" media="screen" href="/assets/vendor/boxicons/css/boxicons.min.css" />
+<link rel="stylesheet" media="screen" href="/assets/vendor/swiper/swiper-bundle.min.css" />
+<link rel="stylesheet" media="screen" href="/assets/css/theme.min.css">
+
+<!-- Start cookieyes banner --> <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/d0bd56e8fa893428ee39512a/script.js"></script> <!-- End cookieyes banner -->
+<% if (!req.url.includes("/bot/")) { %>
+<% } %>
+
+<script src="/assets/js/theme.min.js"></script>

@@ -1,0 +1,48 @@
+body {
+  background: linear-gradient(to bottom, #ff4500, #8b0000);
+  color: #ffffff; /* Kontrastowy kolor tekstu */
+  overflow: hidden; /* Ukrycie nadmiaru */
+}
+
+.fire {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, #ffcc00, #ff4500, #8b0000);
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: rise 3s linear infinite, flicker 1.5s ease-in-out infinite;
+}
+
+@keyframes rise {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-200px) scale(0.5);
+    opacity: 0;
+  }
+}
+
+@keyframes flicker {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+}
+
+/* Dodanie kilku płomieni */
+.fire:nth-child(odd) {
+  animation: rise 2.5s linear infinite, flicker 1s ease-in-out infinite;
+}
+
+.fire:nth-child(even) {
+  animation: rise 3s linear infinite, flicker 1.8s ease-in-out infinite;
+}

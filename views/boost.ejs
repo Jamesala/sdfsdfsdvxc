@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <title>Discordzik | Promuj Swój Serwer Discord</title>
+  <link rel="icon" href="/assets/img/favicon.png" type="image/x-icon">
+  <link rel="shortcut icon" href="/assets/img/favicon.png" type="image/x-icon">
+  
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
+  <!-- External CSS (font awesome, slick carousel etc.) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
+
+  <!-- SEO Meta Tags -->
+  <meta name="title" content="Promuj Swój Serwer Discord | Discordzik.pl">
+  <meta name="keywords" content="Promuj serwer discord, promuj serwer discord, jak zdobyć członków na discordzie, darmowa promocja discord, jak rozwinąć serwer discord, zwiększ liczbę członków discord, boostowanie serwera discord, promocja discord, rozbudowa serwera na discordzie, community discord, serwer discord dla graczy, serwer discord społeczność">
+  <meta name="description" content="Zwiększ widoczność swojego serwera Discord i rozbuduj swoją społeczność dzięki naszej platformie.">
+  <meta name="theme-color" content="#5024f3">
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:site_name" content="Discordzik.pl">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://discordzik.pl/boost">
+  <meta property="og:title" content="Promuj Swój Serwer Discord | Discordzik.pl">
+  <meta property="og:description" content="Zwiększ widoczność swojego serwera Discord i rozbuduj swoją społeczność dzięki naszej platformie.">
+  <meta property="og:image" content="/assets/img/banner.png">
+  <meta property="og:image:secure_url" content="/assets/img/banner.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://discordzik.pl/boost">
+  <meta property="twitter:title" content="Promuj Swój Serwer Discord | Discordzik.pl">
+  <meta property="twitter:description" content="Zwiększ widoczność swojego serwera Discord i rozbuduj swoją społeczność dzięki naszej platformie.">
+  <meta property="twitter:image" content="/assets/img/banner.png">
+  <meta property="twitter:image:width" content="1200">
+  <meta property="twitter:image:height" content="630">
+<script id="boxcoin" src="https://crypto-orbit.com/js/client.js"></script>
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Promuj Swój Serwer Discord | Discordzik.pl",
+    "description": "Zwiększ widoczność swojego serwera Discord i rozbuduj swoją społeczność dzięki naszej platformie.",
+    "url": "https://discordzik.pl/boost"
+  }
+  </script>
+
+  <!-- Robots Meta Tag -->
+  <meta name="robots" content="index, follow">
+</head>
+
+
+<%- include('partials/head') %>
+<style>
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 130px;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+header {
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+}
+
+header h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+header p {
+    font-size: 1.2rem;
+    color: #7f8c8d;
+}
+
+.plany {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    padding: 0 15px;
+}
+
+.plan {
+    padding: 20px;
+    width: 280px;
+    text-align: center;
+    border-radius: 20px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    margin-bottom: 20px;
+}
+
+.plan:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.plan.podstawowy {
+    background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+}
+
+.plan.pro {
+    background: linear-gradient(135deg, #f12711 0%, #f5af19 100%);
+    transform: scale(1.05);
+    z-index: 1;
+}
+
+.plan.gold {
+    background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
+}
+
+.plan h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.cena {
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 15px 0;
+}
+
+.plan ul {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.plan li {
+    font-size: 1rem;
+    margin: 5px 0;
+    color: #f0f0f0;
+    text-align: left;
+    padding-left: 20px;
+    position: relative;
+}
+
+.plan li i {
+    position: absolute;
+    left: 0;
+}
+
+.button {
+    display: inline-block;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+.button:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+.donate-button {
+    display: inline-block;
+    background: linear-gradient(135deg, #ef4444 0%, #8c1212 100%);
+    color: #fff;
+    padding: 15px 30px;
+    border-radius: 30px;
+    font-weight: bold;
+    text-decoration: none;
+    margin: 30px 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, box-shadow 0.3s;
+    font-size: 1.2rem;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.donate-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    color: #fff !important;
+}
+
+.donate-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #8c1212 0%, #ef4444 100%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: -1;
+}
+
+.donate-button:hover::before {
+    opacity: 1;
+}
+
+.icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Centering the title */
+.section-title {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin: 20px 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    width: 100%;
+}
+
+.plan-disabled {
+    opacity: 0.7;
+    pointer-events: none;
+    position: relative;
+    filter: grayscale(80%);
+}
+
+.plan-disabled .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    width: 100%;
+    height: 100%;
+    font-size: 1.4rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    z-index: 10;
+    text-align: center;
+    padding: 20px;
+}
+
+.disabled-button {
+    background-color: #aaa !important;
+    cursor: not-allowed;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    body {
+        padding-top: 110px;
+    }
+    
+    header h1 {
+        font-size: 2rem;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+        margin: 15px 0;
+    }
+    
+    .plan {
+        width: 100%;
+        max-width: 320px;
+    }
+    
+    .plan.pro {
+        transform: scale(1);
+    }
+    
+    .donate-button {
+        padding: 12px 24px;
+        font-size: 1rem;
+    }
+    
+}
+
+@media (max-width: 480px) {
+    body {
+        padding-top: 90px;
+    }
+    
+    header h1 {
+        font-size: 1.6rem;
+    }
+    
+    header p {
+        font-size: 0.9rem;
+    }
+    
+    .plan h2 {
+        font-size: 1.5rem;
+    }
+    
+    .cena {
+        font-size: 1.6rem;
+    }
+    
+    .plan li {
+        font-size: 0.9rem;
+    }
+    
+    .button {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+    
+}
+
+/* Main content wrapper to prevent footer from overlapping */
+.page-wrapper {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+</style>
+
+
+<body>
+  <%- include('partials/spinner') %>
+  <main class="page-wrapper">
+    <%- include('partials/header') %>
+
+    <!-- Hero -->
+        <section class="plany">
+        <h2 class="section-title">Wybierz Status Serwera</h2>
+        <div class="plan podstawowy">
+            <i class="icon fas fa-rocket"></i>
+            <h2>Basic</h2>
+            <p class="cena">10 PLN</p>
+            <ul>
+                <li><i class="fas fa-check"></i> Promowany przez <strong>15 dni</strong></li>
+				<li><i class="fas fa-check"></i> Znacznik <strong>BASIC</strong> serwera na zawsze</li>
+                <li><i class="fas fa-check"></i> Podstawowe wsparcie</li>
+                <li><i class="fas fa-check"></i> Ekskluzywna ranga i odznaka</li>
+            </ul>
+            <a class="button" href="https://ovr.solutions/dzik/pay.php?checkout_id=1">Wybierz</a>
+        </div>
+
+        <div class="plan pro">
+            <i class="icon fas fa-star"></i>
+            <h2>Pro</h2>
+            <p class="cena">25 PLN</p>
+            <ul>
+                <li><i class="fas fa-check"></i> Wyświetlany w <strong>polecanych przez 40 dni</strong></li>
+                <li><i class="fas fa-check"></i> Znacznik <strong>PRO</strong> serwera na zawsze</li>
+                <li><i class="fas fa-check"></i> Nowe Motywy</li>
+                <li><i class="fas fa-check"></i> Własne tło serwera</li>
+                <li><i class="fas fa-check"></i> Priorytetowe wsparcie</li>
+                <li><i class="fas fa-check"></i> Ekskluzywna ranga i odznaka</li>
+            </ul>
+            <a class="button" href="https://ovr.solutions/dzik/pay.php?checkout_id=2">Wybierz</a>
+        </div>
+
+        <div class="plan gold">
+            <i class="icon fas fa-crown"></i>
+            <h2>Gold</h2>
+            <p class="cena">40 PLN</p>
+            <ul>
+                <li><i class="fas fa-check"></i> Wyświetlany w <strong>polecanych przez 60 dni</strong></li>
+                <li><i class="fas fa-check"></i> Złoty znacznik <strong>GOLD</strong> serwera na zawsze</li>
+                <li><i class="fas fa-check"></i> Nowe Motywy</li>
+                <li><i class="fas fa-check"></i> Własne tło serwera</li>
+                <li><i class="fas fa-check"></i> Własne tło w sekcji polecanych</li>
+                <li><i class="fas fa-check"></i> Najwyższy priorytet wsparcia</li>
+                <li><i class="fas fa-check"></i> Ekskluzywna ranga i odznaka</li>
+            </ul>
+            <a class="button" href="https://ovr.solutions/dzik/pay.php?checkout_id=3">Wybierz</a>
+        </div>
+    </section>
+
+    <!-- Przedłużenia promocji Section -->
+    <section class="plany">
+        <h2 class="section-title">Przedłużenia promocji</h2>
+        <div style="text-align: center; width: 100%; margin-bottom: 20px;">
+            <p style="color: #666; font-style: italic; margin: 0 auto; max-width: 600px;">
+                Przedłużenia dostępne tylko dla serwerów, które już posiadają status
+            </p>
+        </div>
+        <div class="plan podstawowy">
+            <i class="icon fas fa-redo"></i>
+            <h2>Przedłużenie Promocji</h2>
+            <p class="cena">8 PLN</p>
+            <p>Przedłużenie o <strong>15 dni</strong></p>
+            <a class="button" href="https://ovr.solutions/dzik/pay.php?checkout_id=4">Wybierz</a>
+        </div>
+
+        <div class="plan pro">
+            <i class="icon fas fa-redo"></i>
+            <h2>Przedłużenie Promocji</h2>
+            <p class="cena">20 PLN</p>
+            <p>Przedłużenie o <strong>40 dni</strong></p>
+            <a class="button" href="https://ovr.solutions/dzik/pay.php?checkout_id=5">Wybierz</a>
+        </div>
+
+        <div class="plan gold">
+            <i class="icon fas fa-redo"></i>
+            <h2>Przedłużenie Promocji</h2>
+            <p class="cena">32 PLN</p>
+            <p>Przedłużenie o <strong>60 dni</strong></p>
+            <a class="button" href="https://ovr.solutions/dzik/pay.php?checkout_id=6">Wybierz</a>
+        </div>
+    </section>
+
+<!-- Disclaimer Section -->
+<section class="disclaimer">
+    <!-- Animated Heart Icon -->
+    <div class="disclaimer-tree-container">
+        <i class="fas fa-tree"></i>
+    </div>
+    <p class="disclaimer-text">
+        Wniesiona kwota to dobrowolna darowizna wspierająca rozwój strony. 10% przekazujemy na fundację Las Na Zawsze.<br>
+        <strong><i class="fas fa-tree" style="margin: 0 5px;"></i> Razem posadziliśmy już 17m² lasu!</strong>
+    </p>
+</section>
+
+<!-- Add CSS styles for the disclaimer -->
+<style>
+/* Disclaimer Section */
+.disclaimer {
+    background: linear-gradient(135deg, #22c55e, #005720);
+    padding: 30px 20px;
+    text-align: center;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-top: 40px;
+    position: relative;
+    overflow: visible; /* Allow content to overflow */
+}
+
+/* Add Trees and Leaves */
+.disclaimer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://pngimg.com/d/forest_PNG7.png') no-repeat center center;
+    background-size: cover;
+    opacity: 0.4; /* Adjust opacity for subtle background */
+    z-index: 0; /* Places the background behind the content */
+}
+
+/* Tree Icon Container */
+.disclaimer-tree-container {
+    font-size: 2.5rem;
+    color: #fff;
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #fff;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    padding: 15px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+.disclaimer-tree-container i {
+    font-size: 2rem;
+    color: #2e8b57;
+    animation: disclaimer-tree-grow 1.5s infinite;
+}
+
+@keyframes disclaimer-tree-grow {
+    0% {
+        transform: scale(1) translateY(0);
+    }
+    50% {
+        transform: scale(1.1) translateY(-5px);
+    }
+    100% {
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Disclaimer Text */
+.disclaimer-text {
+    font-size: 1.2rem;
+    color: #fff;
+    margin-top: 30px;
+    z-index: 2; /* Places text above the background */
+}
+
+.disclaimer-text strong {
+    font-weight: bold;
+}
+
+/* Responsive Design for Smaller Screens */
+@media (max-width: 600px) {
+    .disclaimer {
+        padding: 20px 15px;
+        margin: 20px;
+    }
+}
+
+</style>
+
+
+
+
+    <%- include('partials/footer') %>
+</body>
+</html>

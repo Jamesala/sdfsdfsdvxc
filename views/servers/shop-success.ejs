@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <%- include('../partials/head') %>
+    <title>Zakup zakończony pomyślnie</title>
+</head>
+<body>
+    <%- include('../partials/spinner') %>
+    <main class="page-wrapper">
+        <%- include('../partials/header') %>
+
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <div class="card border-0 shadow">
+                        <div class="card-body text-center p-5">
+                            <div class="mb-4">
+                                <i class="bx bx-check-circle text-success" style="font-size: 4rem;"></i>
+                            </div>
+                            
+                            <h2 class="h3 mb-3">Zakup zakończony pomyślnie!</h2>
+                            
+                            <div class="alert alert-success">
+                                <h6>Zakupiony przedmiot:</h6>
+                                <strong><%= purchase.itemName %></strong><br>
+                                <small>Cena: <%= purchase.price %> PLN</small>
+                            </div>
+
+                            <% if (purchase.roleGranted) { %>
+                                <div class="alert alert-info">
+                                    <i class="bx bx-shield-check"></i>
+                                    Rola została automatycznie przyznana na serwerze Discord!
+                                </div>
+                            <% } else if (purchase.errorMessage) { %>
+                                <div class="alert alert-warning">
+                                    <strong>Uwaga:</strong> Płatność została zrealizowana, ale wystąpił problem z przyznaniem roli.<br>
+                                    <small><%= purchase.errorMessage %></small><br>
+                                    <small>Skontaktuj się z administratorem serwera.</small>
+                                </div>
+                            <% } %>
+
+                            <div class="mt-4">
+                                <a href="/server/<%= purchase.serverID %>" class="btn btn-primary">
+                                    Powrót do serwera
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <%- include('../partials/footer') %>
+</body>
+</html>

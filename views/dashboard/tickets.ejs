@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="pl" class="dark-mode">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Tickety | Panel Administracyjny</title>
+  <%- include('../partials/head.ejs') %>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css">
+  <style>
+    :root {
+      --primary-gradient: linear-gradient(135deg, #7289da, #5b6eae);
+      --danger-gradient: linear-gradient(135deg, #f04747, #d83c3c);
+      --success-gradient: linear-gradient(135deg, #43b581, #3aa374);
+      --warning-gradient: linear-gradient(135deg, #faa61a, #e8951a);
+      --card-hover-transform: translateY(-5px);
+      --card-transition: all 0.3s ease;
+      --mobile-breakpoint: 768px;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    main {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    .container-fluid {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    .template-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    .template-btn {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .template-btn:hover {
+      opacity: 0.9;
+      transform: translateY(-2px);
+    }
+
+    .template-btn-bug { background: var(--danger-gradient); color: white; }
+    .template-btn-cooperation { background: var(--primary-gradient); color: white; }
+    .template-btn-server { background: var(--warning-gradient); color: white; }
+    .template-btn-help { background: var(--success-gradient); color: white; }
+
+    .ticket-card {
+      border-radius: 12px;
+      border: none;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      transition: var(--card-transition);
+      overflow: hidden;
+      background: rgba(255,255,255,0.03);
+    }
+
+    .ticket-card:hover {
+      transform: var(--card-hover-transform);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(114, 137, 218, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .user-avatar:hover {
+      transform: scale(1.1);
+      border-color: rgba(114, 137, 218, 0.7);
+    }
+
+    .ticket-row {
+      transition: all 0.3s ease;
+    }
+
+    .ticket-row:hover {
+      background: rgba(114, 137, 218, 0.05) !important;
+    }
+
+    .action-btn {
+      transition: all 0.2s ease;
+      border-radius: 6px;
+      padding: 6px 10px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .badge-status {
+      padding: 5px 8px;
+      border-radius: 20px;
+      font-weight: 500;
+      font-size: 0.75rem;
+    }
+
+    .badge-open { background: var(--primary-gradient); }
+    .badge-in_progress { background: var(--warning-gradient); }
+    .badge-resolved { background: var(--success-gradient); }
+    .badge-rejected { background: var(--danger-gradient); }
+
+    .badge-type {
+      padding: 5px 8px;
+      border-radius: 20px;
+      font-weight: 500;
+      font-size: 0.75rem;
+      background: rgba(114, 137, 218, 0.2);
+    }
+
+    .empty-state {
+      padding: 40px 20px;
+      text-align: center;
+      background: rgba(255,255,255,0.02);
+      border-radius: 12px;
+      border: 1px dashed rgba(255,255,255,0.1);
+    }
+
+    .empty-state-icon {
+      font-size: 3rem;
+      color: rgba(255,255,255,0.2);
+      margin-bottom: 1rem;
+    }
+
+    .description-text {
+      max-width: 200px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .ticket-details {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+    }
+
+    .ticket-details.active {
+      max-height: 1000px;
+      padding: 10px;
+      background: rgba(0,0,0,0.1);
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    /* Mobile styles */
+    @media (max-width: 768px) {
+      .table-responsive {
+        overflow-x: hidden;
+        max-width: 100%;
+        box-sizing: border-box;
+      }
+
+      .table {
+        width: 100%;
+        max-width: 100%;
+        table-layout: fixed;
+        font-size: 0.85rem;
+      }
+
+      .table thead {
+        display: none;
+      }
+
+      .table tr {
+        display: block;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        background: rgba(255,255,255,0.05);
+        box-sizing: border-box;
+      }
+
+      .table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 8px;
+        text-align: right;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        word-break: break-word;
+        max-width: 100%;
+        box-sizing: border-box;
+        min-width: 0;
+        flex: 1 1 auto;
+      }
+
+      .table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        margin-right: 8px;
+        color: rgba(255,255,255,0.6);
+        flex: 0 0 35%;
+        text-align: left;
+        white-space: normal;
+        font-size: 0.8rem;
+      }
+
+      .table td:last-child {
+        border-bottom: none;
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 6px;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+      }
+
+      .action-btn {
+        padding: 4px 8px;
+        font-size: 0.75rem;
+      }
+
+      .description-text {
+        max-width: 100%;
+        white-space: normal;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        font-size: 0.8rem;
+      }
+
+      .user-info {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: center;
+        max-width: 100%;
+        min-width: 0;
+      }
+
+      .user-info > div {
+        flex: 1;
+        max-width: calc(100% - 40px);
+        min-width: 0;
+        padding-left: 6px;
+      }
+
+      .user-info .fw-bold,
+      .user-info .text-muted {
+        white-space: nowrap;
+        word-break: break-word;
+        max-width: 100%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        font-size: 0.8rem;
+      }
+
+      .user-avatar {
+        margin-bottom: 0;
+        flex-shrink: 0;
+        width: 32px;
+        height: 32px;
+      }
+
+      .ticket-details.active {
+        max-height: none;
+        padding: 8px;
+      }
+
+      .ticket-details .row {
+        flex-direction: column;
+      }
+
+      .ticket-details .col-md-4,
+      .ticket-details .col-md-8 {
+        width: 100%;
+        padding: 0;
+      }
+
+      .ticket-details h5 {
+        font-size: 1rem;
+      }
+
+      .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .card-header .input-group {
+        width: 100%;
+        margin-top: 8px;
+      }
+
+      .modal-dialog {
+        margin: 0.5rem;
+      }
+    }
+
+    /* Desktop styles */
+    @media (min-width: 769px) {
+      .table {
+        table-layout: auto;
+      }
+
+      .table th,
+      .table td {
+        padding: 12px;
+        vertical-align: middle;
+        word-break: normal;
+      }
+
+      .table th:nth-child(1) { width: 5%; }
+      .table th:nth-child(2) { width: 10%; }
+      .table th:nth-child(3) { width: 15%; }
+      .table th:nth-child(4) { width: 20%; }
+      .table th:nth-child(5) { width: 20%; }
+      .table th:nth-child(6) { width: 10%; }
+      .table th:nth-child(7) { width: 10%; }
+      .table th:nth-child(8) { width: 10%; }
+
+      .action-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+      }
+
+      .user-info {
+        flex-direction: row;
+        align-items: center;
+      }
+
+      .description-text {
+        white-space: nowrap;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-dark text-light">
+  <%- include('./partials/header.ejs') %>
+  <%- include('./partials/aside.ejs') %>
+
+  <!-- Main Content -->
+  <main class="docs-container pt-5 pb-3 pb-lg-4" style="padding-right: 0;">
+    <div class="container-fluid px-xxl-5 px-lg-4 pt-4 pt-lg-5 pb-4">
+      <!-- Page Header -->
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+        <h1 class="ps-lg-2 ps-xxl-0 mt-2 mt-lg-0 pt-4 pb-2 mb-3 mb-xl-4 animate__animated animate__fadeIn">
+          <i class="fas fa-ticket-alt me-2"></i>Tickety
+        </h1>
+        <div class="text-muted">
+          Liczba ticketów: <span class="text-white"><%= tickets.length %></span>
+        </div>
+      </div>
+
+      <!-- Tickets Table -->
+      <div class="card border-0 shadow-sm mb-3 animate__animated animate__fadeIn">
+        <div class="card-header bg-dark-2 border-0 d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+          <h2 class="h4 mb-2 mb-md-0"><i class="fas fa-list me-2"></i>Lista ticketów</h2>
+          <div class="w-100 w-md-auto">
+            <div class="input-group">
+              <span class="input-group-text bg-dark border-dark text-muted">
+                <i class="fas fa-search"></i>
+              </span>
+              <input type="text" class="form-control bg-dark border-dark text-light" id="searchTickets" placeholder="Wyszukaj tickety..." aria-label="Wyszukaj tickety">
+            </div>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <% if (tickets.length < 1) { %>
+            <div class="empty-state">
+              <div class="empty-state-icon">
+                <i class="fas fa-ticket-alt"></i>
+              </div>
+              <h3 class="h5">Brak ticketów!</h3>
+              <p class="text-muted">Nie ma żadnych ticketów do wyświetlenia.</p>
+            </div>
+          <% } else { %>
+            <div class="table-responsive">
+              <table class="table table-dark table-hover align-middle mb-0">
+                <thead class="bg-dark-3 d-none d-md-table-header-group">
+                  <tr>
+                    <th scope="col" width="50px">#</th>
+                    <th scope="col">Typ</th>
+                    <th scope="col">Tytuł</th>
+                    <th scope="col">Opis</th>
+                    <th scope="col">Zgłaszający</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Data utworzenia</th>
+                    <th scope="col" class="text-end">Akcje</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% tickets.forEach((ticket, index) => { %>
+                  <tr class="ticket-row" id="ticket_<%= ticket._id %>">
+                    <td data-label="#" scope="row"><%= index + 1 %></td>
+                    <td data-label="Typ">
+                      <span class="badge badge-type">
+                        <% switch(ticket.type) { 
+                          case 'cooperation': %>Współpraca<% break; 
+                          case 'server': %>Serwer<% break; 
+                          case 'help': %>Pomoc<% break; 
+                          case 'bug': %>Błąd<% break; 
+                        } %>
+                      </span>
+                    </td>
+                    <td data-label="Tytuł"><%= ticket.title %></td>
+                    <td data-label="Opis">
+                      <div class="description-text" title="<%= ticket.description %>">
+                        <%= ticket.description %>
+                      </div>
+                    </td>
+                    <td data-label="Zgłaszający">
+                      <div class="d-flex align-items-center user-info">
+                        <img src="https://cdn.discordapp.com/avatars/<%= ticket.userID %>/a_<%= ticket.userAvatar %>?size=64" 
+                             onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'" 
+                             class="user-avatar me-2" 
+                             alt="Awatar użytkownika <%= ticket.userID %>">
+                        <div>
+                          <div class="fw-bold"><%= ticket.createdBy %></div>
+                          <small class="text-muted">ID: <%= ticket.userID %></small>
+                        </div>
+                      </div>
+                    </td>
+                    <td data-label="Status">
+                      <span class="badge badge-status badge-<%= ticket.status %>">
+                        <% switch(ticket.status) { 
+                          case 'open': %>Otwarty<% break; 
+                          case 'in_progress': %>W trakcie<% break; 
+                          case 'resolved': %>Rozwiązany<% break; 
+                          case 'rejected': %>Odrzucony<% break; 
+                        } %>
+                      </span>
+                    </td>
+                    <td data-label="Data utworzenia">
+                      <div class="text-nowrap">
+                        <%= moment(ticket.createdAt).format('DD.MM.YYYY') %>
+                      </div>
+                      <small class="text-muted">
+                        <%= moment(ticket.createdAt).format('HH:mm') %>
+                      </small>
+                    </td>
+                    <td class="text-end">
+                      <div class="action-buttons">
+                        <button class="btn btn-sm btn-primary action-btn" onclick="toggleDetails('<%= ticket._id %>')" aria-label="Pokaż szczegóły ticketu">
+                          <i class="fas fa-eye me-1 d-none d-md-inline"></i> <span>Szczegóły</span>
+                        </button>
+                        <button class="btn btn-sm btn-danger action-btn" onclick="confirmDelete('<%= ticket._id %>')" aria-label="Usuń ticket">
+                          <i class="fas fa-trash me-1 d-none d-md-inline"></i> <span>Usuń</span>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colspan="8" class="p-0 border-0">
+                      <div class="ticket-details" id="details_<%= ticket._id %>">
+                        <div class="row">
+                          <div class="col-md-8">
+                            <h5 class="mb-2">Szczegóły ticketu</h5>
+                            <div class="mb-2">
+                              <label class="form-label">Pełny opis:</label>
+                              <div class="form-control bg-dark-2 border-dark text-light" style="min-height: 80px;"><%= ticket.description %></div>
+                            </div>
+                            
+                            <% if (ticket.type === 'cooperation' || ticket.type === 'server') { %>
+                            <div class="mb-2">
+                              <label class="form-label">Dodatkowe informacje:</label>
+                              <div class="form-control bg-dark-2 border-dark text-light">
+                                <% if (ticket.type === 'cooperation') { %>
+                                  Discord do kontaktu: <strong><%= ticket.discordID || 'Nie podano' %></strong>
+                                <% } else if (ticket.type === 'server') { %>
+                                  ID Serwera: <strong><%= ticket.serverID || 'Nie podano' %></strong>
+                                <% } %>
+                              </div>
+                            </div>
+                            <% } %>
+                            
+                            <% if (ticket.response) { %>
+                            <div class="mb-2">
+                              <label class="form-label">Odpowiedź administracji:</label>
+                              <div class="form-control bg-dark-2 border-dark text-light" style="min-height: 80px;"><%= ticket.response %></div>
+                              <small class="text-muted">Odpowiedział: <%= ticket.respondedBy || 'Administrator' %></small>
+                            </div>
+                            <% } %>
+                          </div>
+                          <div class="col-md-4">
+                            <h5 class="mb-2">Zarządzanie</h5>
+                            <div class="template-buttons">
+                              <button class="template-btn template-btn-bug" onclick="fillResponse('<%= ticket._id %>', 'bug')" aria-label="Wypełnij odpowiedź na błąd">
+                                Odpowiedź na Buga
+                              </button>
+                              <button class="template-btn template-btn-cooperation" onclick="fillResponse('<%= ticket._id %>', 'cooperation')" aria-label="Wypełnij odpowiedź na współpracę">
+                                Odpowiedź na Współpracę
+                              </button>
+                              <button class="template-btn template-btn-server" onclick="fillResponse('<%= ticket._id %>', 'server')" aria-label="Wypełnij odpowiedź na serwer">
+                                Odpowiedź na Serwer
+                              </button>
+                              <button class="template-btn template-btn-help" onclick="fillResponse('<%= ticket._id %>', 'help')" aria-label="Wypełnij odpowiedź na pomoc">
+                                Odpowiedź na Pomoc
+                              </button>
+                            </div>
+                            <form id="updateForm_<%= ticket._id %>" onsubmit="updateTicket(event, '<%= ticket._id %>')">
+                              <div class="mb-2">
+                                <label class="form-label" for="status_<%= ticket._id %>">Status:</label>
+                                <select class="form-select bg-dark-2 border-dark text-light" name="status" id="status_<%= ticket._id %>" required>
+                                  <option value="open" <%= ticket.status === 'open' ? 'selected' : '' %>>Otwarty</option>
+                                  <option value="in_progress" <%= ticket.status === 'in_progress' ? 'selected' : '' %>>W trakcie</option>
+                                  <option value="resolved" <%= ticket.status === 'resolved' ? 'selected' : '' %>>Rozwiązany</option>
+                                  <option value="rejected" <%= ticket.status === 'rejected' ? 'selected' : '' %>>Odrzucony</option>
+                                </select>
+                              </div>
+                              <div class="mb-2">
+                                <label class="form-label" for="response_<%= ticket._id %>">Odpowiedź:</label>
+                                <textarea class="form-control bg-dark-2 border-dark text-light" name="response" id="response_<%= ticket._id %>" rows="4" 
+                                          placeholder="Wpisz odpowiedź dla zgłaszającego..."><%= ticket.response || '' %></textarea>
+                              </div>
+                              <button type="submit" class="btn btn-primary w-100">
+                                <i class="fas fa-save me-1"></i> Zapisz zmiany
+                              </button>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                  </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Delete Confirmation Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content bg-dark border-dark">
+        <div class="modal-header border-dark">
+          <h5 class="modal-title" id="deleteModalLabel">Potwierdzenie usunięcia</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Zamknij"></button>
+        </div>
+        <div class="modal-body">
+          <p>Czy na pewno chcesz usunąć ten ticket? Tej akcji nie można cofnąć.</p>
+        </div>
+        <div class="modal-footer border-dark">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+          <a id="confirmDeleteBtn" href="#" class="btn btn-danger">
+            <i class="fas fa-trash me-1"></i> Usuń
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Search functionality
+    const searchInput = document.getElementById('searchTickets');
+    if (searchInput) {
+      searchInput.addEventListener('input', function() {
+        const search = this.value.toLowerCase();
+        const rows = document.querySelectorAll('tbody tr.ticket-row');
+
+        rows.forEach(row => {
+          const title = row.querySelector('td[data-label="Tytuł"]')?.textContent.toLowerCase() || '';
+          const description = row.querySelector('td[data-label="Opis"]')?.textContent.toLowerCase() || '';
+          const user = row.querySelector('td[data-label="Zgłaszający"]')?.textContent.toLowerCase() || '';
+
+          if (title.includes(search) || description.includes(search) || user.includes(search)) {
+            row.style.display = '';
+            row.classList.add('animate__animated', 'animate__fadeIn');
+          } else {
+            row.style.display = 'none';
+            const ticketId = row.id.split('_')[1];
+            const detailsRow = document.getElementById(`details_${ticketId}`);
+            if (detailsRow) {
+              detailsRow.classList.remove('active');
+            }
+          }
+        });
+      });
+    }
+
+    // Toggle ticket details
+    function toggleDetails(ticketId) {
+      const detailsDiv = document.getElementById(`details_${ticketId}`);
+      if (detailsDiv) {
+        detailsDiv.classList.toggle('active');
+        if (detailsDiv.classList.contains('active') && window.innerWidth <= 768) {
+          setTimeout(() => {
+            detailsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }, 100);
+        }
+      }
+    }
+
+    // Update ticket status and response
+    function updateTicket(event, ticketId) {
+      event.preventDefault();
+      const form = event.target;
+      const formData = new FormData(form);
+      const data = {
+        status: formData.get('status'),
+        response: formData.get('response')
+      };
+
+      fetch(`/dashboard/tickets/update/${ticketId}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          showToast('Ticket został zaktualizowany!', 'success');
+          setTimeout(() => location.reload(), 2000);
+        } else {
+          showToast('Wystąpił błąd: ' + (data.message || 'Nieznany błąd'), 'danger');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        showToast('Wystąpił błąd podczas aktualizacji ticketu', 'danger');
+      });
+    }
+
+    // Delete confirmation
+    function confirmDelete(ticketId) {
+      const deleteModalEl = document.getElementById('deleteModal');
+      if (deleteModalEl) {
+        const deleteModal = new bootstrap.Modal(deleteModalEl);
+        const confirmBtn = document.getElementById('confirmDeleteBtn');
+        if (confirmBtn) {
+          confirmBtn.href = `/dashboard/tickets/delete/${ticketId}`;
+          deleteModal.show();
+        }
+      }
+    }
+
+    // Show toast notification
+    function showToast(message, type) {
+      const toastContainer = document.createElement('div');
+      toastContainer.className = 'position-fixed bottom-0 end-0 p-2';
+      toastContainer.style.zIndex = '1050';
+
+      const toastEl = document.createElement('div');
+      toastEl.className = `toast show align-items-center text-white bg-${type} border-0`;
+      toastEl.setAttribute('role', 'alert');
+      toastEl.setAttribute('aria-live', 'assertive');
+      toastEl.setAttribute('aria-atomic', 'true');
+
+      toastEl.innerHTML = `
+        <div class="d-flex">
+          <div class="toast-body">${message}</div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Zamknij"></button>
+        </div>
+      `;
+
+      toastContainer.appendChild(toastEl);
+      document.body.appendChild(toastContainer);
+
+      setTimeout(() => {
+        toastEl.classList.remove('show');
+        setTimeout(() => {
+          if (toastContainer.parentNode) {
+            document.body.removeChild(toastContainer);
+          }
+        }, 300);
+      }, 3000);
+    }
+
+    // Initialize tooltips on desktop
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.innerWidth > 768) {
+        const tooltipTriggerList = document.querySelectorAll('[title]');
+        tooltipTriggerList.forEach(tooltipTriggerEl => {
+          new bootstrap.Tooltip(tooltipTriggerEl, {
+            trigger: 'hover'
+          });
+        });
+      }
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 768) {
+        document.querySelectorAll('.ticket-details.active').forEach(el => {
+          el.classList.remove('active');
+        });
+      }
+    });
+
+    // Fill response with templates
+    function fillResponse(ticketId, type) {
+      const responseTextarea = document.getElementById(`response_${ticketId}`);
+      if (!responseTextarea) return;
+
+      let template = '';
+      switch(type) {
+        case 'bug':
+          template = `Dziękujemy za zgłoszenie błędu. Nasz zespół został poinformowany i zajmie się naprawą w najbliższym czasie.\n\nW razie pytań zapraszamy na nasz Discord: https://discordzik.pl/discord. \n\nPozdrawiamy,\nZespół Administracji`;
+          break;
+        case 'cooperation':
+          template = `Dziękujemy za zainteresowanie współpracą. Przekazaliśmy Twoją ofertę odpowiedniemu zespołowi i skontaktujemy się z Tobą w przypadku zainteresowania.\n\nPozdrawiamy,\nZespół Administracji`;
+          break;
+        case 'server':
+          template = `Dziękujemy za zgłoszenie dotyczące serwera. Sprawdzimy zgłoszoną kwestię i podejmiemy odpowiednie działania.\n\nPozdrawiamy,\nZespół Administracji`;
+          break;
+        case 'help':
+        default:
+          template = `Dziękujemy za zgłoszenie. Postaramy się odpowiedzieć na Twoje pytanie w najkrótszym możliwym czasie.\n\nW pilnych sprawach prosimy o kontakt na naszym Discordzie: https://discordzik.pl/discord \n\nPozdrawiamy,\nZespół Administracji`;
+      }
+
+      responseTextarea.value = template;
+      if (window.innerWidth <= 768) {
+        setTimeout(() => {
+          responseTextarea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 100);
+      }
+    }
+  </script>
+</body>
+</html>

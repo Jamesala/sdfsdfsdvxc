@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <% if (servers && servers.length > 0) { %>
+    <% servers.forEach(server => { %>
+      <url>
+        <loc>https://discordzik.pl/server/<%= server.serverID || '' %></loc>
+        <lastmod><%= new Date(server.updatedAt || server.createdAt || Date.now()).toISOString() %></lastmod>
+        <changefreq><%= (server.votes && server.votes > 100) ? 'daily' : 'monthly' %></changefreq>
+        <priority><%= (server.votes && server.votes > 500) ? 0.8 : 0.6 %></priority>
+      </url>
+    <% }); %>
+  <% } else { %>
+    <!-- Fallback URL in case no servers are found -->
+    <url>
+      <loc>https://discordzik.pl/</loc>
+      <lastmod><%= new Date().toISOString() %></lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>1.0</priority>
+    </url>
+  <% } %>
+</urlset>

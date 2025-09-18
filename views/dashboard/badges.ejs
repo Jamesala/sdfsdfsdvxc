@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="pl" class="dark-mode">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zarządzanie odznakami | Panel Administracyjny</title>
+  <%- include('../partials/head.ejs') %>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css">
+</head>
+<body class="bg-dark text-light">
+  <%- include('./partials/header.ejs') %>
+  <%- include('./partials/aside.ejs') %>
+
+  <!-- Main Content -->
+  <main class="docs-container pt-5 pb-3 pb-lg-4">
+    <div class="container-fluid px-xxl-5 px-lg-4 pt-4 pt-lg-5 pb-4">
+
+      <!-- Page Header -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="ps-lg-2 ps-xxl-0 mt-2 mt-lg-0 pt-4 pb-2 mb-3 mb-xl-4 animate__animated animate__fadeIn">
+          <i class="fas fa-medal me-3"></i>Zarządzanie odznakami
+        </h1>
+        <div class="d-flex align-items-center gap-3">
+          <div class="text-muted">
+            Odznaki: <span class="text-white"><%= badges.length %></span>
+          </div>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#badgeModal">
+            <i class="bx bx-plus me-2"></i>Dodaj odznakę
+          </button>
+        </div>
+      </div>
+
+        <!-- Statystyki -->
+        <div class="row mb-4">
+          <div class="col-md-3">
+            <div class="card bg-primary bg-opacity-10 border-primary border-opacity-25">
+              <div class="card-body">
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <h6 class="text-primary">Wszystkie odznaki</h6>
+                    <h2 class="mb-0"><%= badges.length %></h2>
+                  </div>
+                  <div class="bg-primary bg-opacity-25 p-3 rounded">
+                    <i class="bx bx-medal fs-4 text-primary"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card bg-success bg-opacity-10 border-success border-opacity-25">
+              <div class="card-body">
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <h6 class="text-success">Aktywne</h6>
+                    <h2 class="mb-0"><%= badges.filter(b => b.isActive).length %></h2>
+                  </div>
+                  <div class="bg-success bg-opacity-25 p-3 rounded">
+                    <i class="bx bx-check-circle fs-4 text-success"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card bg-warning bg-opacity-10 border-warning border-opacity-25">
+              <div class="card-body">
+                <div class="d-flex justify-content-between">
+                  <div>
+                    <h6 class="text-warning">Przyznane łącznie</h6>
+                    <h2 class="mb-0"><%= badges.reduce((sum, b) => sum + b.earnedCount, 0) %></h2>
+                  </div>
+                  <div class="bg-warning bg-opacity-25 p-3 rounded">
+                    <i class="bx bx-trophy fs-4 text-warning"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <button class="btn btn-outline-info w-100 h-100" onclick="checkAllBadges()">
+              <i class="bx bx-refresh mb-2 fs-4"></i><br>
+              <small>Sprawdź odznaki dla wszystkich</small>
+            </button>
+          </div>
+        </div>
+
+        <!-- Lista odznak -->
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">Lista odznak</h5>
+          </div>
+          <div class="card-body p-0">
+            <div class="table-responsive">
+              <table class="table table-dark table-hover mb-0">
+                <thead>
+                  <tr>
+                    <th>Odznaka</th>
+                    <th>Nazwa</th>
+                    <th>Wymagania</th>
+                    <th>Rzadkość</th>
+                    <th>Status</th>
+                    <th>Przyznane</th>
+                    <th>Akcje</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% badges.forEach(badge => { %>
+                  <tr>
+                    <td>
+                      <img src="<%= badge.imageUrl %>" alt="<%= badge.name %>" class="badge-image">
+                    </td>
+                    <td>
+                      <div>
+                        <strong><%= badge.name %></strong>
+                        <br><small class="text-muted"><%= badge.description %></small>
+                      </div>
+                    </td>
+                    <td>
+                      <span class="badge bg-secondary">
+                        <%= badge.requirements.type %> <%= badge.requirements.operator %> <%= badge.requirements.value %>
+                      </span>
+                    </td>
+                    <td>
+                      <span class="badge 
+                        <% switch(badge.rarity) {
+                          case 'legendary': %>bg-warning<% break;
+                          case 'epic': %>bg-primary<% break;
+                          case 'rare': %>bg-info<% break;
+                          case 'uncommon': %>bg-success<% break;
+                          default: %>bg-secondary<% } %>">
+                        <%= badge.rarity %>
+                      </span>
+                    </td>
+                    <td>
+                      <% if (badge.isActive) { %>
+                        <span class="badge bg-success">Aktywna</span>
+                      <% } else { %>
+                        <span class="badge bg-danger">Nieaktywna</span>
+                      <% } %>
+                    </td>
+                    <td><%= badge.earnedCount %></td>
+                    <td>
+                      <button class="btn btn-sm btn-outline-primary action-btn me-2" onclick="editBadge('<%= badge._id %>')">
+                        <i class="bx bx-edit me-1"></i> Edytuj
+                      </button>
+                      <button class="btn btn-sm btn-outline-danger action-btn" onclick="deleteBadge('<%= badge._id %>')">
+                        <i class="bx bx-trash me-1"></i> Usuń
+                      </button>
+                    </td>
+                  </tr>
+                  <% }); %>
+                  <% if (badges.length === 0) { %>
+                  <tr>
+                    <td colspan="7" class="text-center text-muted py-4">
+                      Brak odznak. Dodaj pierwszą odznakę!
+                    </td>
+                  </tr>
+                  <% } %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sekcje zarządzania manualnego -->
+        <div class="row mt-4">
+          <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Sprawdź odznaki dla wszystkich</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>Sprawdzi wszystkich użytkowników i przyznaj odznaki automatycznie na podstawie ich statystyk.</p>
+                        <button class="btn btn-warning" onclick="checkAllBadges()">
+                            <i class="bx bx-refresh"></i> Sprawdź wszystkich
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Przyznaj odznakę manualnie</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="manualAwardForm">
+                            <div class="mb-3">
+                                <label for="userID" class="form-label">ID Użytkownika Discord</label>
+                                <input type="text" class="form-control" id="userID" placeholder="np. 123456789012345678" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="badgeSelect" class="form-label">Wybierz odznakę</label>
+                                <select class="form-select" id="badgeSelect" required>
+                                    <option value="">Wybierz odznakę...</option>
+                                    <% badges.forEach(badge => { %>
+                                    <option value="<%= badge._id %>"><%= badge.name %></option>
+                                    <% }); %>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-success">
+                                <i class="bx bx-trophy"></i> Przyznaj odznakę
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Usuń odznakę od użytkownika</h5>
+                    </div>
+                    <div class="card-body">
+                        <form id="removeBadgeForm">
+                            <div class="mb-3">
+                                <label for="removeUserID" class="form-label">ID Użytkownika Discord</label>
+                                <input type="text" class="form-control" id="removeUserID" placeholder="np. 123456789012345678" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="removeBadgeSelect" class="form-label">Wybierz odznakę do usunięcia</label>
+                                <select class="form-select" id="removeBadgeSelect" required>
+                                    <option value="">Wybierz odznakę...</option>
+                                    <% badges.forEach(badge => { %>
+                                    <option value="<%= badge._id %>"><%= badge.name %></option>
+                                    <% }); %>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bx bx-trash"></i> Usuń odznakę
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal dodawania/edycji odznaki -->
+  <div class="modal fade" id="badgeModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content bg-dark">
+        <div class="modal-header">
+          <h5 class="modal-title">Dodaj odznakę</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="badgeForm">
+          <div class="modal-body">
+            <input type="hidden" id="badgeId" name="badgeId">
+
+            <div class="mb-3">
+              <label class="form-label">Nazwa odznaki</label>
+              <input type="text" class="form-control" id="badgeName" name="name" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Opis</label>
+              <textarea class="form-control" id="badgeDescription" name="description" rows="3" required></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Kategoria</label>
+              <select class="form-control" id="badgeCategory" name="category" required>
+                <option value="">Wybierz kategorię...</option>
+                <option value="reviews">Recenzje</option>
+                <option value="bumps">Bumpy</option>
+                <option value="servers">Serwery</option>
+                <option value="referrals">Polecenia</option>
+                <option value="activity">Aktywność</option>
+                <option value="special">Specjalne</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">URL obrazka</label>
+              <input type="url" class="form-control" id="badgeImageUrl" name="imageUrl" required>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <label class="form-label">Typ wymagania</label>
+                <select class="form-control" id="requirementType" name="requirementType" required>
+                  <option value="bumps">Bumpy</option>
+                  <option value="reviews">Recenzje</option>
+                  <option value="joinDate">Dni od dołączenia</option>
+                  <option value="referrals">Polecenia</option>
+                  <option value="servers">Liczba serwerów</option>
+                  <option value="manual">Tylko manualne przyznanie</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Operator</label>
+                <select class="form-control" id="requirementOperator" name="requirementOperator">
+                  <option value=">=" title="Większe lub równe">&gt;= (większe lub równe)</option>
+                  <option value=">" title="Większe niż">&gt; (większe niż)</option>
+                  <option value="=" title="Równe">= (równe)</option>
+                  <option value="<" title="Mniejsze niż">&lt; (mniejsze niż)</option>
+                  <option value="<=" title="Mniejsze lub równe">&lt;= (mniejsze lub równe)</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Wartość</label>
+                <input type="number" class="form-control" id="requirementValue" name="requirementValue" required>
+              </div>
+            </div>
+
+            <div class="row mt-3">
+              <div class="col-md-6">
+                <label class="form-label">Kolor</label>
+                <input type="color" class="form-control" id="badgeColor" name="color" value="#6d5bff">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Rzadkość</label>
+                <select class="form-control" id="badgeRarity" name="rarity">
+                  <option value="common">Pospolita</option>
+                  <option value="uncommon">Nieco rzadka</option>
+                  <option value="rare">Rzadka</option>
+                  <option value="epic">Epicka</option>
+                  <option value="legendary">Legendarna</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mt-3">
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="isLevelBased" name="isLevelBased">
+                <label class="form-check-label" for="isLevelBased">Odznaka poziomowa</label>
+              </div>
+            </div>
+
+            <!-- Sekcja poziomów -->
+            <div id="levelsSection" style="display: none;" class="mt-4">
+              <h6>Poziomy odznaki</h6>
+              <div id="levelsContainer">
+                <!-- Poziomy będą dodawane dynamicznie -->
+              </div>
+              <button type="button" class="btn btn-sm btn-outline-success mt-2" id="addLevelBtn">
+                <i class="bx bx-plus"></i> Dodaj poziom
+              </button>
+            </div>
+
+            <div class="mt-3">
+              <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="isActive" name="isActive" checked>
+                <label class="form-check-label" for="isActive">Aktywna</label>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+            <button type="submit" class="btn btn-primary">Zapisz</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    :root {
+      --primary-gradient: linear-gradient(135deg, #7289da, #5b6eae);
+      --success-gradient: linear-gradient(135deg, #43b581, #369f6f);
+      --card-hover-transform: translateY(-5px);
+      --card-transition: all 0.3s ease;
+    }
+    
+    .card {
+      border-radius: 12px;
+      border: none;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      transition: var(--card-transition);
+      overflow: hidden;
+      background: rgba(255,255,255,0.03);
+    }
+    
+    .card:hover {
+      transform: var(--card-hover-transform);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    
+    .form-control-custom {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: white;
+      transition: all 0.3s ease;
+    }
+    
+    .form-control-custom:focus {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(114, 137, 218, 0.5);
+      box-shadow: 0 0 0 3px rgba(114, 137, 218, 0.2);
+      color: white;
+    }
+    
+    .badge-image {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 2px solid rgba(114, 137, 218, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .badge-image:hover {
+      transform: scale(1.1);
+      border-color: rgba(114, 137, 218, 0.7);
+    }
+    
+    .action-btn {
+      transition: all 0.2s ease;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    @media (max-width: 768px) {
+      .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Helper function to display toast messages
+    function showToast(message, type = 'info') {
+        const toastContainer = document.getElementById('toastContainer') || (() => {
+            const container = document.createElement('div');
+            container.id = 'toastContainer';
+            container.style.position = 'fixed';
+            container.style.top = '20px';
+            container.style.right = '20px';
+            container.style.zIndex = '1000';
+            document.body.appendChild(container);
+            return container;
+        })();
+
+        const toast = document.createElement('div');
+        toast.classList.add('toast', `toast-${type}`);
+        toast.innerHTML = `
+            <div class="toast-body">
+                ${message}
+            </div>
+        `;
+        toastContainer.appendChild(toast);
+
+        const bsToast = new bootstrap.Toast(toast);
+        bsToast.show();
+
+        toast.addEventListener('hidden.bs.toast', () => {
+            toast.remove();
+        });
+    }
+
+    let editingBadgeId = null;
+
+    // Obsługa formularza
+    document.getElementById('badgeForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData.entries());
+      
+      // Właściwie obsłuż checkboxy
+      data.isActive = document.getElementById('isActive').checked ? 'true' : 'false';
+      data.isLevelBased = document.getElementById('isLevelBased').checked ? 'true' : 'false';
+
+      // Zbierz dane poziomów jeśli odznaka jest poziomowa
+      if (data.isLevelBased === 'true') {
+        const levels = [];
+        const levelItems = document.querySelectorAll('.level-item');
+        
+        levelItems.forEach((item, index) => {
+          const name = item.querySelector('.level-name').value;
+          const requiredValue = parseInt(item.querySelector('.level-value').value);
+          const description = item.querySelector('.level-description').value;
+          const imageUrl = item.querySelector('.level-image').value;
+          const color = item.querySelector('.level-color').value;
+          
+          if (name && requiredValue) {
+            levels.push({
+              level: index + 1,
+              name: name,
+              description: description,
+              requiredValue: requiredValue,
+              imageUrl: imageUrl || 'https://cdn.discordapp.com/attachments/000000000000000000/default-badge.png',
+              color: color
+            });
+          }
+        });
+        
+        data.levels = JSON.stringify(levels);
+      }
+
+      const url = editingBadgeId 
+        ? `/dashboard/badges/edit/${editingBadgeId}`
+        : '/dashboard/badges/create';
+
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          location.reload();
+        } else {
+          alert('Błąd: ' + result.error);
+        }
+      } catch (error) {
+        alert('Wystąpił błąd podczas zapisywania');
+      }
+    });
+
+    // Funkcja edycji odznaki
+    function editBadge(badgeId) {
+      editingBadgeId = badgeId;
+      const badge = <%-JSON.stringify(badges)%>.find(b => b._id === badgeId);
+
+      document.querySelector('.modal-title').textContent = 'Edytuj odznakę';
+      document.getElementById('badgeName').value = badge.name;
+      document.getElementById('badgeDescription').value = badge.description;
+      document.getElementById('badgeCategory').value = badge.category;
+      document.getElementById('badgeImageUrl').value = badge.imageUrl;
+      document.getElementById('requirementType').value = badge.requirements.type;
+      document.getElementById('requirementOperator').value = badge.requirements.operator;
+      document.getElementById('requirementValue').value = badge.requirements.value || '';
+      document.getElementById('badgeColor').value = badge.color || '#6d5bff';
+      document.getElementById('badgeRarity').value = badge.rarity || 'common';
+      document.getElementById('isActive').checked = badge.isActive;
+      document.getElementById('isLevelBased').checked = badge.isLevelBased || false;
+
+      // Obsłuż poziomy
+      const levelsSection = document.getElementById('levelsSection');
+      const levelsContainer = document.getElementById('levelsContainer');
+      
+      if (badge.isLevelBased && badge.levels && badge.levels.length > 0) {
+        levelsSection.style.display = 'block';
+        levelsContainer.innerHTML = '';
+        
+        badge.levels.forEach(level => {
+          addLevel(level);
+        });
+        
+        // Wyłącz podstawowe pola wymagań dla odznak poziomowych
+        document.getElementById('requirementValue').disabled = true;
+        document.getElementById('requirementOperator').disabled = true;
+      } else {
+        levelsSection.style.display = 'none';
+        levelsContainer.innerHTML = '';
+      }
+
+      new bootstrap.Modal(document.getElementById('badgeModal')).show();
+    }
+
+    // Reset formularza przy zamknięciu
+    document.getElementById('badgeModal').addEventListener('hidden.bs.modal', function() {
+      editingBadgeId = null;
+      document.querySelector('.modal-title').textContent = 'Dodaj odznakę';
+      document.getElementById('badgeForm').reset();
+      document.getElementById('isActive').checked = true;
+      document.getElementById('isLevelBased').checked = false;
+      document.getElementById('levelsSection').style.display = 'none';
+      document.getElementById('levelsContainer').innerHTML = '';
+      document.getElementById('requirementValue').disabled = false;
+      document.getElementById('requirementOperator').disabled = false;
+      document.getElementById('requirementValue').setAttribute('required', 'required');
+    });
+
+    // Obsługa zmiany typu wymagania
+    document.getElementById('requirementType').addEventListener('change', function() {
+      const isManual = this.value === 'manual';
+      const valueField = document.getElementById('requirementValue');
+      const operatorField = document.getElementById('requirementOperator');
+      
+      valueField.disabled = isManual;
+      operatorField.disabled = isManual;
+      
+      if (isManual) {
+        valueField.value = '';
+        operatorField.value = '>=';
+        valueField.removeAttribute('required');
+      } else {
+        valueField.setAttribute('required', 'required');
+      }
+    });
+
+    // Obsługa checkbox odznaki poziomowej
+    document.getElementById('isLevelBased').addEventListener('change', function() {
+      const levelsSection = document.getElementById('levelsSection');
+      const requirementValue = document.getElementById('requirementValue');
+      const requirementOperator = document.getElementById('requirementOperator');
+      
+      if (this.checked) {
+        levelsSection.style.display = 'block';
+        requirementValue.disabled = true;
+        requirementOperator.disabled = true;
+        requirementValue.removeAttribute('required');
+      } else {
+        levelsSection.style.display = 'none';
+        requirementValue.disabled = false;
+        requirementOperator.disabled = false;
+        requirementValue.setAttribute('required', 'required');
+        // Wyczyść poziomy
+        document.getElementById('levelsContainer').innerHTML = '';
+      }
+    });
+
+    // Funkcja dodawania nowego poziomu
+    function addLevel(levelData = {}) {
+      const container = document.getElementById('levelsContainer');
+      const levelIndex = container.children.length + 1;
+      
+      const levelDiv = document.createElement('div');
+      levelDiv.className = 'border rounded p-3 mb-3 level-item';
+      levelDiv.innerHTML = `
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h6 class="mb-0">Poziom ${levelIndex}</h6>
+          <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeLevel(this)">
+            <i class="bx bx-trash"></i>
+          </button>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <label class="form-label">Nazwa poziomu</label>
+            <input type="text" class="form-control level-name" value="${levelData.name || ''}" placeholder="np. Brązowy, Srebrny, Złoty" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Wymagana wartość</label>
+            <input type="number" class="form-control level-value" value="${levelData.requiredValue || ''}" placeholder="np. 10" required>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-md-12">
+            <label class="form-label">Opis poziomu</label>
+            <textarea class="form-control level-description" rows="2" placeholder="Opis tego poziomu odznaki">${levelData.description || ''}</textarea>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-md-6">
+            <label class="form-label">URL obrazka</label>
+            <input type="url" class="form-control level-image" value="${levelData.imageUrl || ''}" placeholder="https://example.com/image.png">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Kolor poziomu</label>
+            <input type="color" class="form-control level-color" value="${levelData.color || '#6d5bff'}">
+          </div>
+        </div>
+      `;
+      
+      container.appendChild(levelDiv);
+    }
+
+    // Funkcja usuwania poziomu
+    function removeLevel(button) {
+      button.closest('.level-item').remove();
+      // Aktualizuj numery poziomów
+      const levels = document.querySelectorAll('.level-item');
+      levels.forEach((level, index) => {
+        level.querySelector('h6').textContent = `Poziom ${index + 1}`;
+      });
+    }
+
+    // Obsługa przycisku dodawania poziomu
+    document.getElementById('addLevelBtn').addEventListener('click', function() {
+      addLevel();
+    });
+
+    // Funkcja usuwania odznaki
+    async function deleteBadge(badgeId) {
+      if (!confirm('Czy na pewno chcesz usunąć tę odznakę? Zostanie ona usunięta także u wszystkich użytkowników.')) return;
+
+      try {
+        const response = await fetch(`/dashboard/badges/delete/${badgeId}`, {
+          method: 'POST'
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          location.reload();
+        } else {
+          alert('Błąd: ' + result.error);
+        }
+      } catch (error) {
+        alert('Wystąpił błąd podczas usuwania');
+      }
+    }
+
+    // Sprawdzanie odznak dla wszystkich
+    async function checkAllBadges() {
+      if (!confirm('Czy na pewno chcesz sprawdzić odznaki dla wszystkich użytkowników? Może to potrwać kilka minut.')) return;
+
+      const button = event.target.closest('button');
+      const originalText = button.innerHTML;
+      button.innerHTML = '<div class="spinner-border spinner-border-sm" role="status"></div> Sprawdzanie...';
+      button.disabled = true;
+
+      try {
+        const response = await fetch('/dashboard/badges/check-all', {
+          method: 'POST'
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          alert(`Sprawdzono! Przyznano ${result.awarded} nowych odznak.`);
+          location.reload();
+        } else {
+          alert('Błąd: ' + result.error);
+        }
+      } catch (error) {
+        alert('Wystąpił błąd podczas sprawdzania');
+      } finally {
+        button.innerHTML = originalText;
+        button.disabled = false;
+      }
+    }
+
+    // Obsługa manualnego przyznawania odznak
+    document.getElementById('manualAwardForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const userID = document.getElementById('userID').value.trim();
+        const badgeID = document.getElementById('badgeSelect').value;
+
+        if (!userID || !badgeID) {
+            showToast('Wszystkie pola są wymagane', 'error');
+            return;
+        }
+
+        const submitButton = this.querySelector('button[type="submit"]');
+        const originalText = submitButton.innerHTML;
+        submitButton.innerHTML = '<i class="bx bx-loader bx-spin"></i> Przyznawanie...';
+        submitButton.disabled = true;
+
+        fetch('/dashboard/badges/award-manual', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userID: userID,
+                badgeID: badgeID
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showToast(data.message, 'success');
+                this.reset();
+                setTimeout(() => location.reload(), 2000);
+            } else {
+                showToast(data.error || 'Wystąpił błąd', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showToast('Wystąpił błąd połączenia', 'error');
+        })
+        .finally(() => {
+            submitButton.innerHTML = originalText;
+            submitButton.disabled = false;
+        });
+    });
+
+    // Obsługa usuwania odznak
+    document.getElementById('removeBadgeForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const userID = document.getElementById('removeUserID').value.trim();
+        const badgeID = document.getElementById('removeBadgeSelect').value;
+
+        if (!userID || !badgeID) {
+            showToast('Wszystkie pola są wymagane', 'error');
+            return;
+        }
+
+        if (!confirm('Czy na pewno chcesz usunąć tę odznakę od użytkownika?')) {
+            return;
+        }
+
+        const submitButton = this.querySelector('button[type="submit"]');
+        const originalText = submitButton.innerHTML;
+        submitButton.innerHTML = '<i class="bx bx-loader bx-spin"></i> Usuwanie...';
+        submitButton.disabled = true;
+
+        fetch('/dashboard/badges/remove-from-user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                userID: userID,
+                badgeID: badgeID
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showToast(data.message, 'success');
+                this.reset();
+                setTimeout(() => location.reload(), 2000);
+            } else {
+                showToast(data.error || 'Wystąpił błąd', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showToast('Wystąpił błąd połączenia', 'error');
+        })
+        .finally(() => {
+            submitButton.innerHTML = originalText;
+            submitButton.disabled = false;
+        });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!-- Page Loading -->
+<div class="page-loading active">
+  <div class="page-loading-inner">
+    <div class="bushes-container">
+      <img id="logo" class="logo-hidden" src="" alt="Ładowanie..." data-nimg="1">
+      <img id="bush" class="bushes" src="/assets/img/load/bushes.webp" alt="Krzaki" data-nimg="1">
+    </div>
+    <span>Ładowanie...</span>
+  </div>
+</div>
+
+<!-- Script: Losowe logo i animacja -->
+<script>
+  const images = [
+    "https://discordzik.pl/assets/img/load/load1.webp",
+    "https://discordzik.pl/assets/img/load/load2.webp",
+    "https://discordzik.pl/assets/img/load/load3.webp",
+    "https://discordzik.pl/assets/img/load/load4.webp",
+    "https://discordzik.pl/assets/img/load/load5.webp",
+    "https://discordzik.pl/assets/img/load/load6.webp",
+    "https://discordzik.pl/assets/img/load/load7.webp",
+    "https://discordzik.pl/assets/img/load/load8.webp",
+    "https://discordzik.pl/assets/img/load/load9.webp",
+    "https://discordzik.pl/assets/img/load/load10.webp",
+    "https://discordzik.pl/assets/img/load/load11.webp",
+    "https://discordzik.pl/assets/img/load/load12.webp"
+  ];
+
+  images.forEach(src => {
+    const img = new Image();
+    img.src = src;
+  });
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const logo = document.getElementById('logo');
+    const bush = document.getElementById('bush');
+    const randomIndex = Math.floor(Math.random() * images.length);
+    logo.src = images[randomIndex];
+
+    let imagesLoaded = 0;
+    [logo, bush].forEach(img => {
+      if (img.complete) {
+        imagesLoaded++;
+      } else {
+        img.onload = () => {
+          imagesLoaded++;
+          if (imagesLoaded === 2) triggerReveal();
+        };
+      }
+    });
+
+    if (imagesLoaded === 2) triggerReveal();
+
+    function triggerReveal() {
+      setTimeout(() => {
+        bush.classList.add('slide-right');
+      }, 1000); // drganie przez 1s
+    }
+
+    // Usunięcie loadera po 2.5s
+    setTimeout(() => {
+      const preloader = document.querySelector('.page-loading');
+      if (preloader) preloader.remove();
+    }, 2500);
+  });
+</script>

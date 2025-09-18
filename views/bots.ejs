@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <title>Polskie Boty Discord - Discordzik.pl</title>
+  <link rel="icon" href="/assets/img/favicon.png" type="image/x-icon">
+  <link rel="shortcut icon" href="/assets/img/favicon.png" type="image/x-icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- External CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.css"/>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick-theme.css"/>
+  
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+  
+  <!-- Google Adsense -->
+  <meta name="google-adsense-account" content="ca-pub-9136474966764887">
+
+  <!-- SEO Meta Tags -->
+  <meta name="title" content="Polskie Boty Discord - Discordzik.pl">
+  <meta name="keywords" content="boty Discord, polskie boty discord, boty do gier, boty muzyczne, boty administracyjne, boty do serwera Discord, bot do muzyki Discord, boty do automatyzacji Discord, boty do ankiet Discord, polski bot Discord, boty do zarządzania, boty do czatu Discord, boty edukacyjne Discord, boty społecznościowe Discord, boty moderacyjne Discord">
+  <meta name="description" content="Discordzik.pl to najlepsze źródło polskich botów Discord! Odkryj boty do gier, administracji, muzyki i wielu innych, które urozmaicą Twój serwer Discord. Zwiększ funkcjonalność swojego serwera z najlepszymi botami!">
+  <meta name="theme-color" content="#5024f3">
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:site_name" content="Discordzik.pl">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://discordzik.pl/bots">
+  <meta property="og:title" content="Polskie Boty Discord - Discordzik.pl">
+  <meta property="og:description" content="Discordzik.pl to najlepsze źródło polskich botów Discord! Odkryj boty do gier, administracji, muzyki i wielu innych, które urozmaicą Twój serwer Discord.">
+  <meta property="og:image" content="/assets/img/banner.png">
+  <meta property="og:image:secure_url" content="/assets/img/banner.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://discordzik.pl/bots">
+  <meta property="twitter:title" content="Polskie Boty Discord - Discordzik.pl">
+  <meta property="twitter:description" content="Discordzik.pl to najlepsze źródło polskich botów Discord! Odkryj boty do gier, administracji, muzyki i wielu innych, które urozmaicą Twój serwer Discord.">
+  <meta property="twitter:image" content="/assets/img/banner.png">
+  <meta property="twitter:image:width" content="1200">
+  <meta property="twitter:image:height" content="360">
+  
+  <!-- Structured Data (JSON-LD) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Polskie Boty Discord - Discordzik.pl",
+    "description": "Discordzik.pl to najlepsze źródło polskich botów Discord! Odkryj boty do gier, administracji, muzyki i wielu innych, które urozmaicą Twój serwer Discord.",
+    "url": "https://discordzik.pl/bots",
+    "mainEntityOfPage": "https://discordzik.pl/bots",
+    "image": "/assets/img/banner.png",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Discordzik.pl",
+      "logo": "/assets/img/logo.png"
+    }
+  }
+  </script>
+  
+  <!-- Robots Meta Tag -->
+  <meta name="robots" content="index, follow">
+
+</head>
+
+
+<%- include('partials/head') %>
+
+<body>
+  <%- include('partials/spinner') %>
+  <main class="page-wrapper border-bottom">
+    <%- include('partials/header') %>
+    <!-- Hero -->
+<section class="position-relative py-5 bg-dark text-white">
+  <!-- Gradient BG -->
+  <div class="position-absolute top-0 start-0 w-100 h-100 bg-gradient-primary opacity-10"></div>
+
+  <!-- Content -->
+  <div class="container position-relative zindex-2 py-lg-5 text-center">
+    <div class="d-flex flex-column pt-lg-4 pt-xl-5">
+      <h5 class="my-2 text-uppercase line-height">Discordzik</h5>
+      <h1 class="display-3 fw-bold mb-4">
+        Odkryj <span class="text-primary">Najlepsze</span> Polskie Boty
+      </h1>
+      <p class="fs-lg mb-5">
+        Odkryj boty i społeczności, które doskonale odpowiadają Twoim potrzebom.
+      </p>
+
+      <!-- Carousel -->
+      <div class="carousel-container d-flex align-items-center justify-content-center mb-5 overflow-hidden">
+        <div class="carousel d-flex animate-slide">
+          <% for (let i = 0; i < 15; i++) { %>
+          <div class="avatar-container bg-light rounded-circle mx-2">
+            <img
+              src="<%= bot.users.cache.filter(u => !u.bot && u.avatar).random().displayAvatarURL({ format: 'png', size: 128 }) %>"
+              alt="Avatar"
+              class="rounded-circle avatar-img"
+            />
+          </div>
+          <% } %>
+        </div>
+      </div>
+
+      <span class="fs-sm">
+        Łączymy, <span class="text-primary fw-semibold" id="user-count">700 000+</span> osób na serwerach Discord!
+      </span>
+
+    </div>
+  </div>
+</section>
+
+<style>
+@media (max-width: 768px) {
+    html, body {
+        overflow-x: hidden;
+        width: 100%;
+    }
+
+  .bg-dark {
+    background-color: #2b2b2b;
+  }
+  
+  .line-height {
+    line-height: 4; /* Adjust for more or less space */
+  }
+  .avatar-container {
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s;
+  }
+
+
+  .avatar-img {
+    width: 56px;
+    height: 56px;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+
+  .carousel-container {
+    display: flex;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .carousel {
+    display: flex;
+    flex-shrink: 0;
+  }
+
+
+  @keyframes slide {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+</style>
+
+    <section class="container py-5">
+      <h2 class="h2 mb-4 pt-lg-2 pb-lg-3 py-1 text-center">Popularne Tagi</h2>
+      <ul class="nav nav-tabs justify-content-center">
+        <% tags.slice(0,5).map(tag => { %>
+        <li class="nav-item">
+          <a href="/bots/<%= tag.tag %>" class="nav-link"><%= tag.tag %> <span class="badge bg-faded-primary text-primary mx-1"><%= tag.count %></span></a>
+        </li>
+        <% }) %>
+      </ul>
+      <div class="input-group mb-3">
+        <input class="form-control" type="text" id="searchBot" placeholder="Szukaj bota" aria-label="Szukaj bota">
+        <button class="btn btn-secondary" type="button" id="searchBotBtn">Szukaj</button>
+      </div>
+      <a href="/allbots" class="btn btn-outline-primary my-1 mb-3 w-100" type="button">Wszystkie Boty</a>
+      <div class="accordion" id="foundBot"></div>
+      <script>
+        document.getElementById('searchBotBtn').addEventListener('click', (e) => {
+          let searchBot = document.getElementById('searchBot').value;
+          if (searchBot == '') return document.getElementById('foundBot').innerHTML = '';
+          document.getElementById('searchBotBtn').innerHTML = `<span class="spinner-grow spinner-grow-sm me-2" role="status" aria-hidden="true"><span class="visually-hidden">Szukanie</span></span>Szukanie...`;
+          fetch("/bots/find/" + searchBot, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+          }).then(res => res.json()).then(data => {
+            if (data.error == false) {
+              document.getElementById('searchBotBtn').innerHTML = 'Search';
+              document.getElementById('foundBot').innerHTML = '';
+              data.bots.map(a => {
+                document.getElementById('foundBot').innerHTML += `
+                  <a href="/bot/${a.botID}" style="text-decoration: none; color: inherit">
+                    <div class="accordion-item border-0 rounded-3 shadow-sm mb-3" style="padding: 10px;">
+                      <figcaption class="card-footer d-flex align-items-center border-0 mt-lg-0" style="padding: 3px;">
+                        <img src="${a.avatar ?? 'https://cdn.discordapp.com/embed/avatars/0.png'}" width="60" class="rounded-circle" alt="${a.username}">
+                        <div class="ps-3">
+                          <h6 class="fw-semibold lh-base mb-0">
+                            <span class="fw-semibold me-2 mb-2">
+                              ${a.username}
+                            </span>
+                            <span class="badge bg-faded-info text-info me-2 mb-2">Głosów: ${a.votes}</span>
+                          </h6>
+                          <span class="fs-sm text-muted">${a.shortDesc}</span>
+                        </div>
+                      </figcaption>
+                    </div>
+                  </a>`
+              })
+            } else if (data.error == true) {
+              document.getElementById('searchBotBtn').innerHTML = 'Search';
+              document.getElementById('foundBot').innerHTML = '';
+              document.getElementById('foundBot').innerHTML = '<div class="alert alert-danger" role="alert">' + data.message + '</div>';
+            }
+          });
+        })
+      </script>
+    </section>
+	    </section>
+	    <section class="container py-3">
+	<div id="promoPlaceholder"></div>
+    </section>
+    <style>
+        body {
+            font-family: Manrope, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #20232a;
+        }
+
+        .container {
+            padding: 1rem;
+        }
+
+        .server-cards-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+		
+		.server-card .status-indicator {
+    position: absolute;
+    top: 10;
+    left: 23;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #151822; /* Tło karty serwera */
+    z-index: 1;
+}
+
+.status-online {
+    background-color: #43b581; /* Zielony dla online */
+}
+
+.status-idle {
+    background-color: #faa61a; /* Żółty dla idle */
+}
+
+.status-dnd {
+    background-color: #f04747; /* Czerwony dla dnd */
+}
+
+.status-offline {
+    background-color: #747f8d; /* Szary dla offline */
+}
+
+        .server-card-link {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .server-card {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border-radius: 12px;
+            padding: 10px;
+            width: 90%;
+            max-width: 250px;
+            min-height: 290px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+            margin: 1rem;
+            text-align: center;
+            background-color: #151822;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .server-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+.server-card img {
+    border-radius: 50%;
+    border: 3px solid gray; /* Domyślny kolor dla niepromowanych serwerów */
+    padding: 4px;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.server-card img.gold-border {
+    border-color: gold; /* Złote kółko dla promowanych serwerów */
+}
+
+        .badge-top-left {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: gold;
+            color: black;
+            padding: 0.3rem 0.6rem;
+            border-radius: 5px;
+            font-size: 10px;
+            z-index: 2;
+        }
+
+        .votes-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: transparent;
+            padding: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #009cbc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .votes-badge i {
+            font-size: 24px;
+            color: #009cbc;
+        }
+
+        .votes-number {
+            font-size: 14px;
+            margin-top: 2px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .servers-badge {
+            position: absolute;
+            top: 45px;
+            right: 10px;
+            background-color: transparent;
+            padding: 5px;
+            font-size: 12px;
+            font-weight: bold;
+            color: #009cbc;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .servers-badge i {
+            font-size: 24px;
+            color: #009cbc;
+        }
+
+        .servers-number {
+            font-size: 14px;
+            margin-top: 2px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .server-rank {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 5px 8px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .server-rank.diamond {
+            background-color: #b9f2ff;
+            color: #000;
+        }
+
+        .server-rank.gold {
+            background-color: #ffd700;
+            color: #000;
+        }
+
+        .server-rank.silver {
+            background-color: #c0c0c0;
+            color: #000;
+        }
+
+        .server-rank.bronze {
+            background-color: #cd7f32;
+            color: #000;
+        }
+
+        .server-rank.hidden {
+            display: none;
+        }
+
+        .server-info {
+            flex-grow: 1;
+        }
+
+        .server-info h6 {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-size: 14px;
+        }
+
+        .server-info p {
+            color: #6c757d;
+            margin-bottom: 1rem;
+            font-size: 13px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: normal;
+            max-height: 4rem;
+        }
+
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.3rem;
+        }
+
+        .tag-container .badge {
+            background-color: #1e212b;
+            color: white;
+            padding: 0.3rem 0.6rem;
+            border-radius: 5px;
+            font-size: 10px;
+        }
+
+        @media (max-width: 576px) {
+            .server-card {
+                width: 100%;
+                max-width: none;
+                min-height: auto;
+                padding: 15px;
+                margin: 0.5rem;
+            }
+
+            .server-card img {
+                width: 80px;
+                height: 80px;
+            }
+
+            .votes-badge i,
+            .servers-badge i {
+                font-size: 20px;
+            }
+
+            .votes-number,
+            .servers-number {
+                font-size: 12px;
+            }
+
+            .server-info h6 {
+                font-size: 12px;
+            }
+
+            .server-info p {
+                font-size: 12px;
+            }
+        }
+    </style>
+<section class="container">
+    <div class="py-2">
+            <h1 class="h2 text-left">
+    <i class='bx bxs-star'></i> Promowane Boty</h1>
+        <span class="fs-sm text-left d-block mb-3">Boty, które wygrały konkurs lub wspierają nas.</span>
+        <div class="recommended-bots-carousel">
+            <% bots.filter(bot => bot.promote).sort((a, b) => b.votes - a.votes).map(a => { %>
+            <a href="/bot/<%= a.botID %>" class="server-card-link">
+                <div class="server-card">
+                    <% if (a.tags.includes('PRO')) { %>
+                    <span class="badge-top-left">PRO</span>
+                    <% } %>
+                    <span class="votes-badge">
+                        <i class="fas fa-thumbs-up"></i>
+                        <span class="votes-number"><%= a.votes.toLocaleString() %></span>
+                    </span>
+                    <!-- Dodanie kropki statusu -->
+                    <div class="status-indicator
+                        <% if (bot.guilds.cache.get(config.server.id).members.cache.get(a.botID)?.presence?.status == 'online') { %>
+                        status-online
+                        <% } else if (bot.guilds.cache.get(config.server.id).members.cache.get(a.botID)?.presence?.status == 'idle') { %>
+                        status-idle
+                        <% } else if (bot.guilds.cache.get(config.server.id).members.cache.get(a.botID)?.presence?.status == 'dnd') { %>
+                        status-dnd
+                        <% } else { %>
+                        status-offline
+                        <% } %>">
+                    </div>
+                    <img src="<%= bot.users.cache.get(a.botID)?.displayAvatarURL() || 'https://cdn.discordapp.com/embed/avatars/0.png' %>" 
+                         alt="<%= a.username %>" 
+                         class="gold-border">
+                    <div class="server-info">
+                        <h6><%= a.username %></h6>
+                        <p><%= a.shortDesc.length > 100 ? a.shortDesc.slice(0, 100) + '...' : a.shortDesc %></p>
+                    </div>
+                    <div class="tag-container">
+                        <% a.tags.slice(0, 3).map(t => { %>
+                        <span class="badge"><%= t %></span>
+                        <% }) %>
+                        <% if (a.tags.length > 3) { %>
+                        <span class="badge"><i class="bx bx-plus-circle"></i> <%= a.tags.length - 3 %> więcej</span>
+                        <% } %>
+                    </div>
+                </div>
+            </a>
+            <% }) %>
+        </div>
+    </div>
+</section>
+
+<section class="container">
+    <div class="py-2">
+        	    <h1 class="h2 text-center">
+    <i class='bx bxs-like'></i> Najwyżej Oceniane Boty</h1>
+        <span class="fs-sm text-center d-block mb-3">Boty z największą liczbą głosów</span>
+        <div class="server-cards-wrapper">
+            <% bots.sort((a, b) => b.votes - a.votes).slice(0, 32).map((a, index) => { %>
+            <a href="/bot/<%= a.botID %>" class="server-card-link">
+                <div class="server-card">
+                    <div class="server-rank <%= index === 0 ? 'diamond' : index === 1 ? 'gold' : index === 2 ? 'silver' : index === 3 ? 'bronze' : 'hidden' %>">
+                        <%= index + 1 %>
+                    </div>
+                    <span class="votes-badge">
+                        <i class="fas fa-thumbs-up"></i>
+                        <span class="votes-number"><%= a.votes.toLocaleString() %></span>
+                    </span>
+                    <!-- Dodanie kropki statusu -->
+                    <div class="status-indicator
+                        <% if (bot.guilds.cache.get(config.server.id).members.cache.get(a.botID)?.presence?.status == 'online') { %>
+                        status-online
+                        <% } else if (bot.guilds.cache.get(config.server.id).members.cache.get(a.botID)?.presence?.status == 'idle') { %>
+                        status-idle
+                        <% } else if (bot.guilds.cache.get(config.server.id).members.cache.get(a.botID)?.presence?.status == 'dnd') { %>
+                        status-dnd
+                        <% } else { %>
+                        status-offline
+                        <% } %>">
+                    </div>
+                    <img src="<%= bot.users.cache.get(a.botID)?.displayAvatarURL() || 'https://cdn.discordapp.com/embed/avatars/0.png' %>" 
+                         alt="<%= a.username %>">
+                    <div class="server-info">
+                        <h6><%= a.username %></h6>
+                        <p><%= a.shortDesc.length > 100 ? a.shortDesc.slice(0, 100) + '...' : a.shortDesc %></p>
+                    </div>
+                    <div class="tag-container">
+                        <% a.tags.slice(0, 3).map(t => { %>
+                        <span class="badge"><%= t %></span>
+                        <% }) %>
+                        <% if (a.tags.length > 3) { %>
+                        <span class="badge"><i class="bx bx-plus-circle"></i> <%= a.tags.length - 3 %> więcej</span>
+                        <% } %>
+                    </div>
+                </div>
+            </a>
+            <% }) %>
+        </div>
+    </div>
+</section>
+
+    <section class="container py-3">
+	<div id="promoPlaceholder2"></div>
+    </section>
+
+<body>
+
+
+
+    <section class="container">
+      <div class="py-2">
+        <!-- <div class="offset-xl-1"> -->
+        <h1 class="h2 text-left">Ostatnio Dodane</h1>
+        <span class="fs-sm text-left d-block mb-3">Boty, które niedawno zostały dodane do listy</span>
+        <div class="accordion">
+          <% bots.sort((a, b) => b.Date - a.Date).slice(0, 10).map(a => {%>
+          <a href="/bot/<%= a.botID %>" style="text-decoration: none; color: inherit">
+            <div class="accordion-item border-0 rounded-3 shadow-sm mb-3" style="padding: 10px;">
+              <figcaption class="card-footer d-flex align-items-center border-0 pt-0  mt-lg-0" style="padding: 3px;">
+                <img src="<%= bot.users.cache.get(a.botID)?.displayAvatarURL() || 'https://cdn.discordapp.com/embed/avatars/0.png' %>" width="60" class="rounded-circle" alt="<%= a.username %>">
+                <div class="ps-3">
+                  <h6 class="fw-semibold lh-base mb-0">
+                    <span class="fw-semibold me-2 mb-2">
+                      <%= a.username %>
+                    </span>
+                    <% if (bot.guilds.cache.get(config.server.id).members.cache.get(a.botID)?.presence?.status == 'online') { %>
+                    <span class="badge bg-faded-success text-success me-2 mb-2">Online</span>&nbsp;|&nbsp;&nbsp;
+                    <% } else if (bot.guilds.cache.get(config.server.id).members.cache.get(a.botID)?.presence?.status == 'idle') { %>
+                    <span class="badge bg-faded-warning text-warning me-2 mb-2">Bezczynny</span>&nbsp;|&nbsp;&nbsp;
+                    <% } else if (bot.guilds.cache.get(config.server.id).members.cache.get(a.botID)?.presence?.status == 'dnd') { %>
+                    <span class="badge bg-faded-danger text-danger me-2 mb-2">Nie przeszkadzać</span>&nbsp;|&nbsp;&nbsp;
+                    <% } else if (bot.guilds.cache.get(config.server.id).members.cache.get(a.botID)?.presence?.status == 'offline') { %>
+                    <span class="badge bg-faded-light text-secondary me-2 mb-2">Offline</span>&nbsp;|&nbsp;&nbsp;
+                    <% } %>
+                    <span class="badge bg-faded-success text-success me-2 mb-2">NOWY!</span>
+                    <span class="badge bg-secondary me-2 mb-2">Dodany <%= a.Date.toLocaleString() %></span>
+                    <span class="badge bg-faded-info text-info me-2 mb-2">Głosów: <%= a.votes.toLocaleString() %></span>
+                  </h6>
+                  <span class="fs-sm text-muted"><%= a.shortDesc %></span>
+                </div>
+              </figcaption>
+            </div>
+          </a>
+          <% }) %>
+        </div>
+        <% if (bots.length > 10) { %>
+        <a href="/allbots" class="btn btn-outline-primary my-1 me-1 w-100" type="button">Zobacz więcej</a>
+        <% } %>
+        <!-- </div> -->
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="container py-5 mb-lg-2">
+      <h1 class="h2 text-center pb-4">Często Zadawane Pytania</h1>
+      <hr class="mx-auto" style="max-width: 60px;">
+      <div class="py-2 py-md-4 py-lg-5">
+        <div class="accordion" id="faq">
+          <div class="accordion-item border-0 rounded-3 shadow-sm mb-3">
+            <h2 class="accordion-header" id="q1-heading">
+              <button class="accordion-button shadow-none rounded-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q1" aria-expanded="true" aria-controls="q1">
+                Co to jest Discordzik.pl?
+              </button>
+            </h2>
+            <div id="q1" class="accordion-collapse collapse" aria-labelledby="q1-heading" data-bs-parent="#faq">
+              <div class="accordion-body fs-sm pt-0">
+                <p>Discordzik.pl to platforma, która gromadzi polskie serwery i boty Discord. Umożliwiamy użytkownikom znalezienie i dołączenie do serwerów tematycznych, gamingowych, edukacyjnych i wielu innych.</p>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item border-0 rounded-3 shadow-sm mb-3">
+            <h2 class="accordion-header" id="q3-heading">
+              <button class="accordion-button shadow-none rounded-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q3" aria-expanded="true" aria-controls="q3">
+                Czy korzystanie z Discordzik.pl jest darmowe?
+              </button>
+            </h2>
+            <div id="q3" class="accordion-collapse collapse" aria-labelledby="q3-heading" data-bs-parent="#faq">
+              <div class="accordion-body fs-sm pt-0">
+                <p>Tak, korzystanie z naszej strony jest całkowicie darmowe. Możesz przeglądać i dołączać do serwerów bez żadnych opłat.</p>
+              </div>
+            </div>
+          </div>
+          <div class="accordion-item border-0 rounded-3 shadow-sm mb-3">
+            <h2 class="accordion-header" id="q2-heading">
+              <button class="accordion-button shadow-none rounded-3 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#q2" aria-expanded="false" aria-controls="q2">
+                Jak mogę dodać mój serwer lub bota do listy?
+              </button>
+            </h2>
+            <div id="q2" class="accordion-collapse collapse" aria-labelledby="q2-heading" data-bs-parent="#faq">
+              <div class="accordion-body fs-sm pt-0">
+                <p>Idź do <a href="/bots/new">dodaj bota</a> lub <a href="/servers/new">dodaj serwer</a> i wypełnij formularz informacjami. Po wysłaniu formularza nasz zespół sprawdzi i zatwierdzi go.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container py-5 my-1 my-md-4 my-lg-5">
+      <div class="row">
+        <div class="col-lg-7 mb-4 mb-lg-0">
+          <div class="pe-lg-4 me-lg-3 pe-xl-0 me-xl-0">
+            <h2 class="h1 mb-4">O nas</h2>
+            <p class="fs-lg mb-0">Miejsce dla twórców serwerów i botów, którzy razem rozwijają polską społeczność Discord. Dołącz i twórz z nami! 🚀</p>
+          </div>
+        </div>
+    <div class="col-lg-5 col-xl-4 offset-xl-1 border-start-lg">
+        <div class="ps-lg-4 ms-lg-3 fact-container">
+            <h3 class="h5 d-flex align-items-center">
+                <i class="bx bx-help-circle text-primary fs-4 me-2"></i>
+                Ciekawostka 
+            </h3>
+            <p id="fact" class="pb-4 mb-0 mb-lg-3">Dzikie dziki potrafią biegać z prędkością do 50 km/h 😲</p>
+        </div>
+    </div>
+
+    <section class="container py-5">
+      <h2 class="h2 mb-4 pt-lg-2 pb-lg-3 py-1 text-center">Polskie Discordy</h2>
+    </section>
+    <script>
+        // Lista ciekawostek
+        const facts = [
+            "Dzikie dziki mistrzowie błotnych kąpieli, które wyglądają jak specjalnie zamówione spa! 🛁",
+            "Dziki są jak ninja w lesie przemieszczają się bezszelestnie i znikają, zanim zdążysz je dostrzec! 🥷",
+            "Zestresowane dziki potrafią wydawać dźwięki, które brzmią jak z filmu grozy — idealne na imprezy Halloweenowe! 👻",
+            "Dzikie dziki mogą wyglądać groźnie, ale w rzeczywistości są mistrzami w organizowaniu „błotnych spa”! 🌿",
+        ];
+
+        let currentIndex = 0;
+
+        function changeFact() {
+            // Zaktualizuj tekst w elemencie
+            document.getElementById('fact').innerText = facts[currentIndex];
+            // Zaktualizuj indeks do następnej ciekawostki
+            currentIndex = (currentIndex + 1) % facts.length;
+        }
+
+        // Zmiana ciekawostki co 5 sekund (5000 ms)
+        setInterval(changeFact, 9000);
+
+        // Początkowe wywołanie
+        changeFact();
+    </script>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <%- include('partials/footer') %>
+</body>
+<!-- Google tag (gtag.js) -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9136474966764887"
+     crossorigin="anonymous"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LKN9HV310X"></script>
+  <!-- jQuery (wymagane przez Slick) -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Slick JS -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.min.js"></script>
+<script>
+  $(document).ready(function(){
+    var images = $('.recommended-bots-carousel img');
+    var loadedImages = 0;
+    
+    images.each(function() {
+      if (this.complete) {
+        imageLoaded();
+      } else {
+        $(this).on('load', imageLoaded);
+      }
+    });
+    
+    function imageLoaded() {
+      loadedImages++;
+      if (loadedImages === images.length) {
+        initCarousel();
+      }
+    }
+    
+    // Dla bezpieczeństwa inicjalizuj też po czasie, gdyby jakieś obrazy się nie załadowały
+    setTimeout(initCarousel, 1000);
+    
+    function initCarousel() {
+      $('.recommended-bots-carousel').slick({
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 10000,
+        arrows: true,
+        dots: true,
+        responsive: [
+          {
+            breakpoint: 768,
+            settings: {
+              slidesToShow: 2,
+            }
+          },
+          {
+            breakpoint: 576,
+            settings: {
+              slidesToShow: 1,
+            }
+          }
+        ]
+      });
+    }
+  });
+</script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-LKN9HV310X');
+</script>
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const promotions = [
+            {
+                link: "https://bit.ly/marvel_rivals_gg3",
+                image: "https://discordzik.pl/assets/extra/banner-1500x100-generic.png"
+            }
+        ];
+
+        // Select a random promo
+        const promo = promotions[Math.floor(Math.random() * promotions.length)];
+
+        // Create elements
+        let promoContainer = document.createElement('div');
+        promoContainer.className = 'promo-box'; // Rename to bypass AdBlock
+
+        let promoLink = document.createElement('a');
+        promoLink.href = promo.link;
+        promoLink.target = '_blank';
+        promoLink.rel = 'noopener noreferrer';
+
+        let promoImage = document.createElement('img');
+        promoImage.src = promo.image;
+        promoImage.alt = 'Special Offer';
+        promoImage.style.width = "100%"; // Adjust as needed
+
+        // Append elements
+        promoLink.appendChild(promoImage);
+        promoContainer.appendChild(promoLink);
+
+        // Insert into the placeholder
+        let placeholder = document.getElementById('promoPlaceholder');
+        if (placeholder) {
+            placeholder.appendChild(promoContainer);
+        }
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const promotions = [
+            {
+                link: "https://bit.ly/marvel_rivals_gg3",
+                image: "https://discordzik.pl/assets/extra/banner_1500x330_generaic.png"
+            }
+        ];
+
+        // Select a random promo
+        const promo = promotions[Math.floor(Math.random() * promotions.length)];
+
+        // Create elements
+        let promoContainer = document.createElement('div');
+        promoContainer.className = 'promo-box'; // Rename to bypass AdBlock
+
+        let promoLink = document.createElement('a');
+        promoLink.href = promo.link;
+        promoLink.target = '_blank';
+        promoLink.rel = 'noopener noreferrer';
+
+        let promoImage = document.createElement('img');
+        promoImage.src = promo.image;
+        promoImage.alt = 'Special Offer';
+        promoImage.style.width = "100%"; // Adjust as needed
+
+        // Append elements
+        promoLink.appendChild(promoImage);
+        promoContainer.appendChild(promoLink);
+
+        // Insert into the placeholder
+        let placeholder = document.getElementById('promoPlaceholder2');
+        if (placeholder) {
+            placeholder.appendChild(promoContainer);
+        }
+    });
+</script>
+</html>

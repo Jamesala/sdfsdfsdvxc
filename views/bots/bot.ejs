@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Poznaj <%= botdata.username %>, polski bot Discord! Sprawdź komendy, funkcje i dodaj go na swój serwer na Discordzik.pl!">
+  <meta name="keywords" content="polski bot discord, <%= botdata.username %>, discordzik, boty discord, komendy bota">
+  <meta name="robots" content="index, follow">
+  <title><%= botdata.username %> - Polski Bot Discord | Discordzik.pl</title>
+  <link rel="canonical" href="https://discordzik.pl/bot/<%=botdata.botID%>">
+  <link rel="shortcut icon" href="<%= bot.users.cache.get(botdata.botID)?.displayAvatarURL() || 'https://cdn.discordapp.com/embed/avatars/0.png' %>">
+  <meta property="og:url" content="https://discordzik.pl/bot/<%=botdata.botID%>">
+  <meta property="og:type" content="website">
+  <meta property="og:image:alt" content="<%= botdata.username || 'Nieznany' %>">
+  <meta property="og:title" content="<%=botdata.username %> | Polski Bot Discord">
+  <meta property="og:description" content="<%= botdata.shortDesc %>">
+  <meta property="og:image" content="<%= bot.users.cache.get(botdata.botID)?.displayAvatarURL() || 'https://cdn.discordapp.com/embed/avatars/0.png' %>">
+  <meta property="og:site_name" content="Discordzik.pl">
+  <meta property="og:image:type" content="image/png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="<%= botdata.username %> | Polski Bot Discord">
+  <meta name="twitter:description" content="<%= botdata.shortDesc %>">
+  <meta name="theme-color" content="#5024f3">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "<%= botdata.username %>",
+    "image": "<%= bot.users.cache.get(botdata.botID)?.displayAvatarURL() || 'https://cdn.discordapp.com/embed/avatars/0.png' %>",
+    "description": "<%= botdata.shortDesc %>",
+    "url": "https://discordzik.pl/bot/<%=botdata.botID%>",
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "<%= botdata.rates ? botdata.rates.reduce((a, r) => a + r.star_rate, 0) / botdata.rates.length : 0 %>",
+      "reviewCount": "<%= botdata.rates ? botdata.rates.length : 0 %>"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      <% botdata.faq.forEach((entry, index) => { %>
+      {
+        "@type": "Question",
+        "name": "<%= entry.question %>",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "<%= entry.answer %>"
+        }
+      }<%= index < botdata.faq.length - 1 ? ',' : '' %>
+      <% }); %>
+    ]
+  }
+  </script>
+</head>
+
+<%- include('../partials/head') %>
+
+<body>
+  <%- include('../partials/spinner') %>
+  <main class="page-wrapper">
+    <%- include('../partials/header') %>
+
+<div style="height: 30px;"></div>
+    <section class="container pb-lg-5 border-bottom">
+      <div class="row gy-md-5 gy-4">
+
+        <!-- Player + Timeline -->
+<div class="col-lg-9 col-md-8 order-md-1">
+  <div class="mb-4 mb-lg-5">
+    <div class="accordion-item border-0 rounded-3 shadow-sm mb-3 
+  <% if (botdata.rank === 'BASIC') { %> glow-blue 
+  <% } else if (botdata.rank === 'PRO') { %> glow-orange 
+  <% } else if (botdata.rank === 'GOLD') { %> glow-gold 
+  <% } %>"
+      style="
+      position: relative; /* Umożliwia dodanie przyciemnienia */
+      padding: 10px; 
+      overflow: hidden; /* Zapobiega wyciekom obrazu tła */
+      <% if (botdata.customBannerURL) { %>
+        background: url('<%= botdata.customBannerURL %>') center center / cover no-repeat; 
+      <% } else if (bot.guilds.cache.get(botdata.serverID)?.splashURL()) { %>
+        background: url('<%= bot.guilds.cache.get(botdata.serverID).splashURL({ size: 1024 }) %>') center center / cover no-repeat; 
+      <% } %>">
+      
+      <!-- Przyciemnienie tła -->
+      <% if (botdata.customBannerURL || bot.guilds.cache.get(botdata.serverID)?.splashURL()) { %>
+        <div style="
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.7); /* Przyciemnienie 50% */
+          z-index: 1; /* Umieszcza warstwę nad tłem, ale pod treścią */
+        "></div>
+      <% } %>
+
+      <!-- Treść elementu -->
+      <figcaption class="card-footer d-flex align-items-center border-0 mt-lg-0" style="padding: 3px; position: relative; z-index: 2;">
+        <img src="<%= bot.users.cache.get(botdata.botID)?.displayAvatarURL() || 'https://cdn.discordapp.com/embed/avatars/0.png' %>" 
+             width="60" 
+             class="rounded-circle border border-3 
+             <% if (botdata.tags.includes('BASIC')) { %> border-primary 
+             <% } else if (botdata.tags.includes('PRO')) { %> border-warning 
+             <% } else if (botdata.tags.includes('GOLD')) { %> border-gold 
+             <% } else { %> border-secondary <% } %>" 
+             alt="Ikona bota <%= botdata.username %>"
+             loading="lazy"
+             style="object-fit: cover;">
+        
+        <div class="ps-3">
+          <h6 class="fw-semibold lh-base mb-0 d-flex align-items-center">
+            <!-- Ulepszone odznaki bota -->
+    <% if (botdata.rank) { %>
+      <span class="badge-rank me-2" style="
+        background: <% if (botdata.rank === 'BASIC') { %>rgba(0, 123, 255, 0.2)<% } 
+          else if (botdata.rank === 'PRO') { %>rgba(255, 193, 7, 0.2)<% } 
+          else if (botdata.rank === 'GOLD') { %>rgba(255, 215, 0, 0.2)<% } %>;
+        color: <% if (botdata.rank === 'BASIC') { %>#007bff<% } 
+          else if (botdata.rank === 'PRO') { %>#ffc107<% } 
+          else if (botdata.rank === 'GOLD') { %>#ffd700<% } %>;
+        padding: 0.25rem 0.75rem;
+        border-radius: 50rem;
+        border: 1px solid <% if (botdata.rank === 'BASIC') { %>rgba(0, 123, 255, 0.3)<% } 
+          else if (botdata.rank === 'PRO') { %>rgba(255, 193, 7, 0.3)<% } 
+          else if (botdata.rank === 'GOLD') { %>rgba(255, 215, 0, 0.3)<% } %>;
+        font-size: 0.75rem;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        white-space: nowrap;
+        flex-shrink: 0;
+      ">
+        <i class="fas <% if (botdata.rank === 'BASIC') { %>fa-rocket<% } 
+          else if (botdata.rank === 'PRO') { %>fa-star<% } 
+          else if (botdata.rank === 'GOLD') { %>fa-crown<% } %> me-1"></i> 
+        <%= botdata.rank %>
+      </span>
+    <% } %>
+            
+            <%= botdata.username %>
+          </h6>
+          <span class="fs-sm 
+            <% if (botdata.rank === 'BASIC') { %> text-primary 
+            <% } else if (botdata.rank === 'PRO') { %> text-warning 
+            <% } else if (botdata.rank === 'GOLD') { %> text-gold 
+            <% } else { %> text-muted <% } %>">
+            <%= botdata.shortDesc %>
+          </span>
+        </div>
+      </figcaption>
+<div class="px-3 pb-2" style="position: relative; z-index: 2;">
+  <div class="card border-0 bg-light bg-opacity-10 rounded-3 p-2">
+    <div class="d-flex justify-content-around text-center">
+      <!-- Średnia ocena -->
+      <div class="px-2">
+        <div class="text-warning fw-bold" style="font-size: 0.9rem;">
+          <i class="bx bxs-star"></i> 
+          <% 
+            let displayRating = '0.0';
+            if (botdata.rates?.length > 0) {
+              const validRates = botdata.rates.filter(rate => {
+                const value = Number(rate.star_rate);
+                return !isNaN(value) && value >= 1 && value <= 5;
+              });
+
+              if (validRates.length > 0) {
+                const sum = validRates.reduce((acc, rate) => acc + Number(rate.star_rate), 0);
+                const avg = sum / validRates.length;
+                displayRating = avg.toFixed(1);
+              }
+            }
+          %>
+          <%= displayRating %>
+        </div>
+        <small class="text-muted" style="font-size: 0.7rem;">
+          średnia ocena
+        </small>
+      </div>
+
+      <!-- Liczba głosów -->
+      <div class="px-2">
+        <div class="text-primary fw-bold" style="font-size: 0.9rem;">
+          <i class="bx bx-like"></i> 
+          <%= botdata.votes === 0 ? 'Brak' : botdata.votes.toLocaleString() %>
+        </div>
+        <small class="text-muted" style="font-size: 0.7rem;">
+          <%= botdata.votes === 1 ? 'głos' : 
+              (botdata.votes > 1 && botdata.votes < 5) ? 'głosy' : 'głosów' %>
+        </small>
+      </div>
+    </div>
+  </div>
+</div>
+
+            </div>
+          </div>
+
+          <div class="text-center5">
+            <a href="#botDetails" class="btn btn-primary fw-semibold w-100 d-md-none mb-3" data-scroll>
+              <i class="bx bxs-chevron-down align-middle me-2 "></i>
+              Kliknij, aby wyświetlić informacje o bocie
+            </a>
+          </div>
+
+          <% if (botdata.rank === 'unverified') { %>
+          <div class="card card-body border-0 shadow-sm position-relative overflow-hidden ps-sm-5 mb-5">
+            <div class="position-absolute top-0 start-0 w-3 h-100 bg-danger"></div>
+            <h2 class="h4 fw-normal lh-base">
+              <span class="fw-semibold">Ten bot jest obecnie niezweryfikowany.</span>
+            </h2>
+            <p class="fs-lg mb-1">
+              Ten bot jest obecnie niezweryfikowany. Oznacza to, że nie jest jeszcze gotowy do użytku publicznego.
+          </div>
+<% } %>
+
+<!-- Przyciski przełączania -->
+<div class="d-flex justify-content-center mb-4">
+    <button id="infoBtn" class="btn btn-primary me-2">
+        <i class="bx bx-info-circle"></i>&nbsp;Informacje
+    </button>
+    <button id="commandsBtn" class="btn btn-outline-primary me-2">
+        <i class="bx bx-command"></i>&nbsp;Komendy
+    </button>
+    <button id="faqBtn" class="btn btn-outline-primary">
+        <i class="bx bx-help-circle"></i>&nbsp;FAQ
+    </button>
+</div>
+
+<!-- Sekcja Informacje (domyślnie widoczna) -->
+<div id="infoSection">
+<h2>Informacje o <%= botdata.username %></h2>
+<p>Poznaj <strong><%= botdata.username %></strong>, polski bot Discord! Sprawdź jego funkcje i dodaj na serwer!</p>
+    <div class="accordion-item border-0 rounded-3 shadow-sm mb-3" style="padding:10px;">
+        <p class="card-footer d-flex align-items-center border-0 mt-lg-0">
+              <%- bot.md.render(botdata.longDesc || '')
+        .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+        .replace(/javascript:/gi, '')
+        .replace(/on\w+="[^"]*"/gi, '')
+        .replace(/url\(['"]?(?:(?!['"]?\)).)+['"]?\)/gi, '')
+        .replace(/<iframe/gi, '<iframe style="width: 100%; height:100vh;"') 
+      %>
+        </p>
+    </div>
+</div>
+
+<!-- Sekcja Komendy (domyślnie ukryta) -->
+<div id="commandsSection" style="display: none;">
+    <div class="row">
+        <div class="col-lg-12">
+            <% if (botdata.commands && botdata.commands.length > 0) { %>
+<h2>Komendy Bota <%= botdata.username %></h2>
+<p>Sprawdź pełną listę komend bota <%= botdata.username %>, które ułatwią zarządzanie Twoim serwerem Discord.</p>
+                <div class="card card-body border-0 shadow-sm position-relative overflow-hidden ps-sm-5 mb-5">
+                    <div class="position-absolute top-0 start-0 w-3 h-100 bg-primary"></div>
+                    <ul class="list-unstyled m-0" id="commandsList">
+                        <% botdata.commands.forEach((cmd, index) => { %>
+                            <li class="mb-4 command-item">
+                                <div class="d-flex flex-column">
+                                    <h5 class="text-primary mb-2"><%= cmd.name %></h5>
+                                    <p class="mb-0 text-muted command-description"><%= cmd.description %></p>
+                                </div>
+                            </li>
+                        <% }); %>
+                    </ul>
+                </div>
+                <% if (botdata.commands.length > 10) { %>
+                    <button id="showMoreBtn" class="btn btn-outline-secondary w-100">Pokaż więcej komend</button>
+                <% } %>
+            <% } else { %>
+                <div class="alert alert-info">Właściciel jeszcze nie dodał listy komend. Sprawdź później!</div>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<!-- Sekcja FAQ (domyślnie ukryta) -->
+<div id="faqSection" style="display: none;">
+    <div class="row">
+        <div class="col-lg-12">
+            <% if (botdata.faq && botdata.faq.length > 0) { %>
+<h2>FAQ o <%= botdata.username %></h2>
+<p>Masz pytania o <strong><%= botdata.username %></strong>? Znajdź odpowiedzi na temat funkcji i komend bota!</p>
+                <div class="card card-body border-0 shadow-sm position-relative overflow-hidden ps-sm-5 mb-5">
+                    <div class="position-absolute top-0 start-0 w-3 h-100 bg-info"></div>
+                    <div class="row g-3">
+                        <% botdata.faq.forEach((entry, index) => { %>
+                            <% if (index < 6) { %>
+                                <div class="col-md-6 col-lg-4">
+                                    <div class="faq-item">
+                                        <h6><%= index + 1 %>. <%= entry.question %></h6>
+                                        <p class="mb-0"><%= entry.answer %></p>
+                                    </div>
+                                </div>
+                            <% } %>
+                        <% }); %>
+                    </div>
+                </div>
+            <% } else { %>
+                <div class="alert alert-info">Brak dostępnych pytań FAQ.</div>
+            <% } %>
+        </div>
+    </div>
+</div>
+
+<script>
+// Przełączanie między sekcjami
+document.getElementById('infoBtn').addEventListener('click', function() {
+    document.getElementById('infoSection').style.display = 'block';
+    document.getElementById('commandsSection').style.display = 'none';
+    document.getElementById('faqSection').style.display = 'none';
+    this.classList.remove('btn-outline-primary');
+    this.classList.add('btn-primary');
+    document.getElementById('commandsBtn').classList.remove('btn-primary');
+    document.getElementById('commandsBtn').classList.add('btn-outline-primary');
+    document.getElementById('faqBtn').classList.remove('btn-primary');
+    document.getElementById('faqBtn').classList.add('btn-outline-primary');
+});
+
+document.getElementById('commandsBtn').addEventListener('click', function() {
+    document.getElementById('infoSection').style.display = 'none';
+    document.getElementById('commandsSection').style.display = 'block';
+    document.getElementById('faqSection').style.display = 'none';
+    this.classList.remove('btn-outline-primary');
+    this.classList.add('btn-primary');
+    document.getElementById('infoBtn').classList.remove('btn-primary');
+    document.getElementById('infoBtn').classList.add('btn-outline-primary');
+    document.getElementById('faqBtn').classList.remove('btn-primary');
+    document.getElementById('faqBtn').classList.add('btn-outline-primary');
+});
+
+document.getElementById('faqBtn').addEventListener('click', function() {
+    document.getElementById('infoSection').style.display = 'none';
+    document.getElementById('commandsSection').style.display = 'none';
+    document.getElementById('faqSection').style.display = 'block';
+    this.classList.remove('btn-outline-primary');
+    this.classList.add('btn-primary');
+    document.getElementById('infoBtn').classList.remove('btn-primary');
+    document.getElementById('infoBtn').classList.add('btn-outline-primary');
+    document.getElementById('commandsBtn').classList.remove('btn-primary');
+    document.getElementById('commandsBtn').classList.add('btn-outline-primary');
+});
+
+// Obsługa przycisku "Pokaż więcej komend"
+document.addEventListener('DOMContentLoaded', function () {
+    var showMoreBtn = document.getElementById('showMoreBtn');
+    if (showMoreBtn) {
+        var commandsList = document.getElementById('commandsList');
+        var commandItems = commandsList.querySelectorAll('.command-item');
+
+        if (commandItems.length > 3) {
+            for (let i = 3; i < commandItems.length; i++) {
+                commandItems[i].style.display = 'none';
+            }
+
+            showMoreBtn.addEventListener('click', function () {
+                if (commandsList.classList.contains('expanded')) {
+                    commandsList.classList.remove('expanded');
+                    this.textContent = 'Pokaż więcej komend';
+                    for (let i = 3; i < commandItems.length; i++) {
+                        commandItems[i].style.display = 'none';
+                    }
+                } else {
+                    commandsList.classList.add('expanded');
+                    this.textContent = 'Pokaż mniej komend';
+                    for (let i = 3; i < commandItems.length; i++) {
+                        commandItems[i].style.display = 'block';
+                    }
+                }
+            });
+        } else {
+            showMoreBtn.style.display = 'none';
+        }
+    }
+});
+</script>
+
+</style>
+
+
+
+
+
+        <div class="accordion-item border-0 rounded-3 shadow-sm mb-3" style="">
+        </div>
+      </div>
+		
+
+<div class="col-lg-3 col-md-4 order-md-2 position-relative" id="serverDetails">
+  <div class="sticky-top ps-lg-4" style="top: 135px !important;">
+    <div class="d-flex align-items-center mb-lg-5 mb-4">
+      <img src="<%= owner.avatarURL() %>" class="rounded-circle me-3" width="60" alt="Avatar">
+      <div class="position-relative"> <!-- Nowy kontener dla nazwy użytkownika -->
+        <h4 class="h6 mb-1">Dodane przez</h4>
+        <a href="/profile/<%= owner.id %>" class="fw-semibold">
+          <%= owner.username %>
+        </a>
+      </div>
+      
+      <!-- Oddzielny kontener dla odznak -->
+      <div class="d-flex align-items-center ms-2">
+<% let guild = bot.guilds.cache.get(config.server.id); %>
+<% let cache = guild ? guild.members.cache.get(botdata.ownerID) : null; %>
+<% if (cache) { %>
+  <% const badges = []; %>
+
+  <% if (cache.permissions.bitfield & 8n) { %>
+    <% badges.push({ title: "Administrator", icon: "bx-shield-alt-2", color: "warning" }); %>
+  <% } %>
+  <% if (cache.roles.cache.get(config.server.roles.Support)) { %>
+    <% badges.push({ title: "Support", icon: "bx-support", color: "info" }); %>
+  <% } %>
+  <% if (cache.roles.cache.get(config.server.roles.botReviewer)) { %>
+    <% badges.push({ title: "Weryfikator", icon: "bx-user-check", color: "info" }); %>
+  <% } %>
+  <% if (cache.roles.cache.get(config.server.roles.Partner)) { %>
+    <% badges.push({ title: "Partner", icon: "bx-bolt-circle", color: "info" }); %>
+  <% } %>
+  <% if (cache.roles.cache.get(config.server.roles.Patron)) { %>
+    <% badges.push({ title: "Patron", icon: "bx-donate-heart", color: "warning" }); %>
+  <% } %>
+  <% if (cache.roles.cache.get(config.server.roles.Booster)) { %>
+    <% badges.push({ title: "Booster", icon: "bx-diamond", color: "info" }); %>
+  <% } %>
+  <% if (cache.roles.cache.get(config.server.roles.botDeveloper)) { %>
+    <% badges.push({ title: "Deweloper Bota", icon: "bx-code-alt", color: "success" }); %>
+  <% } %>
+  <% if (cache.roles.cache.get(config.server.roles.bugHuntergold)) { %>
+    <% badges.push({ title: "Gold Bug Hunter", icon: "bx-planet", color: "warning" }); %>
+  <% } %>
+  <% if (cache.roles.cache.get(config.server.roles.bugHunter)) { %>
+    <% badges.push({ title: "Bug Hunter", icon: "bx-planet", color: "warning" }); %>
+  <% } %>
+
+  <% badges.slice(0, 3).forEach(badge => { %>
+    <div class="ms-1" data-bs-toggle="tooltip" data-bs-placement="top" title="<%= badge.title %>">
+      <span class="badge rounded-3 bg-<%= badge.color %> bg-opacity-10 p-1">
+        <i class="bx <%= badge.icon %> text-<%= badge.color %>" style="border-radius: 50%; padding: 2px;"></i>
+      </span>
+    </div>
+  <% }) %>
+<% } %>
+
+      </div>
+    </div>
+<% if (req.user && (req.user.id == botdata.ownerID || (botdata.coowners && botdata.coowners.includes(req.user.id)))) { %>
+<div class="card card-body shadow-sm mb-4 p-3" style="font-size: 0.9rem; border-radius: 12px;">
+  <!-- Menu główne bota -->
+  <div class="bot-admin-menu">
+    <!-- Sekcja Informacje (rozwijana) -->
+    <div class="menu-section">
+      <button class="btn btn-primary w-100 text-center d-flex justify-content-between align-items-center menu-toggle rounded-pill mb-1 px-3 py-2" data-target="bot-info-section" style="border: none; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);">
+        <span class="flex-grow-1 text-center text-white">
+          <i class="bx bx-bot me-2"></i><strong>Informacje bota</strong>
+        </span>
+        <i class="bx bx-chevron-down toggle-icon transition-all text-white"></i>
+      </button>
+      <div class="menu-content mb-2 d-none" id="bot-info-section">
+        <div class="card card-body p-3 rounded-4" style="border: 1px solid rgba(0,0,0,0.08);">
+          <% if (botdata.analytics && botdata.analytics.views) { %>
+          <div class="d-flex align-items-center mb-2">
+            <i class="bx bx-show me-2 fs-5 text-primary"></i>
+            <div>
+              <div class="text-muted small">Wyświetlenia</div>
+              <div class="fw-bold"><%= botdata.analytics.views.toLocaleString() %></div>
+            </div>
+          </div>
+          <% } %>
+          
+          <div class="d-flex align-items-center mb-3">
+            <i class="bx bx-crown me-2 fs-5 text-warning"></i>
+            <div>
+              <div class="text-muted small">Status</div>
+              <div>
+                <% if (botdata.rank === 'BASIC') { %>
+                  <span class="badge bg-primary px-2 py-1 rounded-pill">BASIC</span>
+                <% } else if (botdata.rank === 'PRO') { %>
+                  <span class="badge bg-warning px-2 py-1 rounded-pill text-dark">PRO</span>
+                <% } else if (botdata.rank === 'GOLD') { %>
+                  <span class="badge px-2 py-1 rounded-pill" style="background: linear-gradient(135deg, #FFD700 0%, #D4AF37 100%); color: #000;">GOLD</span>
+                <% } else { %>
+                  <span class="badge bg-secondary px-2 py-1 rounded-pill">Standardowy</span>
+                <% } %>
+              </div>
+            </div>
+          </div>
+          
+          
+          <div class="d-flex align-items-center mb-3">
+            <i class="bx bx-info-circle me-2 fs-5 text-primary"></i>
+            <div>
+              <div class="text-muted small">Status</div>
+              <div>
+                <% if (botdata.status === 'unverified') { %>
+                  <span class="badge bg-danger px-2 py-1 rounded-pill">Niezweryfikowany</span>
+                <% } else if (botdata.promote === true) { %>
+                  <span class="badge bg-success px-2 py-1 rounded-pill">Promowany</span>
+                <% } else { %>
+                  <span class="badge bg-primary px-2 py-1 rounded-pill">Zweryfikowany</span>
+                <% } %>
+              </div>
+            </div>
+          </div>
+          
+          <% if (botdata.promote && botdata.promotedUntil) { %>
+            <div class="d-flex align-items-start mb-3">
+              <i class="bx bx-time me-2 fs-5 text-success mt-1"></i>
+              <div>
+                <div class="text-muted small">Promowany do</div>
+                <div class="fw-bold" id="promotion-timer">
+                  <%= new Date(botdata.promotedUntil).toLocaleString() %>
+                </div>
+                <small class="text-success fw-bold d-block mt-1" id="time-remaining"></small>
+              </div>
+            </div>
+          <% } %>
+          
+          <div class="text-center mt-2">
+            <small class="text-muted"><i class="bx bx-lock-alt me-1"></i>Tylko Ty widzisz te informacje</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Sekcja Promocja -->
+    <% if (botdata.promote === true) { %>
+      <button class="btn btn-success w-100 text-start rounded-pill mb-1 px-3 py-2 d-flex align-items-center" style="border: none; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); background: linear-gradient(135deg, #198754 0%, #146c43 100%);">
+        <img src="https://discordzik.pl/assets/img/emoji/love.png" alt="Icon" style="width: 20px; height: 20px; margin-right: 10px;">
+        <span class="fw-bold text-white">Dziękujemy za wsparcie!</span>
+      </button>
+    <% } else { %>
+      <a href="/boost" class="btn btn-warning w-100 text-start rounded-pill mb-1 px-2 py-1 d-flex align-items-center" style="border: none; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);">
+        <i class="bx bx-crown me-2 fs-5 text-white"></i>
+        <span class="fw-bold text-white">Promuj Bota</span>
+      </a>
+    <% } %>
+    
+    <!-- Sekcja Zarządzanie (rozwijana) -->
+    <div class="menu-section">
+      <button class="btn btn-dark w-100 text-center d-flex justify-content-between align-items-center menu-toggle rounded-pill px-3 py-2 mb-1" data-target="bot-management-section" style="border: none; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); background: linear-gradient(135deg, #212529 0%, #343a40 100%);">
+        <span class="flex-grow-1 text-center text-white">
+          <i class="bx bx-cog me-2"></i><strong>Zarządzanie</strong>
+        </span>
+        <i class="bx bx-chevron-down toggle-icon transition-all text-white"></i>
+      </button>
+      <div class="menu-content mt-1 d-none" id="bot-management-section">
+        <a href="/bots/edit/<%= botdata.botID %>" class="btn btn-outline-primary w-100 text-start rounded-pill mb-2 px-3 py-2 d-flex align-items-center" style="border: 2px solid #0d6efd;">
+          <i class="bx bx-edit me-2 text-primary"></i>
+          <span class="text-primary">Edytuj bota</span>
+        </a>
+        
+        <button type="button" data-bs-toggle="modal" data-bs-target="#deleteBot" class="btn btn-danger w-100 text-start rounded-pill px-3 py-2 d-flex align-items-center" style="border: none; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);">
+          <i class="bx bx-trash me-2 text-white"></i>
+          <span class="fw-bold text-white">Usuń bota</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .bot-admin-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .menu-toggle, .btn {
+    transition: all 0.3s ease !important;
+    will-change: transform;
+  }
+  
+  .menu-toggle:hover, .btn:not(.btn-outline-primary):hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15) !important;
+  }
+  
+  .btn-outline-primary:hover {
+    background-color: rgba(13, 110, 253, 0.1) !important;
+  }
+  
+  .menu-content {
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+  
+  .transition-all {
+    transition: all 0.3s ease;
+  }
+  
+  .menu-toggle[aria-expanded="true"] .toggle-icon {
+    transform: rotate(180deg);
+  }
+  
+  .rounded-4 {
+    border-radius: 1rem !important;
+  }
+    .reply-section {
+  position: relative;
+}
+
+.reply-toggle {
+  color: #6c757d;
+  font-size: 0.875rem;
+  transition: color 0.2s;
+}
+
+.reply-toggle:hover {
+  color: #0d6efd;
+  text-decoration: none;
+}
+
+.reply-toggle i {
+  font-size: 1rem;
+  vertical-align: middle;
+}
+
+.reply-form {
+  transition: all 0.3s ease;
+}
+
+.replies-container {
+  margin-left: 20px;
+  padding-left: 15px;
+  border-left: 2px solid #eee;
+}
+
+.reply-item {
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+
+
+.reply-input {
+  border-radius: 4px 0 0 4px !important;
+}
+
+.reply-submit {
+  border-radius: 0 !important;
+}
+
+.reply-cancel {
+  border-radius: 0 4px 4px 0 !important;
+}
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.menu-toggle').forEach(button => {
+      button.addEventListener('click', function() {
+        const target = this.getAttribute('data-target');
+        const content = document.getElementById(target);
+        const icon = this.querySelector('.toggle-icon');
+        
+        // Toggle content with animation
+        if (content.classList.contains('d-none')) {
+          content.classList.remove('d-none');
+          content.style.maxHeight = '0';
+          setTimeout(() => {
+            content.style.maxHeight = content.scrollHeight + 'px';
+          }, 10);
+          setTimeout(() => {
+            content.style.maxHeight = 'none';
+          }, 300);
+        } else {
+          content.style.maxHeight = content.scrollHeight + 'px';
+          setTimeout(() => {
+            content.style.maxHeight = '0';
+          }, 10);
+          setTimeout(() => {
+            content.classList.add('d-none');
+          }, 300);
+        }
+        
+        // Toggle icon rotation
+        if (content.classList.contains('d-none')) {
+          this.setAttribute('aria-expanded', 'false');
+        } else {
+          this.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+  });
+
+  // Aktualizacja timera promocji (jeśli istnieje)
+  <% if (botdata.promote && botdata.promotedUntil) { %>
+    function updatePromotionTimer() {
+      const endDate = new Date('<%= new Date(botdata.promotedUntil).toISOString() %>');
+      const now = new Date();
+      const diff = endDate - now;
+      
+      if (diff <= 0) {
+        document.getElementById('time
+
+-remaining').textContent = 'Promocja wygasła';
+        return;
+      }
+      
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * }60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      
+      document.getElementById('time-remaining').textContent = 
+        `Pozostało: ${days}d ${hours}h ${minutes}m`;
+    }
+    
+    updatePromotionTimer();
+    setInterval(updatePromotionTimer, 60000);
+  <% } %>
+</script>
+<% } %>
+
+    <% if (coowners.length > 0) { %>
+    <ol class="list-group mb-3" style="max-width: 25rem;">
+      <li class="list-group-item active">Współwłaściciele</li>
+      <% coowners.map(x => { %>
+      <li class="list-group-item d-flex justify-content-between align-items-start">
+        <div class="d-flex align-items-center position-relative">
+          <img src="https://cdn.discordapp.com/avatars/<%= x.id %>/<%= x.avatar %>" class="rounded-circle me-3" width="30" alt="Awatar użytkownika <%= x.username %>">
+          <div>
+            <a href="/profile/<%= x.id %>" class="fw-semibold stretched-link"><%= x.username %></a>
+            <% let coownerCache = guild ? guild.members.cache.get(x.id) : null; %>
+            <% if (coownerCache) { %>
+              <span class="ms-2">
+                <% if (coownerCache.permissions.bitfield & 8n) { %>
+                  <i class="bx bx-shield-alt-2 text-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Administrator"></i>
+                <% } %>
+				<% if (coownerCache.roles.cache.get(config.server.roles.Support)) { %>
+                  <i class="bx bx-support text-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Support"></i>
+                <% } %>
+                <% if (coownerCache.roles.cache.get(config.server.roles.botReviewer)) { %>
+                  <i class="bx bx-user-check text-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Bot Reviewer"></i>
+                <% } %>
+                <% if (coownerCache.roles.cache.get(config.server.roles.Partner)) { %>
+                  <i class="bx bx-bolt-circle text-info" data-bs-toggle="tooltip" data-bs-placement="top" title="Partner"></i>
+                <% } %>
+                <% if (coownerCache.roles.cache.get(config.server.roles.Patron)) { %>
+                  <i class="bx bx-donate-heart text-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Patron"></i>
+                <% } %>
+                <% if (coownerCache.roles.cache.get(config.server.roles.Booster)) { %>
+                  <i class="bx bx-diamond text-violet" data-bs-toggle="tooltip" data-bs-placement="top" title="Booster"></i>
+                <% } %>
+                <% if (coownerCache.roles.cache.get(config.server.roles.botDeveloper)) { %>
+                  <i class="bx bx-code-alt text-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Bot Developer"></i>
+                <% } %>
+                <% if (coownerCache.roles.cache.get(config.server.roles.bugHuntergold)) { %>
+                  <i class="bx bx-planet text-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Gold Bug Hunter"></i>
+                <% } %>
+                <% if (coownerCache.roles.cache.get(config.server.roles.bugHunter)) { %>
+                  <i class="bx bx-planet text-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Bug Hunter"></i>
+                <% } %>
+              </span>
+            <% } %>
+          </div>
+        </div>
+      </li>
+      <% }) %>
+    </ol>
+	
+    <% } %>
+            <% if (botdata.inviteURL) { %>
+            <a href="<%= botdata.inviteURL %>" target="_blank" rel="nofollow" class="btn btn-lg btn-outline-secondary mb-3" style="width: -webkit-fill-available;">
+              <i class="bx bx-plus me-2 lead"></i>Dodaj
+            </a>
+            <% } %>
+            <% if (botdata.supportURL) { %>
+            <a href="<%= botdata.supportURL %>" target="_blank" rel="nofollow" class="btn btn-lg btn-outline-secondary mb-3" style="width: -webkit-fill-available;">
+              <i class="bx bx-support me-2 lead"></i>Pomoc
+            </a>
+            <% } %>
+            <% if (botdata.websiteURL) { %>
+            <a href="<%= botdata.websiteURL %>" target="_blank" rel="nofollow"class="btn btn-lg btn-outline-secondary mb-3" data-redirect style="width: -webkit-fill-available;">
+              <i class="bx bx-link-external me-2 lead"></i>Strona
+            </a>
+            <% } %>
+			<% if (botdata.donateURL) { %>
+            <a href="<%= botdata.donateURL %>" target="_blank" rel="nofollow" class="btn btn-lg btn-outline-secondary mb-3" data-redirect style="width: -webkit-fill-available;">
+              <i class="bx bx-donate-heart me-2 lead"></i>Donate
+            </a>
+            <% } %>
+            <% if (botdata.githubURL) { %>
+            <a href="<%= botdata.githubURL %>" target="_blank" rel="nofollow" class="btn btn-lg btn-outline-secondary mb-3" style="width: -webkit-fill-available;">
+              <i class="bx bxl-github me-2 lead"></i>Github
+            </a>
+            <% } %>
+            <button class="btn btn-lg btn-outline-secondary mb-3" rel="nofollow" id="voteBot" style="width: -webkit-fill-available;">
+              <i class="bx bx-like me-2 lead"></i>Zagłosuj
+              <span class="badge bg-primary shadow-primary ms-3"><%= botdata.votes.toLocaleString() %></span>
+            </button>
+            <div id="result"></div>
+
+            <div class="border rounded-3 mb-4 mb-lg-5">
+              <div class="g-0">
+                <div class="col d-flex align-items-center border-end-sm border-bottom p-3">
+                  <i class="bx bx-text text-primary fs-4"></i>
+                  <div class="ps-2 ms-1">
+                    <h3 class="h6 mb-0">Prefix</h3>
+                    <p class="fs-xs mb-0"><%= botdata.prefix %></p>
+                  </div>
+                </div>
+<% if (botdata.serverCount || apiServerCount) { %>
+<div class="col d-flex align-items-center border-end-sm border-bottom p-3">
+    <i class="bx bx-server text-primary fs-4"></i>
+    <div class="ps-2 ms-1">
+        <div class="d-flex align-items-center mb-1">
+            <h3 class="h6 mb-0 me-2">Serwery</h3>
+            <% if (apiServerCount) { %>
+                <a href="https://api.pawelb.link" target="_blank" 
+                   class="badge bg-info text-decoration-none" 
+                   data-bs-toggle="tooltip" data-bs-placement="top" 
+                   title="Dane z <%= isServerCountFromCache ? 'cache' : 'zewnętrznego API' %>">
+                    <%= isServerCountFromCache ? 'API' : 'API' %>
+                </a>
+            <% } %>
+        </div>
+        <p class="fs-xs mb-0">
+            <%= apiServerCount ? apiServerCount.toLocaleString() : botdata.serverCount.toLocaleString() %>
+        </p>
+    </div>
+</div>
+<% } %>
+
+				    <% if (botdata.framework) { %>
+    <div class="col d-flex align-items-center border-end-sm border-bottom p-3">
+      <i class="bx bx-code-alt text-primary fs-4"></i>
+      <div class="ps-2 ms-1">
+        <h3 class="h6 mb-0">Framework</h3>
+        <p class="fs-xs mb-0">
+          <% 
+            const frameworkNames = {
+              "Discord.js": "Discord.js (JavaScript)",
+              "Discord.py": "Discord.py (Python)",
+              "Eris": "Eris (JavaScript)",
+              "JDA": "JDA (Java)",
+              "Discord4J": "Discord4J (Java)",
+              "Disnake": "Disnake (Python)",
+              "Nextcord": "Nextcord (Python)",
+              "Pycord": "Pycord (Python)",
+              "Other": "Inny"
+            };
+          %>
+          <%= frameworkNames[botdata.framework] || botdata.framework %>
+        </p>
+      </div>
+    </div>
+    <% } %>
+                <div class="col d-flex align-items-center border-end-sm border-bottom p-3">
+                  <i class="bx bx-purchase-tag text-primary fs-4"></i>
+                  <div class="ps-2 ms-1">
+                    <h3 class="h6 mb-0">Tagi</h3>
+                    <% botdata.tags.forEach(tag => { %>
+                    <a href="/bots/<%= tag %>" class="badge bg-secondary me-2 mb-2"><%= tag %></a>
+                    <% }) %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <% if (req.user) { %>
+    <% if (req.user.id == botdata.ownerID || botdata.coowners.includes(req.user.id)) { %>
+    <div class="modal fade" id="deleteBot" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Napewno? ;d</h5>
+            <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <p>Po usunięciu bota zostaje on usunięty z bazy danych i nikt nie będzie mógł go już odwiedzić.</p>
+          </div>
+          <p id="botDeleteError"></p>
+          <div class="modal-footer">
+            <button class="btn btn-secondary btn-sm" type="button" data-bs-dismiss="modal">Zamknij</button>
+            <button class="btn btn-danger btn-sm" type="button" id="botDeletebtn">Usuń</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      $('#botDeletebtn').click(function() {
+        fetch('/bots/delete/<%= botdata.botID %>', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(res => res.json()).then(data => {
+          if (data.error == false) {
+            $('#botDeleteError').html('<div class="alert alert-success" role="alert">Bot został pomyślnie usunięty! Przekierowanie za 5 sekund...</div>');
+            setTimeout(function() {
+              window.location.href = '/';
+            }, 5000);
+          } else if (data.error == true) {
+            $('#botDeleteError').html(`<div class="alert alert-danger" role="alert">${data.message}</div>`);
+          }
+        })
+      })
+    </script>
+    <% } %>
+    <% } %>
+
+
+
+
+    <section class="container mb-4 pb-lg-3">
+      <% if (botdata.rates && botdata.rates?.length > 0) { %>
+      <h2 class="h1 py-4"><span id="commentsCount"><%= botdata.rates?.length %></span> Opinii</h2>
+      <% } else { %>
+      <h2 class="h1 py-4"><span id="commentsCount">0</span> Opinii</h2>
+      <% } %>
+
+  <% if (req.user) { %>
+      <div class="position-relative ps-4 mt-4">
+        <span class="position-absolute top-0 start-0 w-1 h-100 bg-primary"></span>
+        <div class="d-flex align-items-center justify-content-between ps-3 pb-2 mb-1">
+          <div class="d-flex align-items-center me-3">
+            <img src="<%= `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}` %>" class="rounded-circle" width="40" height="40" alt="avatar">
+            <div class="ps-3">
+              <h6 class="fw-semibold mb-0"><%= req.user.username %></h6>
+              <span class="fs-sm text-muted">
+              </span>
+            </div>
+          </div>
+          <button class="btn btn-outline-secondary my-1 me-1" id="postComment">Wyślij</button>
+        </div>
+    <div class="d-flex align-items-center justify-content-between ps-3 pb-2 mb-1">
+      <div class="rating">
+        <input type="radio" name="rating" value="5" id="5"><label for="5">☆</label>
+        <input type="radio" name="rating" value="4" id="4"><label for="4">☆</label>
+        <input type="radio" name="rating" value="3" id="3"><label for="3">☆</label>
+        <input type="radio" name="rating" value="2" id="2"><label for="2">☆</label>
+        <input type="radio" name="rating" value="1" id="1"><label for="1">☆</label>
+      </div>
+    </div>
+    <textarea class="form-control" rows="3" name="botComment" id="botComment" required></textarea>
+  </div>
+  <% } else { %>
+  <div class="position-relative ps-4 mt-4">
+    <span class="position-absolute top-0 start-0 w-1 h-100 bg-primary"></span>
+    <div class="d-flex align-items-center justify-content-between ps-3 pb-2 mb-1">
+      <div class="d-flex align-items-center me-3">
+        <img src="https://cdn.discordapp.com/embed/avatars/0.png" class="rounded-circle" width="40" height="40" alt="avatar">
+        <div class="ps-3">
+          <h6 class="fw-semibold mb-0">Ziomek</h6>
+          <span class="fs-sm text-muted"><a href="#" class="fw-semibold text-decoration-none">@Ziomek</a></span>
+        </div>
+      </div>
+      <button class="btn btn-outline-secondary my-1 me-1" type="button">Opublikuj</button>
+    </div>
+    <textarea class="form-control" rows="3" placeholder="Nie możesz komentować, ponieważ nie jesteś zalogowany." disabled></textarea>
+  </div>
+  <% } %>
+
+  <div class="position-relative ps-4 mt-4">
+    <div id="successComment"></div>
+  </div>
+
+      <div class="border-bottom ps-lg-2 ps-xxl-0" style="padding-bottom: 3rem !important">
+        <% { %>
+        <% for (let i = 5; i > 0; i--) { %>
+        <% let rates = botdata.rates?.filter(rate => rate.star_rate == i).length %>
+        <div class="d-flex align-items-center mb-2">
+          <div class="text-nowrap me-3">
+            <span class="d-inline-block align-middle">
+              <% if (i == 1) {%>
+              1&nbsp;
+              <% } else {%>
+              <%= i %>
+              <% } %>
+            </span>
+            <i class="bx bx-star opacity-70 align-middle ms-1"></i>
+          </div>
+          <div class="progress w-100">
+            <% let numberRate = botdata.rates?.filter(r => r.star_rate == i)?.length / botdata.rates?.length * 100 ? botdata.rates?.filter(r => r.star_rate == i)?.length / botdata.rates?.length * 100 : 0 %>
+            <div class="progress-bar bg-gradient-primary" role="progressbar" style="width: <%= numberRate %>%;" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+              <%= rates %>
+            </div>
+          </div>
+        </div>
+        <% } %>
+        <% } %>
+      </div>
+
+      <div id="newComment"></div>
+
+      <% if (botdata.rates && botdata.rates?.length > 0) { %>
+      <% botdata.rates?.sort(function(a, b) {return new Date(b.date) - new Date(a.date)}); %>
+      <% botdata.rates?.map(rate => { %>
+      <% let rateAuthor = rateAuthors.find(author => {return author.id === rate.author;}); %>
+<div class="position-relative ps-4 mt-4" id="commentID_<%= rate.id %>">
+  <span class="position-absolute top-0 start-0 w-1 h-100 bg-primary"></span>
+  <div class="d-flex align-items-center justify-content-between ps-3 pb-2 mb-1">
+    <div class="d-flex align-items-center me-3">
+      <% if (rateAuthor.avatar) { %>
+        <img src="https://cdn.discordapp.com/avatars/<%= rateAuthor.id %>/<%= rateAuthor.avatar %>.png" class="rounded-circle" width="48" alt="Avatar">
+      <% } else { %>
+        <img src="https://discordzik.pl/assets/img/def.jpg" class="rounded-circle" width="48" alt="Default Avatar">
+      <% } %>
+      <div class="ps-3">
+        <div class="d-flex align-items-center">
+                        <a href="/profile/<%= rateAuthor.id %>" class="fw-semibold mb-0 me-2 text-decoration-none">
+                <h6 class="fw-semibold mb-0 me-2"><%= rateAuthor.username %></h6>
+              </a>
+          <!-- Star Rating next to username -->
+          <% for (let i = 0; i < rate.star_rate; i++) { %>
+            <i class="bx bxs-star text-warning"></i>
+          <% } %>
+        </div>
+        <span class="d-flex align-items-center fs-sm text-muted">
+          <span class="role-icon me-1">
+            <% if (bot.guilds.cache.get(global.config.server.id)?.members.cache.get(rateAuthor.id)?.roles.highest.name === "Admin") { %>
+              <i class="bx bx-shield-alt-2 text-warning"></i>
+			<% } else if (bot.guilds.cache.get(global.config.server.id)?.members.cache.get(rateAuthor.id)?.roles.highest.name === "Support") { %>
+              <i class="bx bx-support text-info"></i>
+            <% } else if (bot.guilds.cache.get(global.config.server.id)?.members.cache.get(rateAuthor.id)?.roles.highest.name === "Partner") { %>
+              <i class="bx bx-bolt-circle text-info"></i>
+            <% } else if (bot.guilds.cache.get(global.config.server.id)?.members.cache.get(rateAuthor.id)?.roles.highest.name === "Patron") { %>
+              <i class="bx bx-donate-heart text-warning"></i>
+            <% } else if (bot.guilds.cache.get(global.config.server.id)?.members.cache.get(rateAuthor.id)?.roles.highest.name === "Booster") { %>
+              <i class="bx bx-rocket text-info"></i>
+            <% } else { %>
+              <i class="bx bx-user text-muted"></i>
+            <% } %>
+          </span>
+              <a href="/profile/<%= rateAuthor.id %>" class="fw-semibold text-decoration-none">
+                <%- bot.guilds.cache.get(global.config.server.id)?.members.cache.get(rateAuthor.id)?.roles.highest.name || "Użytkownik" %>
+              </a>
+          <span class="ms-2 fs-sm text-muted date-hover">
+  <%= moment(rate.date).fromNow() %>
+  <span class="date-tooltip">
+    <%= moment(rate.date).format('DD MMMM YYYY, HH:mm') %>
+  </span>
+</span> <!-- Added "ms-2" for margin -->
+        </span>
+      </div>
+	      </div>
+</div>
+        <p class="ps-3 mb-0"><%= rate.message %></p>
+      </div>
+	  <div class="ps-3 mt-2">
+  <% if (rate.replies && rate.replies.length > 0) { %>
+  <div class="replies-container mb-3 ps-3 border-start border-2">
+    <% rate.replies.forEach(reply => { 
+      let replyAuthor = rateAuthors.find(author => author.id === reply.author);
+    %>
+<div class="reply-item mb-2 ps-3 pt-2 pb-2 rounded">
+  <div class="d-flex align-items-start">
+    <% if (reply.authorAvatar) { %>
+      <img src="<%= reply.authorAvatarURL || `https://cdn.discordapp.com/avatars/${reply.author}/${reply.authorAvatar}.png` %>" 
+           class="rounded-circle me-2" width="40" height="40" alt="Avatar"
+           onerror="this.src='https://discordzik.pl/assets/img/def.jpg'">
+    <% } else { %>
+      <img src="https://discordzik.pl/assets/img/def.jpg" class="rounded-circle me-2" width="40" height="40" alt="Default Avatar">
+    <% } %>
+    <div class="w-100">
+      <div class="d-flex justify-content-between">
+        <div>
+          <a href="/profile/<%= reply.author %>" class="text-decoration-none">
+                  <h6 class="fw-semibold mb-0"><%= reply.authorName || "Nieznany" %></h6>
+                </a>
+          <div class="d-flex align-items-center fs-sm text-muted mt-1">
+    <span class="role-icon me-1">
+      <% if (bot.guilds.cache.get(global.config.server.id)?.members.cache.get(reply.author)?.roles.highest.name === "Admin") { %>
+        <i class="bx bx-shield-alt-2 text-warning"></i>
+	  <% } else if (bot.guilds.cache.get(global.config.server.id)?.members.cache.get(rateAuthor.id)?.roles.highest.name === "Support") { %>
+        <i class="bx bx-support text-info"></i>
+      <% } else if (bot.guilds.cache.get(global.config.server.id)?.members.cache.get(reply.author)?.roles.highest.name === "Partner") { %>
+        <i class="bx bx-bolt-circle text-info"></i>
+      <% } else if (bot.guilds.cache.get(global.config.server.id)?.members.cache.get(reply.author)?.roles.highest.name === "Patron") { %>
+        <i class="bx bx-donate-heart text-warning"></i>
+      <% } else if (bot.guilds.cache.get(global.config.server.id)?.members.cache.get(reply.author)?.roles.highest.name === "Booster") { %>
+        <i class="bx bx-rocket text-info"></i>
+      <% } else { %>
+        <i class="bx bx-user text-muted"></i>
+      <% } %>
+    </span>
+                  <a href="/profile/<%= reply.author %>" class="fw-semibold text-decoration-none">
+                    <%- bot.guilds.cache.get(global.config.server.id)?.members.cache.get(reply.author)?.roles.highest.name || "Użytkownik" %>
+                  </a>
+    <span class="ms-2"><%= moment(reply.date).fromNow() %></span>
+  </div>
+</div>
+        <% if (req.user && reply.author === req.user.id) { %>
+          <a href="https://discordzik.pl/profile/<%= reply.author %>/comments" class="btn btn-outline-primary btn-sm ms-auto">
+            Usuń
+          </a>
+        <% } %>
+
+      </div>
+
+          <p class="mb-0"><%= reply.message %></p>
+        </div>
+      </div>
+    </div>
+    <% }); %>
+  </div>
+<% } %>
+
+
+  <% if (req.user) { %>
+    <div class="reply-section mt-2">
+      <button class="btn btn-link p-0 text-decoration-none reply-toggle" 
+              data-comment-id="<%= rate.id %>">
+        <i class="bx bx-reply me-1"></i>Odpowiedz
+      </button>
+      
+      <div class="reply-form mt-2 d-none" data-comment-id="<%= rate.id %>">
+        <div class="input-group">
+          <input type="text" class="form-control reply-input" placeholder="Napisz odpowiedź...">
+          <button class="btn btn-outline-primary reply-submit">Wyślij</button>
+          <button class="btn btn-outline-secondary reply-cancel">Anuluj</button>
+        </div>
+      </div>
+    </div>
+  <% } %>
+</div>
+    <% }); %>
+  <% } else { %>
+  <div class="py-4">
+    <div class="d-flex align-items-center justify-content-between pb-2 mb-1">
+      <div class="d-flex align-items-center me-3">
+        <div class="ps-3">
+          <h6 class="mb-0" id="noReviewsYet">Brak komentarzy</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% } %>
+
+    </section>
+
+<!-- Popup Modal -->
+<div id="modernPopup" class="modal fade" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-light" style="background-color: #0b0f19; border-radius: 10px; overflow: hidden;">
+      
+      <!-- Modal Header -->
+      <div class="modal-header border-0 position-relative" style="padding: 1.5rem;">
+        <div class="d-flex align-items-center w-100">
+          <img src="https://discordzik.pl/assets/img/emoji/love.png" alt="Love Emoji" style="width: 60px; height: 60px; border-radius: 50%; margin-right: 1rem;">
+          <h5 class="modal-title fw-semibold mb-0">Ostrzeżenie</h5>
+        </div>
+        <button type="button" class="btn-close btn-close-white position-absolute end-0" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Modal Body -->
+      <div class="modal-body" style="padding: 2rem; font-size: 1rem; line-height: 1.5;">
+        <p class="mb-3">
+          Przechodzisz na stronę zewnętrzną, która nie jest zarządzana przez Discordzik. Upewnij się, że masz zaufanie do tej witryny przed kontynuacją.
+        </p>
+        <div id="popupDomain" class="alert alert-info d-flex align-items-center mt-3" style="gap: 0.5rem; background-color: #2d2d2d; border: none;">
+          <i class="bx bx-globe fs-4 text-info"></i>
+          <span id="domainDisplay">Ładowanie domeny...</span>
+        </div>
+        <div class="alert alert-warning d-flex align-items-center mt-3" style="gap: 0.5rem; background-color: #2d2d2d; border: none;">
+          <i class="bx bx-error-circle fs-4 text-warning"></i>
+          <span>Opuszczenie strony oznacza akceptację ryzyka.</span>
+        </div>
+      </div>
+      
+      <!-- Modal Footer -->
+      <div class="modal-footer justify-content-between border-0" style="padding: 1.5rem;">
+        <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal" style="padding: 0.75rem 1.5rem;">Zamknij</button>
+        <a id="confirmRedirect" href="#" class="btn btn-outline-info mt-3 mb-3 d-flex align-items-center justify-content-center" style="padding: 0.75rem 1.5rem;">
+          Przejdź dalej
+        </a>
+      </div>
+      
+    </div>
+  </div>
+</div>
+<script>
+(function() {
+  document.addEventListener('DOMContentLoaded', () => {
+    const popup = document.getElementById('modernPopup'); // Modal z ID "modernPopup"
+    const confirmRedirect = document.getElementById('confirmRedirect'); // Przycisk "Przejdź dalej"
+    const domainDisplay = document.getElementById('domainDisplay'); // Element do wyświetlenia domeny
+    let redirectURL = null;
+
+    // Event Delegation for dynamically added elements
+    document.body.addEventListener('click', (event) => {
+      const button = event.target.closest('[data-redirect]');
+      if (!button) return;
+
+      event.preventDefault(); // Zapobiegamy domyślnemu działaniu linku
+      redirectURL = button.getAttribute('href'); // Pobieramy URL
+      const urlObject = new URL(redirectURL); // Tworzymy obiekt URL, by wyciągnąć domenę
+      domainDisplay.textContent = urlObject.hostname; // Wyświetlamy domenę w modalu
+
+      const modalInstance = new bootstrap.Modal(popup); // Tworzymy instancję modala
+      modalInstance.show(); // Pokazujemy modal
+    });
+
+    // Obsługa kliknięcia "Przejdź dalej"
+    confirmRedirect.addEventListener('click', () => {
+      if (redirectURL) {
+        window.open(redirectURL, '_blank'); // Otwórz link w nowej karcie
+      }
+    });
+  });
+})();
+</script>
+<style>
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-content {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.popup-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+  /* Nowe style dla tooltipa */
+  .date-hover {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+  }
+  
+  .date-hover .date-tooltip {
+    visibility: hidden;
+    width: 180px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 8px;
+    position: absolute;
+    z-index: 1000;
+    bottom: 80%;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 13px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+    margin-bottom: 8px;
+  }
+  
+  .date-hover .date-tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
+  }
+  
+  .date-hover:hover .date-tooltip {
+    visibility: visible;
+    opacity: 1;
+  }
+</style>
+
+
+  </main>
+  <%- include('../partials/footer') %>
+</body>
+
+</html>
+
+<style>
+  .rating {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: left;
+  }
+
+  .rating>input {
+    display: none;
+  }
+
+  .rating>label {
+    position: relative;
+    width: 1.1em;
+    font-size: 30px;
+    color: #FFD700;
+    cursor: pointer;
+  }
+
+  .rating>label::before {
+    content: "\2605";
+    position: absolute;
+    opacity: 0;
+  }
+
+  .rating>label:hover:before,
+  .rating>label:hover~label:before {
+    opacity: 1 !important;
+  }
+
+  .rating>input:checked~label:before {
+    opacity: 1;
+  }
+
+  .rating:hover>input:checked~label:before {
+    opacity: 0.4;
+  }
+</style>
+
+
+<script>
+  $('#voteBot').click(function(e) {
+    e.preventDefault();
+    $.ajax({
+      type: 'POST',
+      url: '/bot/<%= botdata.botID %>/vote',
+      success: function(data) {
+        if (data.error == false) {
+          document.getElementById("voteBot").classList.add("disabled");
+          document.getElementById("voteBot").innerHTML = '<i class="bx bx-like me-2 lead"></i>Zagłosowane'
+          $('#result').html('<div class="alert alert-success" role="alert">' + data.message + '</div>');
+          setTimeout(function() {
+            document.getElementById("result").innerHTML = "";
+            document.getElementById("voteBot").classList.remove("disabled");
+            document.getElementById("voteBot").innerHTML = '<i class="bx bx-like me-2 lead"></i>Zagłosuj <span class="badge bg-primary shadow-primary ms-3"><%= botdata.votes + 1 %></span>'
+          }, 5000);
+        } else if (data.error == true) {
+          document.getElementById("voteBot").classList.add("disabled");
+          document.getElementById("voteBot").innerHTML = '<i class="bx bx-like me-2 lead"></i>Głosowanie <span class="badge bg-primary shadow-primary ms-3">Zablokowane</span>'
+          $('#result').html('<div class="alert alert-danger" role="alert">' + data.message + '</div>');
+          setTimeout(function() {
+            document.getElementById("result").innerHTML = "";
+            document.getElementById("voteBot").classList.remove("disabled");
+            document.getElementById("voteBot").innerHTML = '<i class="bx bx-like me-2 lead"></i>Zagłosuj <span class="badge bg-primary shadow-primary ms-3"><%= botdata.votes + 1 %></span>'
+          }, 5000);
+        }
+      },
+    });
+  });
+</script>
+
+<% if (req.user) { %>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  document.onclick = function (e) {
+    if (e.target.id === "postComment") {
+      e.preventDefault();
+
+      // Ensure necessary elements exist
+      const botComment = document.getElementById("botComment");
+      const ratingInput = document.querySelector('input[name="rating"]:checked');
+      const botID = '<%= botdata.botID %>';
+
+      if (!botComment) {
+        console.error("Comment input field not found!");
+        return;
+      }
+
+      const comment = botComment.value;
+      const stars = ratingInput?.value || "0";
+
+      fetch("/bots/comment", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          botID,
+          comment,
+          stars,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (!data.error) {
+            // Success handling
+            const successDiv = document.getElementById("successComment");
+            successDiv.innerHTML = `
+              <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <div class="d-flex align-items-center">
+                  <i class="bx bxs-check-circle text-success fs-4 me-2"></i>
+                  <span>${data.message}</span>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>`;
+            
+            const newCommentDiv = document.getElementById("newComment");
+            newCommentDiv.innerHTML = `
+              <div class="position-relative ps-4 mt-4" id="commentID_${data.id}">
+                <div class="d-flex align-items-center justify-content-between ps-3 pb-2 mb-1">
+                  <span class="position-absolute top-0 start-0 w-1 h-100 bg-primary"></span>
+                  <div class="d-flex align-items-center me-3">
+                    <img src="https://cdn.discordapp.com/avatars/<%= req.user.id %>/<%= req.user.avatar %>.png" class="rounded-circle" width="48" alt="Avatar">
+                    <div class="ps-3">
+                      <h6 class="fw-semibold mb-0">
+                        <%= req.user.username %>
+                        <span id="newstars"></span>
+                      </h6>
+                      <span class="fs-sm text-muted"><%= moment().fromNow() %></span>
+                    </div>
+                  </div>
+                </div>
+                <p class="ps-3 mb-0">
+                  <a href="/profile/<%= req.user.id %>" class="fw-semibold text-decoration-none">@<%= req.user.username %></a> ${comment}
+                </p>
+              </div>`;
+            
+            botComment.value = ""; // Clear the comment field
+            document.getElementById("noReviewsYet")?.remove(); // Remove 'No Reviews Yet' placeholder
+            ratingInput.checked = false; // Uncheck the rating
+
+            // Update stars and comments count
+            data.stars.forEach((star) => {
+              document.getElementById(`${star}stars`).style.width = "100%";
+            });
+            document.getElementById("commentsCount").innerHTML =
+              parseInt(document.getElementById("commentsCount").innerHTML) + 1;
+
+            // Hide success message after 5 seconds
+            setTimeout(() => {
+              successDiv.classList.add("d-none");
+            }, 5000);
+          } else {
+            // Error handling
+            const errorDiv = document.getElementById("successComment");
+            errorDiv.innerHTML = `
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <div class="d-flex align-items-center">
+                  <i class="bx bxs-error-circle text-danger fs-4 me-2"></i>
+                  <span>${data.message}</span>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>`;
+          }
+        })
+        .catch((err) => console.error("Fetch error:", err));
+    }
+  };
+});
+
+  // Dodaj to na końcu istniejącego skryptu
+document.addEventListener('click', function(e) {
+  // Obsługa przycisku "Odpowiedz"
+  if (e.target.classList.contains('reply-toggle') || e.target.closest('.reply-toggle')) {
+    const toggleBtn = e.target.classList.contains('reply-toggle') ? e.target : e.target.closest('.reply-toggle');
+    const replySection = toggleBtn.closest('.reply-section');
+    const replyForm = replySection.querySelector('.reply-form');
+    
+    replyForm.classList.toggle('d-none');
+    if (!replyForm.classList.contains('d-none')) {
+      replyForm.querySelector('.reply-input').focus();
+    }
+  }
+  
+  // Obsługa wysyłania odpowiedzi
+  if (e.target.classList.contains('reply-submit')) {
+    const replyForm = e.target.closest('.reply-form');
+    const commentId = replyForm.getAttribute('data-comment-id');
+    const replyInput = replyForm.querySelector('.reply-input');
+    const message = replyInput.value.trim();
+    
+    if (!message) return;
+    
+    fetch("/bots/comment/reply", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        commentId: commentId,
+        botID: '<%= botdata.botID %>',
+        message: message
+      })
+    }).then(res => res.json()).then(data => {
+      if (data.error === false) {
+        // Dodaj nową odpowiedź do widoku
+        const repliesContainer = replyForm.closest('.reply-section').querySelector('.replies-container') || 
+          (() => {
+            const container = document.createElement('div');
+            container.className = 'replies-container mb-3';
+            replyForm.closest('.reply-section').insertBefore(container, replyForm);
+            return container;
+          })();
+        
+const replyElement = document.createElement('div');
+replyElement.className = 'reply-item mb-2 ps-3 border-start border-2';
+replyElement.innerHTML = `
+  <div class="d-flex align-items-center">
+    <img src="https://cdn.discordapp.com/avatars/${data.reply.author}/${data.reply.authorAvatar}.png" 
+         class="rounded-circle me-2" width="32" alt="Avatar">
+    <div>
+      <span class="fw-semibold">${data.reply.authorName}</span>
+      <span class="text-muted ms-2 fs-sm">teraz</span>
+      <p class="mb-0">${message}</p>
+    </div>
+  </div>
+`;
+        
+        repliesContainer.appendChild(replyElement);
+        replyInput.value = '';
+        replyForm.classList.add('d-none');
+      } else {
+        alert(data.message || 'Wystąpił błąd podczas wysyłania odpowiedzi');
+      }
+    }).catch(error => {
+      console.error('Error:', error);
+      alert('Wystąpił błąd podczas wysyłania odpowiedzi');
+    });
+  }
+  
+  // Obsługa anulowania odpowiedzi
+  if (e.target.classList.contains('reply-cancel')) {
+    const replyForm = e.target.closest('.reply-form');
+    replyForm.querySelector('.reply-input').value = '';
+    replyForm.classList.add('d-none');
+  }
+});
+</script>
+<% } %>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boty Discord z tagiem <%= req.params.tag %> | Discordzik.pl</title>
+  <meta name="description" content="Lista najlepszych polskich botów Discord oznaczonych tagiem <%= req.params.tag %>. Znajdź idealnego bota dla swojego serwera!">
+  
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://discordzik.pl/bots/<%= encodeURIComponent(req.params.tag) %>" />
+  
+  <link rel="icon" href="/assets/img/favicon.png" type="image/png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Boty Discord z tagiem <%= req.params.tag %> | Discordzik.pl">
+  <meta property="og:description" content="Lista polskich botów Discord oznaczonych tagiem <%= req.params.tag %>">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://discordzik.pl/bots/<%= encodeURIComponent(req.params.tag) %>">
+  <meta property="og:image" content="/assets/img/banner.png">
+  
+  <meta name="robots" content="index, follow">
+  
+  <!-- Schema.org markup -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "Boty Discord z tagiem <%= req.params.tag %>",
+      "description": "Lista polskich botów Discord oznaczonych tagiem <%= req.params.tag %>",
+      "url": "https://discordzik.pl/bots/<%= encodeURIComponent(req.params.tag) %>"
+    }
+  </script>
+</head>
+<%- include('../partials/head') %>
+<body>
+  <%- include('../partials/spinner') %>
+  <main class="page-wrapper">
+    <%- include('../partials/header') %>
+
+    <section class="position-relative py-5 border-bottom">
+      <div class="container mt-4 mb-lg-5 pt-lg-2 pb-5">
+        <!-- Breadcrumbs -->
+        <nav aria-label="breadcrumb" class="mb-4 d-flex justify-content-center">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Strona główna</a></li>
+            <li class="breadcrumb-item"><a href="/bots">Boty</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><%= req.params.tag %></li>
+          </ol>
+        </nav>
+
+        <!-- Nagłówek -->
+        <div class="text-center mb-5">
+          <h1 class="display-5 fw-bold mb-3">Boty z tagiem: <span class="text-primary"><%= req.params.tag %></span></h1>
+          <p class="lead">
+            <% if (bots.length > 0) { %>
+              Znaleziono <strong><%= bots.length %></strong> botów z tym tagiem. Dodaj funkcjonalności do swojego serwera!
+            <% } else { %>
+              Aktualnie nie mamy botów z tagiem <%= req.params.tag %>. Możesz dodać swojego jako pierwszego!
+            <% } %>
+          </p>
+        </div>
+
+        <!-- Sortowanie -->
+        <div class="d-flex justify-content-end mb-4">
+          <div class="btn-group gap-3" role="group" aria-label="Sortowanie botów">
+            <button onclick="sortBots('votes')" 
+                    class="btn btn-outline-primary px-3 py-2"
+                    aria-label="Sortuj według głosów">
+              <i class="fas fa-thumbs-up me-2"></i>Najpopularniejsze
+            </button>
+            <button onclick="sortBots('random')" 
+                    class="btn btn-outline-primary px-3 py-2"
+                    aria-label="Losowe sortowanie">
+              <i class="fas fa-random me-2"></i>Losowe
+            </button>
+          </div>
+        </div>
+
+        <!-- Lista botów -->
+        <div class="row g-4" id="bots-container">
+          <% if (bots.length > 0) { %>
+            <% bots.slice((page - 1) * 10, page * 10).forEach((botItem, index) => { 
+              const botUser = bot.users.cache.get(botItem.botID);
+              const botName = botUser?.username || botItem.username || 'Nieznany bot';
+              const botAvatar = botUser?.displayAvatarURL() || 'https://cdn.discordapp.com/embed/avatars/0.png';
+              const status = bot.guilds.cache.get(config.server.id)?.members.cache.get(botItem.botID)?.presence?.status || 'offline';
+            %>
+              <div class="col-md-6 col-lg-4" data-votes="<%= botItem.votes || 0 %>">
+                <div class="card h-100 shadow-sm">
+                  <a href="/bot/<%= botItem.botID %>" class="text-decoration-none text-reset">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center mb-3">
+                        <img src="<%= botAvatar %>" 
+                             class="rounded-circle me-3" 
+                             width="60" 
+                             height="60" 
+                             alt="Avatar bota <%= botName %>">
+                        <div>
+                          <h3 class="h5 mb-0"><%= botName %></h3>
+                          <small class="d-flex align-items-center mt-1">
+                            <% if (status === 'online') { %>
+                              <span class="badge bg-success me-2"></span> Online
+                            <% } else if (status === 'idle') { %>
+                              <span class="badge bg-warning me-2"></span> Bezczynny
+                            <% } else if (status === 'dnd') { %>
+                              <span class="badge bg-danger me-2"></span> Nie przeszkadzać
+                            <% } else { %>
+                              <span class="badge bg-secondary me-2"></span> Offline
+                            <% } %>
+                          </small>
+                        </div>
+                      </div>
+                      <p class="text-muted"><%= botItem.shortDesc || 'Brak opisu' %></p>
+                      <div class="d-flex flex-wrap gap-2 mt-auto">
+                        <% if (botItem.tags && botItem.tags.length > 0) { %>
+                          <% botItem.tags.slice(0, 3).forEach(t => { %>
+                            <span class="badge bg-secondary"><%= t %></span>
+                          <% }) %>
+                        <% } %>
+                        <% if (botItem.promote) { %>
+                          <span class="badge bg-warning text-dark">PRO</span>
+                        <% } %>
+                        <% if (botItem.Date > Date.now() - 604800000) { %>
+                          <span class="badge bg-success">NOWY</span>
+                        <% } %>
+                        <span class="badge bg-primary ms-auto">
+                          <i class="fas fa-thumbs-up me-1"></i> <%= botItem.votes || 0 %>
+                        </span>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            <% }) %>
+          <% } else { %>
+            <div class="col-12 text-center py-5">
+              <i class="fas fa-robot fa-3x text-muted mb-3"></i>
+              <h3 class="h4">Brak botów z tym tagiem</h3>
+              <a href="/add-bot" class="btn btn-primary mt-3">Dodaj swojego bota</a>
+            </div>
+          <% } %>
+        </div>
+
+        <!-- Paginacja -->
+        <% if (bots.length > 10) { %>
+          <nav aria-label="Nawigacja stron" class="mt-5">
+            <ul class="pagination justify-content-center">
+              <% const totalPages = Math.ceil(bots.length / 10) %>
+              <% const startPage = Math.max(1, page - 2) %>
+              <% const endPage = Math.min(totalPages, page + 2) %>
+              
+              <% if (page > 1) { %>
+                <li class="page-item">
+                  <a class="page-link" href="?page=<%= page - 1 %>" aria-label="Poprzednia">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+              <% } %>
+              
+              <% for (let p = startPage; p <= endPage; p++) { %>
+                <li class="page-item <%= p === page ? 'active' : '' %>">
+                  <a class="page-link" href="?page=<%= p %>"><%= p %></a>
+                </li>
+              <% } %>
+              
+              <% if (page < totalPages) { %>
+                <li class="page-item">
+                  <a class="page-link" href="?page=<%= page + 1 %>" aria-label="Następna">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              <% } %>
+            </ul>
+          </nav>
+        <% } %>
+
+        <!-- Popularne tagi -->
+        <div class="mt-5 pt-5 border-top">
+          <h3 class="h4 mb-4">Popularne tagi botów</h3>
+          <div class="d-flex flex-wrap gap-2">
+            <% if (tags && tags.length > 0) { %>
+              <% tags.sort((a, b) => b.count - a.count).forEach(t => { %>
+                <a href="/bots/<%= t.tag %>" 
+                   class="btn btn-sm btn-outline-primary <%= t.tag === req.params.tag ? 'active' : '' %>">
+                  <%= t.tag %> <span class="badge bg-primary rounded-pill ms-1"><%= t.count %></span>
+                </a>
+              <% }) %>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sekcja SEO -->
+    <section class="container my-5 py-3">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <h2 class="h3 mb-4">Boty Discord z tagiem <%= req.params.tag %></h2>
+          <p>
+            Na tej stronie znajdziesz wszystkie polskie boty Discord oznaczone tagiem <strong><%= req.params.tag %></strong>. 
+            Niezależnie czy szukasz bota moderacyjnego, muzycznego, gamingowego czy utility, nasza lista pomoże Ci znaleźć idealne rozwiązanie dla Twojego serwera.
+          </p>
+          <p>
+            Każdy bot jest weryfikowany przez nasz zespół, aby zapewnić bezpieczeństwo i jakość. Możesz sortować boty według 
+            popularności lub przeglądać je w losowej kolejności. Dodając bota do swojego serwera, zyskujesz dodatkowe funkcjonalności
+            które ułatwią zarządzanie społecznością i zwiększą interakcje między użytkownikami.
+          </p>
+          
+          <h3 class="h4 mt-4 mb-3">Dlaczego warto używać botów Discord?</h3>
+          <ul class="list-unstyled">
+            <li class="mb-2"><i class="fas fa-check-circle text-primary me-2"></i> Automatyzacja moderacji i zarządzania serwerem</li>
+            <li class="mb-2"><i class="fas fa-check-circle text-primary me-2"></i> Dodatkowe funkcje rozrywkowe dla członków</li>
+            <li class="mb-2"><i class="fas fa-check-circle text-primary me-2"></i> Integracja z innymi platformami i usługami</li>
+            <li class="mb-2"><i class="fas fa-check-circle text-primary me-2"></i> Statystyki i analizy aktywności na serwerze</li>
+            <li class="mb-2"><i class="fas fa-check-circle text-primary me-2"></i> Własne komendy dostosowane do potrzeb społeczności</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <%- include('../partials/footer') %>
+
+    <script>
+      function sortBots(method) {
+        const container = document.getElementById('bots-container');
+        if (!container) return;
+        
+        const bots = Array.from(container.children);
+        
+        if (method === 'votes') {
+          bots.sort((a, b) => {
+            const votesA = parseInt(a.dataset.votes) || 0;
+            const votesB = parseInt(b.dataset.votes) || 0;
+            return votesB - votesA;
+          });
+        } else if (method === 'random') {
+          bots.sort(() => Math.random() - 0.5);
+        }
+        
+        bots.forEach(bot => container.appendChild(bot));
+      }
+    </script>
+  </main>
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+  <title>Wydarzenia na Serwerach Discord | Discordzik.pl</title>
+  <link rel="icon" href="/assets/img/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="/assets/img/favicon.ico" type="image/x-icon">
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  <!-- Preload zasobów -->
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.css" as="style">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preload" href="/assets/img/events-banner.jpg" as="image">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick-theme.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css">
+
+  <!-- Google Adsense -->
+  <meta name="google-adsense-account" content="ca-pub-9136474966764887">
+
+  <!-- SEO Meta Tags -->
+  <meta name="title" content="Wydarzenia na Serwerach Discord | Discordzik.pl">
+  <meta name="keywords" content="wydarzenia discord, eventy discord, konkursy discord, turnieje discord, spotkania discord, imprezy discord, serwery discord, polskie discordy, aktywności discord, kalendarz wydarzeń discord, społeczność discord, gry discord, spotkania online, eventy gamingowe">
+  <meta name="description" content="Sprawdź najciekawsze wydarzenia na polskich serwerach Discord! Konkursy, turnieje, spotkania i inne eventy w jednym miejscu. Dołącz do najlepszych społeczności!">
+  <meta name="theme-color" content="#5024f3">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="<%= config.website.url || 'https://discordzik.pl' %>/wydarzenia">
+  <meta property="og:title" content="Najlepsze Wydarzenia na Polskich Serwerach Discord | Discordzik.pl">
+  <meta property="og:description" content="Sprawdź najciekawsze wydarzenia na polskich serwerach Discord! Konkursy, turnieje, spotkania i inne eventy w jednym miejscu.">
+  <meta property="og:image" content="<%= config.website.url || 'https://discordzik.pl' %>/assets/img/events-banner.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="Discordzik.pl">
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="<%= config.website.url || 'https://discordzik.pl' %>/wydarzenia">
+  <meta property="twitter:title" content="Wydarzenia na Serwerach Discord | Discordzik.pl">
+  <meta property="twitter:description" content="Sprawdź najciekawsze wydarzenia na polskich serwerach Discord! Konkursy, turnieje, spotkania i inne eventy w jednym miejscu.">
+  <meta property="twitter:image" content="<%= config.website.url || 'https://discordzik.pl' %>/assets/img/events-banner.jpg">
+
+  <!-- Monetag Verification -->
+  <meta name="monetag" content="d3dd2bca9e602899e10b67bd13168aa5">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="<%= config.website.url || 'https://discordzik.pl' %>/wydarzenia">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Wydarzenia na Serwerach Discord",
+    "description": "Kalendarz najciekawszych wydarzeń na polskich serwerach Discord - konkursy, turnieje, spotkania i inne eventy",
+    "url": "<%= config.website.url || 'https://discordzik.pl' %>/wydarzenia",
+    "image": "<%= config.website.url || 'https://discordzik.pl' %>/assets/img/events-banner.jpg",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Discordzik.pl",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "<%= config.website.url || 'https://discordzik.pl' %>/assets/img/logo.png"
+      }
+    }
+  }
+  </script>
+  <%- include('../partials/head') %>
+  <style>
+    /* Główne style */
+    body {
+      padding-top: 80px; /* Dostosuj do wysokości swojego headeru */
+    }
+    
+    .event-card {
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      height: 100%;
+    }
+    .event-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+    .event-image {
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px 8px 0 0;
+    }
+    .server-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+    .badge-time {
+      background-color: #5024f3;
+      color: white;
+    }
+    .section-title {
+      position: relative;
+      margin-bottom: 2rem;
+    }
+    .section-title:after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -10px;
+      width: 50px;
+      height: 3px;
+      background: #5024f3;
+    }
+    
+    /* Responsywność */
+    @media (max-width: 991.98px) {
+      body {
+        padding-top: 60px; /* Mniejszy padding dla mniejszych ekranów */
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <%- include('../partials/spinner') %>
+  <main class="page-wrapper">
+    <%- include('../partials/header') %>
+    
+    <!-- Nagłówek -->
+    <section class="container pt-4 pb-4">
+      <div class="row gy-4">
+        <div class="col-12">
+          <h1 class="display-4">Aktualne wydarzenia</h1>
+          <p class="lead">Sprawdź co się dzieje na serwerach Discord</p>
+        </div>
+      </div>
+    </section>
+
+<!-- Trwające wydarzenia -->
+<!-- Trwające wydarzenia -->
+<section class="container mb-5">
+  <h2 class="section-title h3">Trwające wydarzenia</h2>
+  <% if (ongoingEvents.length > 0) { %>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <% ongoingEvents.forEach(event => { 
+          let guild = null;
+          let serverName = event.serverName || 'Unknown';
+          let serverIcon = event.serverIcon || null;
+          
+          if (sbot && sbot.guilds && sbot.guilds.cache) {
+              guild = sbot.guilds.cache.get(event.serverId);
+              if (guild) {
+                  serverName = guild.name;
+                  if (!serverIcon) {
+                      serverIcon = guild.iconURL({ format: 'webp', size: 128 });
+                  }
+              }
+          }
+      %>
+        <div class="col">
+          <div class="card event-card shadow-sm">
+            <% if (event.imageURL) { %>
+              <img src="<%= event.imageURL %>" class="card-img-top event-image" alt="<%= event.name %>">
+            <% } %>
+            
+            <div class="card-body">
+              <div class="d-flex align-items-center mb-3">
+                <% if (serverIcon) { %>
+                  <img src="<%= serverIcon %>" class="server-icon" alt="<%= serverName %>">
+                <% } else { %>
+                  <div class="server-icon bg-secondary d-flex align-items-center justify-content-center">
+                    <i class="fas fa-server text-white"></i>
+                  </div>
+                <% } %>
+                <h3 class="h5 mb-0"><%= serverName %></h3>
+              </div>
+              
+              <h4 class="card-title"><%= event.name %></h4>
+              <p class="card-text text-muted"><%= event.description || 'Brak opisu' %></p>
+              
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="badge badge-time">
+                  <i class="fas fa-clock me-1"></i>
+                  <%= moment(event.endDate).fromNow(true) %> do końca
+                </span>
+                <a href="/server/<%= event.serverVanityURL || event.serverId %>/events/<%= event.id %>" class="btn btn-sm btn-outline-primary">Szczegóły</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  <% } else { %>
+    <div class="alert alert-info">
+      Obecnie nie ma żadnych trwających wydarzeń.
+    </div>
+  <% } %>
+</section>
+
+<!-- Nadchodzące wydarzenia -->
+<section class="container mb-5 pb-5">
+  <h2 class="section-title h3">Nadchodzące wydarzenia</h2>
+  <% if (upcomingEvents.length > 0) { %>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <% upcomingEvents.forEach(event => { 
+          let guild = null;
+          let serverName = event.serverName || 'Unknown';
+          let serverIcon = event.serverIcon || null;
+          
+          if (sbot && sbot.guilds && sbot.guilds.cache) {
+              guild = sbot.guilds.cache.get(event.serverId);
+              if (guild) {
+                  serverName = guild.name;
+                  if (!serverIcon) {
+                      serverIcon = guild.iconURL({ format: 'webp', size: 128 });
+                  }
+              }
+          }
+      %>
+        <div class="col">
+          <div class="card event-card shadow-sm">
+            <% if (event.imageURL) { %>
+              <img src="<%= event.imageURL %>" class="card-img-top event-image" alt="<%= event.name %>">
+            <% } %>
+            
+            <div class="card-body">
+              <div class="d-flex align-items-center mb-3">
+                <% if (serverIcon) { %>
+                  <img src="<%= serverIcon %>" class="server-icon" alt="<%= serverName %>">
+                <% } else { %>
+                  <div class="server-icon bg-secondary d-flex align-items-center justify-content-center">
+                    <i class="fas fa-server text-white"></i>
+                  </div>
+                <% } %>
+                <h3 class="h5 mb-0"><%= serverName %></h3>
+              </div>
+              
+              <h4 class="card-title"><%= event.name %></h4>
+              <p class="card-text text-muted"><%= event.description || 'Brak opisu' %></p>
+              
+              <div class="d-flex justify-content-between align-items-center">
+                <span class="badge bg-secondary">
+                  <i class="fas fa-clock me-1"></i>
+                  <%= moment(event.startDate).fromNow() %>
+                </span>
+                <a href="/server/<%= event.serverVanityURL || event.serverId %>/events/<%= event.id %>" class="btn btn-sm btn-outline-primary">Szczegóły</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  <% } else { %>
+    <div class="alert alert-info">
+      Obecnie nie ma żadnych nadchodzących wydarzeń.
+    </div>
+  <% } %>
+</section>
+  </main>
+
+  <%- include('../partials/footer') %>
+</body>
+
+</html>

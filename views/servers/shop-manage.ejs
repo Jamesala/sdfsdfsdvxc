@@ -1,0 +1,261 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <%- include('../partials/head') %>
+    <title>Zarządzanie sklepem - <%= serverdata.name || 'Serwer Discord' %></title>
+</head>
+<body>
+    <%- include('../partials/spinner') %>
+    <main class="page-wrapper">
+        <%- include('../partials/header') %>
+
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-12">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="/server/<%= serverdata.serverID %>">Serwer</a></li>
+                            <li class="breadcrumb-item active">Zarządzanie sklepem</li>
+                        </ol>
+                    </nav>
+
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h1 class="h2">🛍️ Zarządzanie sklepem</h1>
+                        <div>
+                            <span class="badge bg-primary me-2">Przychód: <%= shop.totalRevenue || 0 %> PLN</span>
+                            <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#purchaseHistoryModal">
+                                <i class="bx bx-history"></i> Historia zakupów
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Informacje o limitach -->
+                    <div class="alert alert-info">
+                        <h6><i class="bx bx-info-circle"></i> Limity przedmiotów:</h6>
+                        <p class="mb-0">
+                            Możesz dodać maksymalnie <strong><%= itemLimit %></strong> przedmiotów.
+                            <% if (serverdata.status !== 'GOLD') { %>
+                                <a href="/boost" class="text-decoration-none">Ulepsz serwer</a>, aby zwiększyć limit.
+                            <% } %>
+                        </p>
+                    </div>
+
+                    <!-- Formularz dodawania przedmiotu -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Dodaj nowy przedmiot</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="addItemForm">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Nazwa przedmiotu</label>
+                                            <input type="text" class="form-control" name="name" required maxlength="50">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Cena (PLN)</label>
+                                            <input type="number" class="form-control" name="price" min="1" max="1000" step="0.01" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Opis (opcjonalny)</label>
+                                    <textarea class="form-control" name="description" rows="2" maxlength="200"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Rola</label>
+                                    <select class="form-select role-select" name="roleID" required>
+                                        <option value="">Wybierz rolę</option>
+                                        <% roles.forEach(role => { %>
+                                            <% const isUsed = shop.items.some(item => item.isActive && item.roleID === role.id); %>
+                                            <option value="<%= role.id %>" <%= isUsed ? 'disabled' : '' %>>
+                                                <%= role.name %> <%= isUsed ? '(już używana)' : '' %>
+                                            </option>
+                                        <% }); %>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-primary" <%= shop.items.filter(item => item.isActive).length >= itemLimit ? 'disabled' : '' %>>
+                                    <i class="bx bx-plus"></i> Dodaj przedmiot
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Lista przedmiotów -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Aktualne przedmioty</h5>
+                        </div>
+                        <div class="card-body">
+                            <% const activeItems = shop.items.filter(item => item.isActive); %>
+                            <% if (activeItems.length === 0) { %>
+                                <p class="text-muted text-center">Brak przedmiotów w sklepie</p>
+                            <% } else { %>
+                                <div class="row">
+                                    <% activeItems.forEach(item => { %>
+                                        <div class="col-md-6 col-lg-4 mb-3">
+                                            <div class="card h-100">
+                                                <div class="card-body">
+                                                    <h6 class="card-title"><%= item.name %></h6>
+                                                    <p class="card-text text-muted small"><%= item.description || 'Brak opisu' %></p>
+                                                    <div class="d-flex justify-content-between align-items-center">
+                                                        <span class="fw-bold text-primary"><%= item.price %> PLN</span>
+                                                        <button class="btn btn-sm btn-outline-danger" onclick="deleteItem('<%= item.id %>')">
+                                                            <i class="bx bx-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <% }); %>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal historii zakupów -->
+        <div class="modal fade" id="purchaseHistoryModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Historia zakupów</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <% if (purchases.length === 0) { %>
+                            <p class="text-muted text-center">Brak zakupów</p>
+                        <% } else { %>
+                            <div class="table-responsive">
+                                <table class="table table-sm">
+                                    <thead>
+                                        <tr>
+                                            <th>Data</th>
+                                            <th>Kupujący</th>
+                                            <th>Przedmiot</th>
+                                            <th>Cena</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <% purchases.forEach(purchase => { %>
+                                            <tr>
+                                                <td><%= new Date(purchase.purchaseDate).toLocaleDateString('pl-PL') %></td>
+                                                <td><%= purchase.buyerUsername %></td>
+                                                <td><%= purchase.itemName %></td>
+                                                <td><%= purchase.price %> PLN</td>
+                                                <td>
+                                                    <% if (purchase.status === 'completed' && purchase.roleGranted) { %>
+                                                        <span class="badge bg-success">Zakończony</span>
+                                                    <% } else if (purchase.status === 'completed' && !purchase.roleGranted) { %>
+                                                        <span class="badge bg-warning">Błąd roli</span>
+                                                    <% } else if (purchase.status === 'pending') { %>
+                                                        <span class="badge bg-info">Oczekujący</span>
+                                                    <% } else { %>
+                                                        <span class="badge bg-danger">Nieudany</span>
+                                                    <% } %>
+                                                </td>
+                                            </tr>
+                                        <% }); %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        /* Dark mode styling for role dropdown */
+        .role-select {
+            background-color: #565973 !important;
+            color: #ffffff !important;
+            border-color: #d4d7e5 !important;
+        }
+        
+        .role-select option {
+            background-color: #565973 !important;
+            color: #ffffff !important;
+        }
+        
+        .role-select option:disabled {
+            background-color: #33354d !important;
+            color: #9397ad !important;
+        }
+        
+        /* Light mode fallback */
+        [data-bs-theme="light"] .role-select,
+        .light-mode .role-select {
+            background-color: #ffffff !important;
+            color: #333333 !important;
+            border-color: #dee2e6 !important;
+        }
+        
+        [data-bs-theme="light"] .role-select option,
+        .light-mode .role-select option {
+            background-color: #ffffff !important;
+            color: #333333 !important;
+        }
+    </style>
+
+    <script>
+        // Dodawanie przedmiotu
+        document.getElementById('addItemForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const data = Object.fromEntries(formData);
+
+            try {
+                const response = await fetch(`/server/<%= serverdata.serverID %>/shop/item`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    location.reload();
+                } else {
+                    alert(result.error || 'Wystąpił błąd');
+                }
+            } catch (error) {
+                console.error('Błąd:', error);
+                alert('Wystąpił błąd podczas dodawania przedmiotu');
+            }
+        });
+
+        // Usuwanie przedmiotu
+        async function deleteItem(itemId) {
+            if (!confirm('Czy na pewno chcesz usunąć ten przedmiot?')) return;
+
+            try {
+                const response = await fetch(`/server/<%= serverdata.serverID %>/shop/item/${itemId}`, {
+                    method: 'DELETE'
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    location.reload();
+                } else {
+                    alert(result.error || 'Wystąpił błąd');
+                }
+            } catch (error) {
+                console.error('Błąd:', error);
+                alert('Wystąpił błąd podczas usuwania przedmiotu');
+            }
+        }
+    </script>
+
+    <%- include('../partials/footer') %>
+</body>
+</html>

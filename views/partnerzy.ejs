@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <link rel="shortcut icon" href="/assets/img/favicon.png">
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Partnerzy Discordzik.pl - Najlepsze Polskie Serwery Discord</title>
+  
+  <!-- Meta Tags -->
+  <meta name="title" content="Partnerzy Discordzik.pl - Najlepsze Polskie Serwery Discord">
+  <meta name="description" content="Poznaj partnerów Discordzik.pl! Dołącz do najlepszych polskich serwerów i społeczności na Discordzie.">
+  <meta name="theme-color" content="#0b0f19">
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:site_name" content="Discordzik.pl">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://discordzik.pl/partnerzy">
+  <meta property="og:title" content="Partnerzy Discordzik.pl - Najlepsze Serwery i Społeczności Discord">
+  <meta property="og:description" content="Poznaj partnerów Discordzik.pl i dołącz do najlepszych polskich serwerów Discord!">
+  <meta property="og:image" content="/assets/img/banner.png">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css">
+  <style>
+    :root {
+      --bg-dark: #0b0f19;
+      --bg-light: #1a1f2e;
+      --accent: #6d5bff;
+      --text-primary: #ffffff;
+      --text-secondary: #b0b0b0;
+      --card-bg: #151822;
+      --border-color: rgba(255, 255, 255, 0.05);
+    }
+
+    body {
+      font-family: 'Manrope', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      padding: 3rem 0 2rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .hero-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+	
+    .line-height {
+      line-height: 3;
+    }
+
+    .hero-subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Server Cards */
+    .server-cards-wrapper {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      padding: 1rem 0 3rem;
+    }
+
+    .server-card {
+      position: relative;
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      border: 1px solid var(--border-color);
+      overflow: hidden;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+
+    .server-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      border-color: rgba(109, 91, 255, 0.3);
+    }
+
+    .server-card.partner {
+      border-left: 4px solid var(--accent);
+    }
+
+    .server-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .server-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--accent);
+    }
+
+    .partner-badge {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background-color: var(--accent);
+      color: white;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .server-info {
+      margin-left: 1rem;
+    }
+
+    .server-name {
+      font-weight: 600;
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .server-members {
+      color: var(--accent);
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin: 0.2rem 0 0;
+    }
+
+    .server-description {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin: 1rem 0;
+    }
+
+    .server-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .server-tag {
+      background-color: rgba(109, 91, 255, 0.1);
+      color: var(--accent);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2rem;
+      }
+      
+      .server-cards-wrapper {
+        grid-template-columns: 1fr;
+      }
+      
+      .server-card {
+        padding: 1.2rem;
+      }
+      
+      .server-icon {
+        width: 60px;
+        height: 60px;
+      }
+    }
+
+    /* Remove underline from links */
+    a {
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+  <%- include('partials/head') %>
+  <%- include('partials/spinner') %>
+
+  <main class="page-wrapper">
+    <%- include('partials/header') %>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container">
+        <h1 class="hero-title line-height">Nasi Partnerzy <span class="text-muted">11</span> znalezionych.</h1>
+        <p class="hero-subtitle">Oto lista wszystkich na stronie.</p>
+        
+        <div class="server-cards-wrapper">
+          <!-- Server Card 1 -->
+          <a href="/server/471646251771756554" class="server-card partner">
+            <div class="server-header">
+              <img src="https://cdn.discordapp.com/icons/471646251771756554/8fbbe9bcbe1ff1dc09fff8f6ddd7ba6b.webp" class="server-icon" alt="memuchy">
+              <div class="partner-badge">🤝</div>
+              <div class="server-info">
+                <h3 class="server-name">memuchy</h3>
+              </div>
+            </div>
+            <p class="server-description">🎉 Witaj na Memuchach! Serwer pełen tysięcy memów na każdą okazję!</p>
+            <div class="server-tags">
+              <span class="server-tag">Rozrywka</span>
+              <span class="server-tag">Memy</span>
+              <span class="server-tag">Kultura</span>
+            </div>
+          </a>
+
+          <!-- Server Card 2 -->
+          <a href="/server/1169625335755702282" class="server-card partner">
+            <div class="server-header">
+              <img src="https://cdn.discordapp.com/icons/1169625335755702282/03a6bea1a61ff93ffa1916e9a84fa0bf.webp" class="server-icon" alt="GG3">
+              <div class="partner-badge">🤝</div>
+              <div class="server-info">
+                <h3 class="server-name">GG3</h3>
+              </div>
+            </div>
+            <p class="server-description">Jesteś graczem? Lubisz wyzwania? Chcesz zarobić grając w gry? Dołącz do GG3</p>
+            <div class="server-tags">
+              <span class="server-tag">Gry</span>
+              <span class="server-tag">Rozrywka</span>
+              <span class="server-tag">E-Sport</span>
+            </div>
+          </a>
+
+          <!-- Server Card 3 -->
+          <a href="/server/511455522323693578" class="server-card partner">
+            <div class="server-header">
+              <img src="https://cdn.discordapp.com/icons/511455522323693578/16e9e2ee9b44643e9e6af6c7fa3b0279.webp" class="server-icon" alt="Minecraft Polska">
+              <div class="partner-badge">🤝</div>
+              <div class="server-info">
+                <h3 class="server-name">Minecraft Polska</h3>
+              </div>
+            </div>
+            <p class="server-description">Serwer łączący wszystkich graczy Minecraft! Dołącz i baw się z nami!</p>
+            <div class="server-tags">
+              <span class="server-tag">Gry</span>
+              <span class="server-tag">Minecraft</span>
+              <span class="server-tag">Społeczność</span>
+            </div>
+          </a>
+
+          <!-- Server Card 4 -->
+          <a href="/server/943579258616438844" class="server-card partner">
+            <div class="server-header">
+              <img src="https://cdn.discordapp.com/icons/943579258616438844/a_9ab6f2073c38709f139b9b24c4d6410f.gif" class="server-icon" alt="genshinawka i sąsiedzi">
+              <div class="partner-badge">🤝</div>
+              <div class="server-info">
+                <h3 class="server-name">genshinawka i sąsiedzi</h3>
+              </div>
+            </div>
+            <p class="server-description">Cześć! Zapraszamy wszystkich fanów gier Hoyoverse lub fanów anime czy mangi!</p>
+            <div class="server-tags">
+              <span class="server-tag">Gry</span>
+              <span class="server-tag">Rozrywka</span>
+              <span class="server-tag">Anime</span>
+            </div>
+          </a>
+
+          <!-- Server Card 5 -->
+          <a href="/server/791616996797841428" class="server-card partner">
+            <div class="server-header">
+              <img src="https://cdn.discordapp.com/icons/791616996797841428/a5e0c8234f11d7ab22421045dd6efc70.webp" class="server-icon" alt="mcgramy.pl">
+              <div class="partner-badge">🤝</div>
+              <div class="server-info">
+                <h3 class="server-name">mcgramy.pl</h3>
+              </div>
+            </div>
+            <p class="server-description">Oficjalny Discord serwera Minecraft mcgramy.pl! 🚀 Dołącz i zacznij swoją przygodę!</p>
+            <div class="server-tags">
+              <span class="server-tag">Gry</span>
+              <span class="server-tag">Rozrywka</span>
+              <span class="server-tag">Memy</span>
+            </div>
+          </a>
+
+          <!-- Server Card 6 -->
+          <a href="/server/1295020041057865809" class="server-card partner">
+            <div class="server-header">
+              <img src="https://cdn.discordapp.com/icons/1295020041057865809/16e3666252ab8a49db9802b7842a04cb.webp" class="server-icon" alt="Valorant PL">
+              <div class="partner-badge">🤝</div>
+              <div class="server-info">
+                <h3 class="server-name">Valorant PL</h3>
+              </div>
+            </div>
+            <p class="server-description">Valorant PL - Dołącz do nas i stań się częścią najlepszej polskiej społeczności Valorant!</p>
+            <div class="server-tags">
+              <span class="server-tag">Gry</span>
+              <span class="server-tag">Rozrywka</span>
+              <span class="server-tag">E-Sport</span>
+            </div>
+          </a>
+
+          <!-- Server Card 7 -->
+          <a href="/server/1238845113510395955" class="server-card partner">
+            <div class="server-header">
+              <img src="https://cdn.discordapp.com/icons/1238845113510395955/98626f4efcbd49883c63a08e3c2818e7.webp" class="server-icon" alt="Śląska Społeczność">
+              <div class="partner-badge">🤝</div>
+              <div class="server-info">
+                <h3 class="server-name">Śląska Społeczność</h3>
+              </div>
+            </div>
+            <p class="server-description">Śląska Społeczność - Serwer Discord zrzeszający wszystkich z województwa śląskiego!</p>
+            <div class="server-tags">
+              <span class="server-tag">Gry</span>
+              <span class="server-tag">Rozrywka</span>
+              <span class="server-tag">Memy</span>
+            </div>
+          </a>
+
+          <!-- Server Card 9 -->
+          <a href="/server/1003273322630488077" class="server-card partner">
+            <div class="server-header">
+              <img src="https://cdn.discordapp.com/icons/1003273322630488077/a68dc17a0e9db5d4be6bd8f2645573a1.webp" class="server-icon" alt="FANI MATY 33 #2040">
+              <div class="partner-badge">🤝</div>
+              <div class="server-info">
+                <h3 class="server-name">FANI MATY 33 #2040</h3>
+              </div>
+            </div>
+            <p class="server-description">✧ OFICJALNY DISCORD FANÓW MATY 33 ✧ Terminy Wszystkich Koncertów, Integracja Słuchaczy Maty</p>
+            <div class="server-tags">
+              <span class="server-tag">Gry</span>
+              <span class="server-tag">Rozrywka</span>
+              <span class="server-tag">Muzyka</span>
+            </div>
+          </a>
+
+          <!-- Server Card 10 -->
+          <a href="/server/1296894716348207124" class="server-card partner">
+            <div class="server-header">
+              <img src="https://cdn.discordapp.com/icons/1296894716348207124/763de3511c6775426cf6592d765b2556.webp" class="server-icon" alt="crystalize.pl">
+              <div class="partner-badge">🤝</div>
+              <div class="server-info">
+                <h3 class="server-name">crystalize.pl | Nowy poziom Gildii 1.16+</h3>
+              </div>
+            </div>
+            <p class="server-description">Dołącz do najbardziej epickiej społeczności gildii w Minecraft!</p>
+            <div class="server-tags">
+              <span class="server-tag">Gry</span>
+              <span class="server-tag">Rozrywka</span>
+              <span class="server-tag">E-Sport</span>
+            </div>
+          </a>
+
+          <!-- Server Card 11 -->
+          <a href="/server/1274699424618250381" class="server-card partner">
+            <div class="server-header">
+              <img src="https://cdn.discordapp.com/icons/1274699424618250381/e8e4733d820e9a2c62414f5d6d0e9188.webp" class="server-icon" alt="Amatorska">
+              <div class="partner-badge">🤝</div>
+              <div class="server-info">
+                <h3 class="server-name">Amatorska Liga Serwerowa</h3>
+              </div>
+            </div>
+            <p class="server-description">Amatorska liga serwerowa - przeniesie cię w świat emocjonujący rozgrywek międzyserwerowych.</p>
+            <div class="server-tags">
+              <span class="server-tag">Gry</span>
+              <span class="server-tag">Rozrywka</span>
+              <span class="server-tag">E-Sport</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <%- include('partials/footer') %>
+  </main>
+</body>
+</html>

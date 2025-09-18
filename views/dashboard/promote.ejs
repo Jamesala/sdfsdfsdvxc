@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="pl" class="dark-mode">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Promocje Serwerów | Discord Bot List</title>
+  <%- include('../partials/head.ejs') %>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css">
+  <style>
+    :root {
+      --primary-gradient: linear-gradient(135deg, #7289da, #5b6eae);
+      --card-hover-transform: translateY(-5px);
+      --card-transition: all 0.3s ease;
+      --dark-bg: #1a1a1a;
+      --dark-bg-2: #2d2d2d;
+      --dark-border: #3d3d3d;
+      --promotion-color: #f1c40f;
+      --basic-color: #3a7bd5;
+      --pro-color: #8e44ad;
+      --gold-color: #f1c40f;
+    }
+    
+    .promotion-header {
+      background: rgba(241, 196, 15, 0.1);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .add-promotion-container {
+      background: rgba(46, 204, 113, 0.1);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .promotion-card {
+      background: var(--dark-bg-2);
+      border-radius: 12px;
+      padding: 20px;
+      border: 1px solid var(--dark-border);
+      margin-bottom: 20px;
+      transition: var(--card-transition);
+    }
+    
+    .promotion-card:hover {
+      transform: var(--card-hover-transform);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    
+    .promotion-badge {
+      background: rgba(241, 196, 15, 0.2);
+      color: var(--promotion-color);
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+    }
+    
+    .status-badge {
+      font-weight: 600;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+    }
+    
+    .status-basic {
+      background: rgba(58, 123, 213, 0.2);
+      color: var(--basic-color);
+    }
+    
+    .status-pro {
+      background: rgba(142, 68, 173, 0.2);
+      color: var(--pro-color);
+    }
+    
+    .status-gold {
+      background: rgba(241, 196, 15, 0.2);
+      color: var(--gold-color);
+    }
+    
+    .server-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(241, 196, 15, 0.3);
+    }
+    
+    .time-remaining {
+      color: var(--promotion-color);
+      font-weight: 600;
+    }
+    
+    .btn-promote {
+      background: linear-gradient(135deg, var(--promotion-color), #f39c12);
+      border: none;
+      color: #1a1a1a;
+      font-weight: 600;
+      padding: 8px 15px;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-promote:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+      color: #1a1a1a;
+    }
+    
+    .btn-basic {
+      background: linear-gradient(135deg, var(--basic-color), #2c82c9);
+    }
+    
+    .btn-pro {
+      background: linear-gradient(135deg, var(--pro-color), #9b59b6);
+    }
+    
+    .btn-gold {
+      background: linear-gradient(135deg, var(--gold-color), #f39c12);
+    }
+    
+    .empty-state {
+      padding: 40px 20px;
+      text-align: center;
+      background: rgba(255,255,255,0.02);
+      border-radius: 12px;
+      border: 1px dashed rgba(255,255,255,0.1);
+    }
+    
+    .empty-state-icon {
+      font-size: 3rem;
+      color: rgba(255,255,255,0.2);
+      margin-bottom: 1rem;
+    }
+    
+    .time-input-container {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    
+    .time-input-group {
+      flex: 1;
+    }
+    
+    .time-input-label {
+      display: block;
+      margin-bottom: 8px;
+      color: #b9bbbe;
+      font-weight: 500;
+    }
+    
+    .time-input {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--dark-border);
+      color: white;
+      padding: 12px 15px;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 1.1rem;
+    }
+    
+    .time-input:focus {
+      border-color: var(--promotion-color);
+      box-shadow: 0 0 0 3px rgba(241, 196, 15, 0.2);
+      outline: none;
+    }
+
+    /* Mobile optimizations */
+    @media (max-width: 768px) {
+      .server-icon {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .promotion-card {
+        padding: 15px;
+      }
+      
+      .time-input-container {
+        flex-direction: column;
+      }
+
+      .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .table td, .table th {
+        white-space: nowrap;
+        padding: 0.5rem;
+      }
+
+      .server-name {
+        font-size: 0.9rem;
+      }
+
+      .status-badge, .promotion-badge {
+        font-size: 0.7rem;
+        padding: 3px 6px;
+      }
+
+      .btn-promote, .btn-primary {
+        padding: 5px 8px;
+        font-size: 0.8rem;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .add-promotion-container .row {
+        flex-direction: column;
+      }
+
+      .package-btn {
+        font-size: 0.8rem;
+        padding: 5px 8px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .card-header > div {
+        margin-top: 10px;
+      }
+
+      .promotion-header, .add-promotion-container {
+        padding: 15px;
+      }
+
+      .modal-body {
+        padding: 15px;
+      }
+
+      .modal-footer {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .modal-footer button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-dark text-light">
+  <%- include('./partials/header.ejs') %>
+  <%- include('./partials/aside.ejs') %>
+
+  <main class="docs-container pt-5 pb-3 pb-lg-4" style="padding-right: 0;">
+    <div class="container-fluid px-xxl-5 px-lg-4 pt-4 pt-lg-5 pb-4">
+      <!-- Page Header -->
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+        <h1 class="ps-lg-2 ps-xxl-0 mt-2 mt-lg-0 pt-4 pb-2 mb-3 mb-xl-4 animate__animated animate__fadeIn">
+          <i class="fas fa-star me-3"></i>Zarządzanie Promocjami
+        </h1>
+        <div class="text-muted mb-3 mb-md-0">
+          Ostatnia aktualizacja: <span class="text-white"><%= new Date().toLocaleString() %></span>
+        </div>
+      </div>
+
+      <!-- Add Promotion Section -->
+      <div class="add-promotion-container animate__animated animate__fadeIn">
+        <h3 class="h4 mb-3"><i class="fas fa-plus-circle me-2"></i>Dodaj nową promocję</h3>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label for="serverIdInput" class="form-label">ID Serwera</label>
+            <input type="text" class="form-control search-input" id="serverIdInput" placeholder="Wpisz ID serwera">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Pakiet Promocyjny</label>
+            <div class="d-flex flex-wrap gap-2">
+              <button class="btn btn-basic btn-sm package-btn active" data-days="15" data-status="BASIC">
+                <i class="fas fa-gem me-1"></i> BASIC (15 dni)
+              </button>
+              <button class="btn btn-pro btn-sm package-btn" data-days="40" data-status="PRO">
+                <i class="fas fa-crown me-1"></i> PRO (40 dni)
+              </button>
+              <button class="btn btn-gold btn-sm package-btn" data-days="60" data-status="GOLD">
+                <i class="fas fa-trophy me-1"></i> GOLD (60 dni)
+              </button>
+            </div>
+          </div>
+        </div>
+        <button id="addPromotionBtn" class="btn btn-success">
+          <i class="fas fa-plus me-1"></i> Dodaj promocję
+        </button>
+      </div>
+
+      <!-- Promoted Servers List -->
+      <div class="card border-0 shadow-sm mb-4 animate__animated animate__fadeIn">
+        <div class="card-header bg-dark-2 border-0 d-flex flex-column flex-md-row justify-content-between align-items-center flex-wrap gap-3">
+          <h2 class="h4 mb-0"><i class="fas fa-list me-2"></i>Aktywne Promocje</h2>
+          <div class="text-muted">
+            Liczba promowanych serwerów: <span class="text-white"><%= servers.length %></span>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <% if (servers.length < 1) { %>
+            <div class="empty-state">
+              <div class="empty-state-icon">
+                <i class="fas fa-star"></i>
+              </div>
+              <h3 class="h5">Brak aktywnych promocji!</h3>
+              <p class="text-muted">Obecnie żaden serwer nie jest promowany.</p>
+            </div>
+          <% } else { %>
+            <div class="table-responsive">
+              <table class="table table-dark table-hover align-middle mb-0">
+                <thead class="bg-dark-3">
+                  <tr>
+                    <th width="50px">#</th>
+                    <th>Serwer</th>
+                    <th>Status</th>
+                    <th class="text-end">Czas</th>
+                    <th class="text-end">Akcje</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% servers.forEach((server, index) => { 
+                    const guild = sbot.guilds.cache.get(server.serverID);
+                    const timeRemaining = server.promotedUntil ? new Date(server.promotedUntil) - new Date() : 0;
+                    const daysRemaining = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+                    const hoursRemaining = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const status = server.status || 'BRAK';
+                  %>
+                  <tr>
+                    <th scope="row"><%= index + 1 %></th>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <img src="<%= guild?.iconURL({ size: 64, format: 'webp' }) || 'https://cdn.discordapp.com/embed/avatars/0.png' %>" 
+                             class="server-icon me-3" 
+                             alt="<%= guild?.name || 'Unknown Server' %>"
+                             loading="lazy">
+                        <div>
+                          <div class="server-name">
+                            <%= guild?.name || 'Unknown Server' %>
+                            <% if (server.promotedUntil && new Date(server.promotedUntil) > new Date()) { %>
+                              <span class="promotion-badge ms-2"><i class="fas fa-star me-1"></i> PROMOWANY</span>
+                            <% } %>
+                          </div>
+                          <div class="server-id">
+                            ID: <%= server.serverID %>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+<td>
+  <% if (status === 'BASIC') { %>
+    <span class="status-badge status-basic d-inline-flex align-items-center">
+      <i class=""></i>BASIC
+    </span>
+  <% } else if (status === 'PRO') { %>
+    <span class="status-badge status-pro d-inline-flex align-items-center">
+      <i class=""></i>PRO
+    </span>
+  <% } else if (status === 'GOLD') { %>
+    <span class="status-badge status-gold d-inline-flex align-items-center">
+      <i class=""></i>GOLD
+    </span>
+  <% } else { %>
+    <span class="badge bg-secondary">BRAK</span>
+  <% } %>
+</td>
+                    <td class="text-end time-remaining">
+                      <% if (server.promotedUntil && new Date(server.promotedUntil) > new Date()) { %>
+                        <%= daysRemaining %>d <%= hoursRemaining %>h
+                      <% } else { %>
+                        <span class="text-muted">Brak</span>
+                      <% } %>
+                    </td>
+                    <td class="text-end">
+                      <div class="d-flex gap-2 justify-content-end action-buttons">
+                        <button class="btn btn-sm btn-promote edit-promotion-btn" 
+                                data-server-id="<%= server.serverID %>"
+                                data-status="<%= status %>"
+                                data-promoted-until="<%= server.promotedUntil %>">
+                          <i class="fas fa-edit me-1"></i> Edytuj
+                        </button>
+                        <a href="/server/<%= server.serverID %>" class="btn btn-sm btn-primary" target="_blank">
+                          <i class="fas fa-external-link-alt me-1"></i> Podgląd
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Edit Promotion Modal -->
+  <div class="modal fade" id="editPromotionModal" tabindex="-1" aria-labelledby="editPromotionModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark-2 border-dark">
+        <div class="modal-header border-dark">
+          <h5 class="modal-title" id="editPromotionModalLabel"><i class="fas fa-edit me-2"></i>Edytuj promocję</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="editServerId">
+          <div class="mb-4">
+            <label class="form-label">Pakiet</label>
+            <div class="d-flex flex-wrap gap-2 mb-3">
+              <button class="btn btn-basic btn-sm package-select" data-status="BASIC">
+                <i class="fas fa-gem me-1"></i> BASIC (15 dni)
+              </button>
+              <button class="btn btn-pro btn-sm package-select" data-status="PRO">
+                <i class="fas fa-crown me-1"></i> PRO (40 dni)
+              </button>
+              <button class="btn btn-gold btn-sm package-select" data-status="GOLD">
+                <i class="fas fa-trophy me-1"></i> GOLD (60 dni)
+              </button>
+            </div>
+            <select class="form-select search-input" id="editStatusSelect">
+              <option value="">Wybierz pakiet</option>
+              <option value="BASIC">BASIC</option>
+              <option value="PRO">PRO</option>
+              <option value="GOLD">GOLD</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Niestandardowy czas promocji</label>
+            <div class="time-input-container">
+              <div class="time-input-group">
+                <label class="time-input-label" for="editDays">Dni</label>
+                <input type="number" id="editDays" class="time-input" min="0" max="365" value="0" placeholder="0">
+              </div>
+              <div class="time-input-group">
+                <label class="time-input-label" for="editHours">Godziny</label>
+                <input type="number" id="editHours" class="time-input" min="0" max="23" value="0" placeholder="0">
+              </div>
+              <div class="time-input-group">
+                <label class="time-input-label" for="editMinutes">Minuty</label>
+                <input type="number" id="editMinutes" class="time-input" min="0" max="59" value="0" placeholder="0">
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-dark">
+          <button type="button" class="btn btn-danger" id="removePromotionBtn">
+            <i class="fas fa-trash-alt me-1"></i> Usuń promocję
+          </button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+          <button type="button" class="btn btn-primary" id="savePromotionBtn">
+            <i class="fas fa-save me-1"></i> Zapisz zmiany
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Current selected package for new promotion
+    let selectedPackage = {
+      days: 15,
+      status: 'BASIC'
+    };
+
+    // Handle package selection for new promotion
+    document.querySelectorAll('.package-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        selectedPackage = {
+          days: parseInt(this.getAttribute('data-days')),
+          status: this.getAttribute('data-status')
+        };
+        
+        // Update active state
+        document.querySelectorAll('.package-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+
+    // Handle package selection in modal
+    document.querySelectorAll('.package-select').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const status = this.getAttribute('data-status');
+        document.getElementById('editStatusSelect').value = status;
+      });
+    });
+
+    // Function to open edit modal
+    function openEditModal(serverId, currentStatus, promotedUntil) {
+      const modal = new bootstrap.Modal(document.getElementById('editPromotionModal'));
+      document.getElementById('editServerId').value = serverId;
+      document.getElementById('editStatusSelect').value = currentStatus || '';
+      
+      if (promotedUntil) {
+        const endDate = new Date(promotedUntil);
+        const now = new Date();
+        const diffMs = endDate - now;
+        
+        const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+        const diffHours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const diffMinutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+        
+        document.getElementById('editDays').value = diffDays;
+        document.getElementById('editHours').value = diffHours;
+        document.getElementById('editMinutes').value = diffMinutes;
+      } else {
+        document.getElementById('editDays').value = 0;
+        document.getElementById('editHours').value = 0;
+        document.getElementById('editMinutes').value = 0;
+      }
+      
+      modal.show();
+    }
+
+    // Handle edit buttons in table
+    document.querySelectorAll('.edit-promotion-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const serverId = this.getAttribute('data-server-id');
+        const status = this.getAttribute('data-status');
+        const promotedUntil = this.getAttribute('data-promoted-until');
+        openEditModal(serverId, status, promotedUntil);
+      });
+    });
+
+    // Handle add promotion button
+    document.getElementById('addPromotionBtn').addEventListener('click', async function() {
+      const serverId = document.getElementById('serverIdInput').value.trim();
+      
+      if (!serverId) {
+        alert('Proszę wpisać ID serwera');
+        return;
+      }
+      
+      const btn = this;
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Przetwarzanie...';
+      
+      try {
+        const response = await fetch('/dashboard/promote/add', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            serverId: serverId,
+            status: selectedPackage.status
+          })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          alert(data.message);
+          window.location.reload();
+        } else {
+          alert(data.message || 'Wystąpił błąd');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Wystąpił błąd podczas komunikacji z serwerem');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-plus me-1"></i> Dodaj promocję';
+      }
+    });
+
+    // Handle save changes in modal
+    document.getElementById('savePromotionBtn').addEventListener('click', async function() {
+      const serverId = document.getElementById('editServerId').value;
+      const days = parseInt(document.getElementById('editDays').value) || 0;
+      const hours = parseInt(document.getElementById('editHours').value) || 0;
+      const minutes = parseInt(document.getElementById('editMinutes').value) || 0;
+      const status = document.getElementById('editStatusSelect').value;
+      
+      const btn = this;
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Zapisywanie...';
+      
+      try {
+        const response = await fetch(`/dashboard/promote/${serverId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            days: days,
+            hours: hours,
+            minutes: minutes,
+            status: status
+          })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          alert(data.message);
+          window.location.reload();
+        } else {
+          alert(data.message || 'Wystąpił błąd');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Wystąpił błąd podczas komunikacji z serwerem');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-save me-1"></i> Zapisz zmiany';
+      }
+    });
+
+    // Handle remove promotion in modal
+    document.getElementById('removePromotionBtn').addEventListener('click', async function() {
+      if (!confirm('Czy na pewno chcesz usunąć promocję tego serwera?')) {
+        return;
+      }
+      
+      const serverId = document.getElementById('editServerId').value;
+      const btn = this;
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin me-1"></i> Usuwanie...';
+      
+      try {
+        const response = await fetch(`/dashboard/promote/${serverId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            action: "remove"
+          })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          alert(data.message);
+          window.location.reload();
+        } else {
+          alert(data.message || 'Wystąpił błąd');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Wystąpił błąd podczas komunikacji z serwerem');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-trash-alt me-1"></i> Usuń promocję';
+      }
+    });
+  </script>
+ <style>
+
+ </style>
+</body>
+</html>

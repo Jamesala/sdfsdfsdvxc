@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <% profiles.forEach(profile => { %>
+  <url>
+    <loc>https://discordzik.pl/profile/<%= profile.userID %></loc>
+    <lastmod><%= new Date(profile.updatedAt || Date.now()).toISOString() %></lastmod>
+    <changefreq><%= (profile.points || 0) > 100 ? 'weekly' : 'monthly' %></changefreq>
+    <priority>0.7</priority>
+  </url>
+  <% }); %>
+</urlset>

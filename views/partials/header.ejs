@@ -1,0 +1,384 @@
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" type="text/javascript"></script>
+<link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css">
+<style>
+/* Base styles */
+:root {
+  --bg-dark: #0b0f19;
+  --bg-light: #1a1f2e;
+  --accent: #6d5bff;
+  --accent-hover: #8576ff;
+  --text-primary: #e0e0e0;
+  --text-secondary: #a0a0a0;
+  --header-height-desktop: 100px;
+  --header-height-mobile: 80px;
+}
+
+/* Icon animations */
+.bx {
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.nav-link:hover .bx, .dropdown-item:hover .bx {
+  transform: scale(1.2) rotate(5deg);
+  color: var(--accent);
+}
+
+.nav-link:active .bx, .dropdown-item:active .bx {
+  transform: scale(0.9);
+}
+
+/* Pulse animation for specific icons (e.g., Boost) */
+.bx-crown:hover {
+  animation: pulse 0.8s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+.dropdown-toggles .bx-chevron-down {
+  transition: transform 0.2s ease;
+}
+
+.dropdown.show .dropdown-toggles .bx-chevron-down {
+  transform: rotate(180deg);
+}
+
+.nav-link[data-bs-toggle="dropdown"] {
+  cursor: pointer;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  padding-top: var(--header-height-desktop);
+}
+
+/* Fixed header */
+.navbar {
+  background-color: var(--bg-dark) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  height: var(--header-height-desktop);
+  min-height: var(--header-height-desktop);
+}
+
+.navbar-brand {
+  color: var(--text-primary) !important;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  font-size: 1.25rem;
+}
+
+.navbar-brand img {
+  height: 45px;
+  width: auto;
+  margin-right: 10px;
+}
+
+/* Container adjustments */
+.navbar .container {
+  height: 100%;
+  max-width: 1400px;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+}
+
+/* Nav items */
+.nav-link {
+  color: var(--text-secondary) !important;
+  padding: 8px 12px;
+  margin: 0 4px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.nav-link i {
+  margin-right: 8px;
+  font-size: 1.1rem;
+}
+
+/* Active and hover states */
+.nav-link:hover, .nav-link:focus {
+  color: var(--text-primary) !important;
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.nav-link.active {
+  color: var(--accent) !important;
+}
+
+/* Boost link */
+.nav-items .boost-link {
+  display: inline-flex;
+  align-items: center;
+  color: var(--accent) !important;
+  background: none;
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.nav-items .boost-link:hover {
+  background-color: rgba(109, 91, 255, 0.1);
+}
+
+/* User dropdown */
+.nav.dropdown img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+}
+
+/* Offcanvas menu */
+.offcanvas {
+  background-color: var(--bg-dark) !important;
+  border-left: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.offcanvas-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+/* New badge */
+.new-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: var(--accent);
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 2px 5px;
+  border-radius: 10px;
+  line-height: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991.98px) {
+  body {
+    padding-top: var(--header-height-mobile);
+  }
+
+  .navbar {
+    height: var(--header-height-mobile);
+    min-height: var(--header-height-mobile);
+  }
+
+  .navbar-brand {
+    font-size: 1.1rem;
+  }
+
+  .navbar-brand img {
+    height: 45px;
+  }
+
+  .nav-link {
+    padding: 8px 12px;
+    margin: 4px 0;
+  }
+
+  .offcanvas-body {
+    padding-top: 10px;
+  }
+
+  .navbar-toggler {
+    padding: 0.25rem 0.5rem;
+    font-size: 1rem;
+  }
+}
+
+/* Ensure proper alignment */
+.navbar-toggler,
+.navbar-nav,
+.navbar-collapse {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+/* Dropdown menu adjustments */
+.dropdown-menu {
+  background-color: var(--bg-light);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.dropdown-item {
+  color: var(--text-secondary);
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+  color: var(--text-primary);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+</style>
+
+<header class="navbar navbar-expand-lg fixed-top">
+  <div class="container px-3" style="max-width: 1200px;">
+    <a class="navbar-brand pe-3" id="logo" href="https://discordzik.pl/">
+      <img src="/assets/img/logo.png" alt="logo" class="me-2 img-fluid" width="42">
+      Discordzik
+    </a>
+
+    <div id="navbarNav" class="offcanvas offcanvas-end">
+      <div class="offcanvas-header border-bottom">
+        <h5 class="offcanvas-title">Menu</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-items">
+            <a href="/servers" class="nav-link">
+              <i class="bx bx-server fs-lg me-2"></i> Serwery
+            </a>
+          </li>
+          <li class="nav-items">
+            <a href="/bots" class="nav-link">
+              <i class="bx bx-bot fs-lg me-2"></i> Boty
+            </a>
+          </li>
+          <li class="nav-items">
+            <a href="/wydarzenia" class="nav-link">
+              <i class="bx bx-party fs-lg me-2"></i> Wydarzenia
+            </a>
+          </li>
+          <li class="nav-items">
+            <a href="/partnerzy" class="nav-link">
+              <i class="bx bx-user-check fs-lg me-2"></i> Partnerzy
+            </a>
+          </li>
+          <li class="nav-items">
+            <a href="/boost" class="nav-link boost-link">
+              <i class="bx bx-crown"></i> Boost
+            </a>
+          </li>
+          <li class="nav-items dropdown">
+            <a href="#" class="nav-link dropdown-toggles" data-bs-toggle="dropdown">
+              <i class="bx bx-menu fs-lg me-2"></i> Więcej
+            </a>
+            <div class="dropdown-menu">
+              <div class="d-lg-flex pt-lg-3">
+                <div class="mega-dropdown-column">
+                  <h6 class="px-3 mb-2">Pomoc</h6>
+                  <ul class="list-unstyled mb-3">
+                    <li><a href="/tickets" class="dropdown-item py-1"><i class="bx bxs-box fs-md me-2"></i>Ticket</a></li>
+                    <li><a href="/discord" class="dropdown-item py-1"><i class="bx bxl-discord fs-md me-2"></i>Oficjalny Discord</a></li>
+                    <li><a href="https://richfeature.com/Discordzik/kb" class="dropdown-item py-1"><i class="bx bx-info-circle fs-md me-2"></i>Baza Wiedzy</a></li>
+                  </ul>
+                  <h6 class="px-3 mb-2">Ważne</h6>
+                  <ul class="list-unstyled mb-3">
+                    <li><a href="/tos" class="dropdown-item py-1"><i class="bx bx-file fs-md me-2"></i>Warunki korzystania</a></li>
+                    <li><a href="/privacy" class="dropdown-item py-1"><i class="bx bx-shield fs-md me-2"></i>Polityka prywatności</a></li>
+                    <li><a href="/cookies" class="dropdown-item py-1"><i class="bx bx-cookie fs-md me-2"></i>Polityka cookies</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="offcanvas-header border-top">
+        <% if (!user) { %>
+        <a href="/login<%= typeof referrerInfo !== 'undefined' && referrerInfo ? `?ref=${referrerInfo.code}` : '' %>" class="btn btn-secondary btn-sm fs-sm order-lg-3 d-flex flex-column align-items-center">
+          <div class="d-flex align-items-center">
+            <i class="bx bx-log-in fs-lg me-2"></i>
+            Zaloguj
+          </div>
+          <% if (typeof referrerInfo !== 'undefined' && referrerInfo) { %>
+          <small class="text-muted" style="font-size: 0.7rem; line-height: 1;">Z polecenia <%= referrerInfo.username %></small>
+          <% } %>
+        </a>
+        <% } else { %>
+        <a href="/logout" class="btn btn-secondary btn-sm fs-sm order-lg-3 d-none d-lg-inline-flex">
+          <i class="bx bx-log-out fs-lg me-2"></i>
+          Wyloguj
+        </a>
+        <% } %>
+      </div>
+    </div>
+
+    <button type="button" class="navbar-toggler" data-bs-toggle="offcanvas" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <% if (user) { %>
+    <div class="nav dropdown d-block order-lg-3 ms-3">
+      <a href="#" class="d-flex nav-link p-0" data-bs-toggle="dropdown">
+        <img src="<%= `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}` %>" class="rounded-circle img-fluid" width="40" alt="User">
+        <div class="d-none d-sm-block ps-2">
+          <div class="fs-xs lh-1 opacity-60">Witaj,</div>
+          <div class="fs-sm dropdown-toggles d-flex align-items-center">
+            <%= user.username %>
+            <i class="bx bx-chevron-down fs-xs ms-1 transition-all"></i>
+          </div>
+        </div>
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end my-1" style="width: 14rem;">
+        <li>
+          <a href="/profile" class="dropdown-item d-flex align-items-center">
+            <i class="bx bx-user-circle fs-base opacity-60 me-2"></i>
+            Profil
+          </a>
+        </li>
+        <li>
+          <a href="/bots/new" class="dropdown-item d-flex align-items-center">
+            <i class="bx bx-plus fs-base opacity-60 me-2"></i>
+            Dodaj Bota
+          </a>
+        </li>
+        <li>
+          <a href="/servers/new" class="dropdown-item d-flex align-items-center">
+            <i class="bx bx-plus fs-base opacity-60 me-2"></i>
+            Dodaj Serwer
+          </a>
+        </li>
+        <% if (global.config && global.config.client && global.config.client.owners && global.client.guilds.cache) {
+          const userIsOwner = global.config.client.owners.includes(user.id);
+          const guild = global.client.guilds.cache.get(global.config.server.id);
+          const userIsBotReviewer = guild && guild.members.cache.get(user.id)?.roles.cache.has(global.config.server.roles.botReviewer);
+          if (userIsOwner || userIsBotReviewer) { %>
+        <li>
+          <a href="/dashboard" class="dropdown-item d-flex align-items-center">
+            <i class="bx bx-cog fs-base opacity-60 me-2"></i>
+            Panel
+          </a>
+        </li>
+        <% }} %>
+        <li class="dropdown-divider"></li>
+        <li>
+          <a class="dropdown-item d-flex align-items-center" href="/logout">
+            <i class="bx bx-log-out fs-base opacity-60 me-2"></i>
+            Wyloguj
+          </a>
+        </li>
+      </ul>
+    </div>
+    <% } else { %>
+    <a href="/login<%= typeof referrerInfo !== 'undefined' && referrerInfo ? `?ref=${referrerInfo.code}` : '' %>" class="btn btn-secondary btn-sm fs-sm rounded d-none order-lg-3 d-lg-inline-flex flex-column align-items-center">
+      <div class="d-flex align-items-center">
+        <i class="bx bx-log-in fs-lg me-2"></i>
+        Zaloguj
+      </div>
+      <% if (typeof referrerInfo !== 'undefined' && referrerInfo) { %>
+      <small class="text-muted" style="font-size: 0.7rem; line-height: 1;">Z polecenia <%= referrerInfo.username %></small>
+      <% } %>
+    </a>
+    <% } %>
+  </div>
+</header>

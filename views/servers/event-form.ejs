@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Discordzik | Dodaj Wydarzenie</title>
+  <link rel="icon" href="/assets/img/favicon.ico" type="image/x-icon">
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+  <meta name="google-adsense-account" content="ca-pub-9136474966764887">
+  <meta name="title" content="Discordzik | Dodaj Wydarzenie">
+  <meta name="description" content="Dodaj nowe wydarzenie dla swojego serwera Discord na Discordzik.pl">
+  <meta name="theme-color" content="#5024f3">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="<%= config.website.url %>/server/<%= serverdata.serverID %>/event/new">
+  <meta property="og:title" content="Discordzik | Dodaj Wydarzenie">
+  <meta property="og:description" content="Dodaj nowe wydarzenie dla swojego serwera Discord na Discordzik.pl">
+  <meta property="og:image" content="/assets/img/banner.png">
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:title" content="Discordzik | Dodaj Wydarzenie">
+  <meta property="twitter:description" content="Dodaj nowe wydarzenie dla swojego serwera Discord na Discordzik.pl">
+  <meta property="twitter:image" content="/assets/img/banner.png">
+  <%- include('../partials/head') %>
+  
+  <!-- Dodatkowe style dla kalendarza -->
+  <style>
+    .datepicker-container {
+      position: relative;
+    }
+    .datepicker-toggle {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #6c757d;
+      cursor: pointer;
+      z-index: 1; /* Dodane aby przycisk był nad polem input */
+    }
+    .datepicker-toggle:hover {
+      color: #0d6efd;
+    }
+    /* Poprawki dla kalendarza */
+    .flatpickr-calendar {
+      z-index: 1060 !important; /* Wyższy niż modal (1050) */
+    }
+    .flatpickr-day.selected, .flatpickr-day.selected:hover {
+      background: #0d6efd;
+      border-color: #0d6efd;
+    }
+  </style>
+  <!-- Flatpickr CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+
+<body>
+  <%- include('../partials/spinner') %>
+  <main class="page-wrapper">
+    <%- include('../partials/header') %>
+
+    <section class="container mt-4 mb-5 pt-2 pb-lg-5">
+      <div class="row gy-4"></div>
+    </section>
+
+    <section class="container mb-5 pb-lg-5">
+      <div class="alert d-flex alert-warning" role="alert">
+        <i class="bx bx-error lead me-3"></i>
+        <div>
+<h6 class="alert-heading mb-1">Uwaga!</h6>
+<p class="mb-0">
+  Zamierzasz dodać nowe wydarzenie dla serwera <strong><%= sbot.guilds.cache.get(serverdata.serverID)?.name || 'Unknown' %></strong>.
+<span class="text-warning">Wszelkie nadużycia, spam lub łamanie regulaminu skutkują <strong>trwałą blokadą</strong>.</span>
+</p>
+        </div>
+      </div>
+
+      <div class="border-bottom py-5 ps-lg-2 ps-xxl-0">
+        <form class="needs-validation" id="eventForm">
+          <div class="mb-4 row align-items-center">
+            <label class="col-md-2 col-form-label fs-sm" for="eventName">Nazwa wydarzenia</label>
+            <div class="col-md-10">
+              <input class="form-control" type="text" name="name" id="eventName" placeholder="Nazwa wydarzenia" required minlength="5" maxlength="42">
+              <div class="form-text">Nazwa wydarzenia (5-42 znaków)</div>
+            </div>
+          </div>
+
+          <div class="mb-4 row align-items-center">
+            <label class="col-md-2 col-form-label fs-sm" for="eventDescription">Opis wydarzenia</label>
+            <div class="col-md-10">
+              <textarea class="form-control" name="description" id="eventDescription" rows="4" maxlength="250" placeholder="Opis wydarzenia..."></textarea>
+              <div class="form-text">Opis wydarzenia (maksymalnie 250 znaków)</div>
+            </div>
+          </div>
+
+          <div class="mb-4 row align-items-center">
+            <label class="col-md-2 col-form-label fs-sm" for="eventImage">Obraz wydarzenia</label>
+            <div class="col-md-10">
+              <input class="form-control" type="url" name="imageURL" id="eventImage" placeholder="https://link.pl/zdjecie.jpg">
+              <div class="form-text">URL obrazu wydarzenia (opcjonalne) (najlepiej 500x500)</div>
+            </div>
+          </div>
+
+          <div class="mb-4 row align-items-center">
+            <label class="col-md-2 col-form-label fs-sm" for="startDate">Data rozpoczęcia</label>
+            <div class="col-md-10 datepicker-container">
+              <input class="form-control" type="datetime-local" name="startDate" id="startDate" required>
+              <button type="button" class="datepicker-toggle" onclick="openCalendar('startDate')">
+              </button>
+              <div class="form-text">Data i godzina rozpoczęcia wydarzenia</div>
+            </div>
+          </div>
+
+          <div class="mb-4 row align-items-center">
+            <label class="col-md-2 col-form-label fs-sm" for="endDate">Data zakończenia</label>
+            <div class="col-md-10 datepicker-container">
+              <input class="form-control" type="datetime-local" name="endDate" id="endDate" required>
+              <button type="button" class="datepicker-toggle" onclick="openCalendar('endDate')">
+              </button>
+              <div class="form-text">Data i godzina zakończenia wydarzenia</div>
+            </div>
+          </div>
+
+          <div id="eventResults"></div>
+          <div class="tab-pane fade show active" id="preview1" role="tabpanel">
+            <button class="btn btn-primary" type="submit" id="submit">Dodaj wydarzenie</button>
+            <a href="/server/<%= serverdata.serverID %>" class="btn btn-outline-secondary ms-2">Anuluj</a>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- Flatpickr JS -->
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pl.js"></script>
+
+  <script>
+    // Set min datetime for date inputs
+    const now = new Date();
+    const timezoneOffset = now.getTimezoneOffset() * 60000;
+    const localISOTime = (new Date(now - timezoneOffset)).toISOString().slice(0, 16);
+    
+    document.getElementById('startDate').min = localISOTime;
+    document.getElementById('endDate').min = localISOTime;
+
+    // Inicjalizacja Flatpickr dla pól daty
+    const startDatePicker = flatpickr("#startDate", {
+      enableTime: true,
+      dateFormat: "Y-m-d H:i",
+      time_24hr: true,
+      locale: "pl",
+      minuteIncrement: 15,
+      minDate: "today"
+    });
+
+    const endDatePicker = flatpickr("#endDate", {
+      enableTime: true,
+      dateFormat: "Y-m-d H:i",
+      time_24hr: true,
+      locale: "pl",
+      minuteIncrement: 15,
+      minDate: "today"
+    });
+
+    // Funkcja do otwierania kalendarza
+    function openCalendar(inputId) {
+      if (inputId === 'startDate') {
+        startDatePicker.open();
+      } else if (inputId === 'endDate') {
+        endDatePicker.open();
+      }
+    }
+
+    // Form submission
+    document.getElementById('eventForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      document.getElementById('submit').disabled = true;
+      
+      try {
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData.entries());
+        
+        // Validate dates
+        const startDate = new Date(data.startDate);
+        const endDate = new Date(data.endDate);
+        
+        if (startDate >= endDate) {
+          throw new Error('Data zakończenia musi być późniejsza niż data rozpoczęcia');
+        }
+
+        const response = await fetch('/server/<%= serverdata.serverID %>/event/new', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+        
+        if (result.success) {
+          document.getElementById('eventResults').innerHTML = `
+            <div class="alert alert-success" role="alert">
+              Wydarzenie zostało dodane! <a href="/server/<%= serverdata.serverID %>" class="alert-link">Przejdź do serwera</a>
+            </div>
+          `;
+        } else {
+          document.getElementById('eventResults').innerHTML = `
+            <div class="alert alert-danger" role="alert">
+              ${result.error || 'Wystąpił błąd podczas dodawania wydarzenia'}
+            </div>
+          `;
+          document.getElementById('submit').disabled = false;
+        }
+      } catch (error) {
+        document.getElementById('eventResults').innerHTML = `
+          <div class="alert alert-danger" role="alert">
+            ${error.message || 'Wystąpił błąd podczas przetwarzania formularza'}
+          </div>
+        `;
+        document.getElementById('submit').disabled = false;
+      }
+    });
+  </script>
+
+  <%- include('../partials/footer') %>
+</body>
+</html>

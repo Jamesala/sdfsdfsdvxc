@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <%- include('partials/head') %>
+  <link rel="shortcut icon" href="/assets/img/favicon.png">
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Lista polskich deweloperów Discord - Discordzik.pl</title>
+  
+  <!-- Meta Tags -->
+  <meta name="title" content="Lista polskich deweloperów Discord - Discordzik.pl">
+  <meta name="description" content="Lista polskich deweloperów Discord i twórców botów. Sprawdź statystyki i odkryj najlepszych developerów polskiej społeczności Discord.">
+  <meta name="theme-color" content="#0b0f19">
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:site_name" content="Discordzik.pl">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://discordzik.pl/developers">
+  <meta property="og:title" content="Lista polskich deweloperów Discord - Discordzik.pl">
+  <meta property="og:description" content="Lista polskich deweloperów Discord i twórców botów. Sprawdź statystyki i odkryj najlepszych developerów polskiej społeczności Discord.">
+  <meta property="og:image" content="/assets/img/banner.png">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg-dark: #0b0f19;
+      --bg-light: #1a1f2e;
+      --accent: #6d5bff;
+      --text-primary: #ffffff;
+      --text-secondary: #b0b0b0;
+      --card-bg: #151822;
+      --border-color: rgba(255, 255, 255, 0.05);
+      --gold: #FFD700;
+      --silver: #C0C0C0;
+      --bronze: #CD7F32;
+    }
+
+    body {
+      font-family: 'Manrope', sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    /* Hero Section */
+    .hero-section {
+      padding: 3rem 0 2rem;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .hero-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    
+    .line-height {
+      line-height: 3;
+    }
+
+    .hero-subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Developer Cards */
+    .developer-cards-wrapper {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      padding: 1rem 0 3rem;
+    }
+
+    .developer-card {
+      position: relative;
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      border: 1px solid var(--border-color);
+      overflow: visible; /* Ważne - musi być visible zamiast hidden */
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+	
+	    .position-badge {
+      position: absolute;
+      top: -15px; /* Ujemna wartość sprawia, że odznaka wychodzi poza kartę */
+      right: -15px; /* Ujemna wartość sprawia, że odznaka wychodzi poza kartę */
+      width: 50px; /* Nieco większe rozmiary */
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.3rem;
+      box-shadow: 0 3px 15px rgba(0, 0, 0, 0.3);
+      z-index: 10; /* Wysoki z-index aby była na wierzchu */
+      border: 3px solid var(--card-bg); /* Obramowanie dopasowane do tła karty */
+    }
+	
+	
+
+    .developer-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      border-color: rgba(109, 91, 255, 0.3);
+    }
+	
+	    .developer-card:hover .position-badge {
+      transform: scale(1.1) rotate(0deg);
+      transition: transform 0.3s ease;
+    }
+	
+    .developer-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .developer-avatar {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--accent);
+    }
+
+    .developer-info {
+      margin-left: 1rem;
+    }
+
+    .developer-name {
+      font-weight: 600;
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .developer-id {
+      color: var(--accent);
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin: 0.2rem 0 0;
+    }
+
+    .developer-bots {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin: 1rem 0;
+    }
+
+    .developer-bot-count {
+      font-weight: bold;
+      color: var(--accent);
+    }
+
+    .developer-status {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .status-badge {
+      background-color: rgba(109, 91, 255, 0.1);
+      color: var(--accent);
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .status-badge.active {
+      background-color: rgba(87, 242, 135, 0.1);
+      color: #57F287;
+    }
+
+    .status-badge.inactive {
+      background-color: rgba(237, 66, 69, 0.1);
+      color: #ED4245;
+    }
+
+    /* Position Badges */
+    .position-badge {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1.2rem;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      z-index: 1;
+    }
+
+    .position-1 {
+      background-color: var(--gold);
+      color: #000;
+      transform: rotate(-15deg); /* Lekkie obrócenie dla efektu wizualnego */
+    }
+
+    .position-2 {
+      background-color: var(--silver);
+      color: #000;
+      transform: rotate(5deg);
+    }
+
+    .position-3 {
+      background-color: var(--bronze);
+      color: #fff;
+      transform: rotate(10deg);
+    }
+
+    /* Stats Section */
+    .stats-section {
+      margin-bottom: 2rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 1.5rem;
+      border-left: 4px solid var(--accent);
+    }
+
+    .stat-icon {
+      font-size: 2rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-label {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    /* Search Box */
+    .search-container {
+      margin-bottom: 2rem;
+    }
+
+    .search-box {
+      position: relative;
+    }
+	
+	.search-icon {
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      transform: translateY(-50%);
+      color: var(--text-secondary);
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 2.5rem 0.75rem 1rem;
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-primary);
+      transition: all 0.3s ease;
+      font-size: 1rem;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(109, 91, 255, 0.2);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2rem;
+      }
+      
+      .developer-cards-wrapper {
+        grid-template-columns: 1fr;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
+      
+      .stat-card {
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      
+      .stat-icon {
+        font-size: 1.5rem;
+        margin-bottom: 0;
+      }
+      
+      .stat-value {
+        font-size: 1.5rem;
+      }
+      
+      .stat-label {
+        font-size: 0.8rem;
+      }
+      
+      .developer-card {
+        padding: 1.2rem;
+      }
+      
+      .developer-avatar {
+        width: 60px;
+        height: 60px;
+      }
+      
+      .position-badge {
+        width: 35px;
+        height: 35px;
+        font-size: 1rem;
+      }
+    }
+
+    /* Remove underline from links */
+    a {
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+  <%- include('partials/head') %>
+  <%- include('partials/spinner') %>
+
+<main class="page-wrapper">
+  <%- include('partials/header') %>
+
+  <!-- Main Content Section -->
+  <section class="hero-section">
+    <div class="container">
+      <h1 class="hero-title line-height">Polscy Deweloperzy Discord</h1>
+      <p class="hero-subtitle">Odkryj najlepszych twórców botów i aplikacji Discord w polskiej społeczności</p>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value"><%= developers.length %></div>
+            <div class="stat-label">Deweloperów</div>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-robot"></i>
+          </div>
+          <div class="stat-content">
+            <div class="stat-value"><%= botsdata.length %></div>
+            <div class="stat-label">Botów</div>
+          </div>
+        </div>
+        
+        <div class="stat-card">
+          <div class="stat-icon">
+            <i class="fas fa-crown"></i>
+          </div>
+          <div class="stat-content">
+            <%
+              let topDeveloper = developers.reduce((top, dev) => {
+                const botCount = botsdata.filter(bot => bot.ownerID === dev.id || bot.coowners.includes(dev.id)).length;
+                return botCount > top.botCount ? {dev, botCount} : top;
+              }, {dev: developers[0], botCount: 0});
+            %>
+            <div class="stat-value"><%= topDeveloper.botCount %></div>
+            <div class="stat-label">Rekord (<%= topDeveloper.dev.username %>)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search Box -->
+      <div class="search-box">
+        <input type="text" class="search-input" id="searchUser" placeholder="Wyszukaj dewelopera...">
+      </div>
+
+  <!-- Developers List -->
+  <div class="developer-cards-wrapper">
+    <% if (developers.length > 0) { 
+      const sortedDevelopers = [...developers].sort((a, b) => {
+        const aBotCount = botsdata.filter(bot => bot.ownerID === a.id || bot.coowners.includes(a.id)).length;
+        const bBotCount = botsdata.filter(bot => bot.ownerID === b.id || bot.coowners.includes(b.id)).length;
+        
+        if (bBotCount !== aBotCount) {
+          return bBotCount - aBotCount;
+        }
+        
+        return a.username.localeCompare(b.username);
+      });
+      
+      for (let i = 0; i < sortedDevelopers.length; i++) { 
+        const botCount = botsdata.filter(bot => bot.ownerID === sortedDevelopers[i].id || bot.coowners.includes(sortedDevelopers[i].id)).length;
+        const isActive = botCount > 0;
+    %>
+      <a href="/profile/<%= sortedDevelopers[i].id %>" class="developer-card">
+        <!-- Odznaki pozycji - teraz wychodzą poza kartę -->
+        <% if (i === 0) { %>
+          <div class="position-badge position-1" title="1 miejsce">1</div>
+        <% } else if (i === 1) { %>
+          <div class="position-badge position-2" title="2 miejsce">2</div>
+        <% } else if (i === 2) { %>
+          <div class="position-badge position-3" title="3 miejsce">3</div>
+        <% } %>
+        
+        <div class="developer-header">
+          <img src="<%= sortedDevelopers[i].displayAvatarURL() %>" class="developer-avatar" alt="<%= sortedDevelopers[i].username %>">
+          <div class="developer-info">
+            <h3 class="developer-name">@<%= sortedDevelopers[i].username %></h3>
+            <p class="developer-id"><%= sortedDevelopers[i].id %></p>
+          </div>
+        </div>
+        <div class="developer-status">
+          <% if (isActive) { %>
+            <span class="status-badge active">Deweloper Bota (<%= botCount %>)</span>
+          <% } else { %>
+            <span class="status-badge inactive">Brak botów</span>
+          <% } %>
+        </div>
+      </a>
+    <% } %>
+    <% } else { %>
+      <div class="no-results">
+        <i class="fas fa-exclamation-circle fa-2x mb-3"></i>
+        <h5>Brak deweloperów do wyświetlenia</h5>
+      </div>
+    <% } %>
+  </div>
+    </div>
+  </section>
+
+  <%- include('partials/footer') %>
+</main>
+
+  <script>
+    document.getElementById("searchUser").addEventListener("keyup", function() {
+      var value = this.value.toLowerCase().trim();
+      var developers = document.querySelectorAll(".developer-card");
+      var hasResults = false;
+      
+      developers.forEach(function(dev) {
+        var found = false;
+        var username = dev.querySelector(".developer-name").textContent.toLowerCase();
+        var userId = dev.querySelector(".developer-id").textContent.toLowerCase();
+        
+        if (username.includes(value) || userId.includes(value)) {
+          found = true;
+          hasResults = true;
+        }
+        
+        if (found) {
+          dev.style.display = "block";
+        } else {
+          dev.style.display = "none";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

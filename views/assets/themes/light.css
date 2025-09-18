@@ -1,0 +1,36 @@
+:root {
+  --primary-color: #FFD700;
+  --secondary-color: #D4AF37;
+  --accent-color: #FFC000;
+  --text-color: #ffffff;
+  --background-color: #36393f;
+}
+
+/* Przyciski */
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--secondary-color);
+  color: #000;
+}
+
+.btn-primary:hover {
+  background-color: var(--secondary-color);
+  border-color: var(--primary-color);
+}
+
+/* Ramki */
+.glow-gold {
+  animation: gold-glow 3s infinite ease-in-out;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+/* Tekst */
+.text-gold {
+  color: var(--primary-color) !important;
+}
+
+/* Animacje */
+@keyframes gold-glow {
+  0%, 100% { box-shadow: 0 0 8px rgba(255, 215, 0, 0.5); }
+  50% { box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+}

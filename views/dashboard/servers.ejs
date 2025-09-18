@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="pl" class="dark-mode">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Statystyki Serwerów | Discord Bot List</title>
+  <%- include('../partials/head.ejs') %>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css">
+  <style>
+    :root {
+      --primary-gradient: linear-gradient(135deg, #7289da, #5b6eae);
+      --card-hover-transform: translateY(-5px);
+      --card-transition: all 0.3s ease;
+      --dark-bg: #1a1a1a;
+      --dark-bg-2: #2d2d2d;
+      --dark-border: #3d3d3d;
+      --premium-basic: #3a7bd5;
+      --premium-pro: #8e44ad;
+      --premium-gold: #f1c40f;
+    }
+    
+    body {
+      background-color: var(--dark-bg);
+      color: #f0f0f0;
+    }
+    
+    .stat-card {
+      border-radius: 12px;
+      border: none;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      transition: var(--card-transition);
+      overflow: hidden;
+      background: rgba(255,255,255,0.03);
+      will-change: transform;
+    }
+    
+    .stat-card:hover {
+      transform: var(--card-hover-transform);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    
+    .stat-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .stat-value {
+      font-size: clamp(1.8rem, 3vw, 2.2rem);
+      font-weight: 700;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    .server-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      transition: all 0.3s ease;
+      border: 2px solid rgba(114, 137, 218, 0.3);
+    }
+    
+    .server-icon:hover {
+      transform: scale(1.1);
+      border-color: rgba(114, 137, 218, 0.7);
+    }
+    
+    .server-row {
+      transition: all 0.3s ease;
+    }
+    
+    .server-row:hover {
+      background: rgba(114, 137, 218, 0.05) !important;
+    }
+    
+    .action-btn {
+      transition: all 0.2s ease;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .search-input {
+      border-radius: 8px;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: white;
+      transition: all 0.3s ease;
+    }
+    
+    .search-input:focus {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(114, 137, 218, 0.5);
+      box-shadow: 0 0 0 3px rgba(114, 137, 218, 0.2);
+      outline: none;
+    }
+    
+    /* Premium badges */
+    .badge-premium {
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+    }
+    
+    .badge-basic {
+      background: var(--premium-basic);
+      color: white;
+    }
+    
+    .badge-pro {
+      background: var(--premium-pro);
+      color: white;
+    }
+    
+    .badge-gold {
+      background: var(--premium-gold);
+      color: #1a1a1a;
+    }
+    
+    /* Filter tabs */
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+    
+    .filter-tab {
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+      user-select: none;
+    }
+    
+    .filter-tab:hover {
+      opacity: 0.9;
+    }
+    
+    .filter-tab.active {
+      transform: scale(1.05);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    
+    .filter-tab.all {
+      background: rgba(114, 137, 218, 0.2);
+      border-color: rgba(114, 137, 218, 0.5);
+    }
+    
+    .filter-tab.basic {
+      background: rgba(58, 123, 213, 0.2);
+      border-color: rgba(58, 123, 213, 0.5);
+    }
+    
+    .filter-tab.pro {
+      background: rgba(142, 68, 173, 0.2);
+      border-color: rgba(142, 68, 173, 0.5);
+    }
+    
+    .filter-tab.gold {
+      background: rgba(241, 196, 15, 0.2);
+      border-color: rgba(241, 196, 15, 0.5);
+    }
+    
+    /* Premium progress bars */
+    .progress-premium {
+      height: 8px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.05);
+    }
+    
+    .progress-premium .progress-bar-basic {
+      background: var(--premium-basic);
+    }
+    
+    .progress-premium .progress-bar-pro {
+      background: var(--premium-pro);
+    }
+    
+    .progress-premium .progress-bar-gold {
+      background: var(--premium-gold);
+    }
+    
+    .user-tag {
+      display: inline-flex;
+      align-items: center;
+      background: rgba(255,255,255,0.05);
+      padding: 4px 8px;
+      border-radius: 4px;
+    }
+    
+    .server-name {
+      font-weight: 500;
+      color: #fff;
+    }
+    
+    .server-id {
+      font-size: 0.8rem;
+      color: #b9bbbe;
+    }
+    
+    .empty-state {
+      padding: 40px 20px;
+      text-align: center;
+      background: rgba(255,255,255,0.02);
+      border-radius: 12px;
+      border: 1px dashed rgba(255,255,255,0.1);
+    }
+    
+    .empty-state-icon {
+      font-size: 3rem;
+      color: rgba(255,255,255,0.2);
+      margin-bottom: 1rem;
+    }
+    
+    .card {
+      background-color: var(--dark-bg-2);
+      border-color: var(--dark-border);
+    }
+    
+    .table-dark {
+      background-color: var(--dark-bg-2);
+      color: #f0f0f0;
+    }
+    
+    .table-dark thead th {
+      border-color: var(--dark-border);
+    }
+    
+    .table-dark tbody tr {
+      border-color: var(--dark-border);
+    }
+    
+    .pagination .page-item .page-link {
+      background-color: var(--dark-bg-2);
+      border-color: var(--dark-border);
+      color: #f0f0f0;
+    }
+    
+    .pagination .page-item.active .page-link {
+      background-color: #7289da;
+      border-color: #7289da;
+    }
+
+    /* Search counter */
+    .search-counter {
+      font-size: 0.9rem;
+      color: #b9bbbe;
+      margin-top: 8px;
+      text-align: right;
+    }
+
+    /* Mobile optimizations */
+    @media (max-width: 768px) {
+      .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      .server-icon {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .stat-card {
+        padding: 1.5rem;
+      }
+      
+      .filter-tabs {
+        gap: 6px;
+        justify-content: center;
+      }
+      
+      .filter-tab {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+      }
+
+      .card-header h2 {
+        font-size: 1.2rem;
+      }
+
+      .action-btn {
+        padding: 6px 8px;
+        font-size: 0.8rem;
+      }
+
+      .action-btn i {
+        margin-right: 2px !important;
+      }
+
+      .table td, .table th {
+        padding: 0.75rem 0.5rem;
+      }
+
+      .server-name {
+        font-size: 0.9rem;
+      }
+
+      .server-id {
+        font-size: 0.7rem;
+      }
+
+      .badge-premium {
+        padding: 3px 6px;
+        font-size: 0.65rem;
+      }
+
+      .search-input {
+        padding: 10px 12px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .stat-card {
+        padding: 1rem;
+      }
+
+      .stat-icon {
+        font-size: 1.5rem;
+      }
+
+      .stat-value {
+        font-size: 1.5rem;
+      }
+
+      .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .card-header > div {
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      #searchServer, #sortServer {
+        width: 100% !important;
+      }
+
+      .filter-tab {
+        padding: 5px 10px;
+        font-size: 0.8rem;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-dark text-light">
+  <%- include('./partials/header.ejs') %>
+  <%- include('./partials/aside.ejs') %>
+
+  <!-- Main Content -->
+  <main class="docs-container pt-5 pb-3 pb-lg-4" style="padding-right: 0;">
+    <div class="container-fluid px-xxl-5 px-lg-4 pt-4 pt-lg-5 pb-4">
+      <!-- Page Header -->
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+        <h1 class="ps-lg-2 ps-xxl-0 mt-2 mt-lg-0 pt-4 pb-2 mb-3 mb-xl-4 animate__animated animate__fadeIn">
+          <i class="fas fa-server me-3"></i>Statystyki Serwerów
+        </h1>
+        <div class="text-muted mb-3 mb-md-0">
+          Ostatnia aktualizacja: <span class="text-white"><%= new Date().toLocaleString() %></span>
+        </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5 animate__animated animate__fadeInUp">
+        <div class="col">
+          <div class="stat-card p-4 text-center h-100">
+            <div class="stat-icon">
+              <i class="fas fa-server"></i>
+            </div>
+            <h3 class="h5 mb-3">Wszystkie Serwery</h3>
+            <div class="stat-value"><%= serversdata.length ? serversdata.length.toLocaleString() : "0" %></div>
+            <div class="progress mt-3" style="height: 6px;">
+              <div class="progress-bar bg-primary" role="progressbar" 
+                   style="width: <%= Math.min(100, (serversdata.length || 0)/1000*100) %>%;" 
+                   aria-valuenow="<%= serversdata.length || 0 %>" aria-valuemin="0" aria-valuemax="1000"></div>
+            </div>
+            <small class="text-muted">Cel: 1000 serwerów</small>
+          </div>
+        </div>
+       
+        
+        <div class="col">
+          <div class="stat-card p-4 text-center h-100">
+            <div class="stat-icon">
+              <i class="fas fa-crown"></i>
+            </div>
+            <h3 class="h5 mb-3">Serwery Premium</h3>
+            <div class="stat-value">
+              <% 
+                const premiumServers = serversdata.filter(server => server.status && ['BASIC', 'PRO', 'GOLD'].includes(server.status)).length;
+                const basicServers = serversdata.filter(server => server.status === 'BASIC').length;
+                const proServers = serversdata.filter(server => server.status === 'PRO').length;
+                const goldServers = serversdata.filter(server => server.status === 'GOLD').length;
+                const totalPremium = basicServers + proServers + goldServers;
+              %>
+              <%= totalPremium.toLocaleString() || "0" %>
+            </div>
+            <div class="progress-premium mt-3">
+              <div class="progress-bar progress-bar-basic" role="progressbar" 
+                   style="width: <%= totalPremium > 0 ? (basicServers/totalPremium*100) : 0 %>%;" 
+                   aria-valuenow="<%= basicServers %>" aria-valuemin="0" aria-valuemax="<%= totalPremium %>"></div>
+              <div class="progress-bar progress-bar-pro" role="progressbar" 
+                   style="width: <%= totalPremium > 0 ? (proServers/totalPremium*100) : 0 %>%;" 
+                   aria-valuenow="<%= proServers %>" aria-valuemin="0" aria-valuemax="<%= totalPremium %>"></div>
+              <div class="progress-bar progress-bar-gold" role="progressbar" 
+                   style="width: <%= totalPremium > 0 ? (goldServers/totalPremium*100) : 0 %>%;" 
+                   aria-valuenow="<%= goldServers %>" aria-valuemin="0" aria-valuemax="<%= totalPremium %>"></div>
+            </div>
+            <small class="text-muted">
+              <span class="d-inline-block me-2"><i class="fas fa-circle text-basic me-1"></i> BASIC: <%= basicServers %></span>
+              <span class="d-inline-block me-2"><i class="fas fa-circle text-pro me-1"></i> PRO: <%= proServers %></span>
+              <span class="d-inline-block"><i class="fas fa-circle text-gold me-1"></i> GOLD: <%= goldServers %></span>
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="filter-tabs animate__animated animate__fadeIn">
+        <div class="filter-tab all active" data-filter="all">Wszystkie (<%= serversdata.length %>)</div>
+        <div class="filter-tab basic" data-filter="basic">BASIC (<%= basicServers %>)</div>
+        <div class="filter-tab pro" data-filter="pro">PRO (<%= proServers %>)</div>
+        <div class="filter-tab gold" data-filter="gold">GOLD (<%= goldServers %>)</div>
+      </div>
+
+      <!-- Servers List -->
+      <div class="card border-0 shadow-sm mb-4 animate__animated animate__fadeIn">
+        <div class="card-header bg-dark-2 border-0 d-flex flex-column flex-md-row justify-content-between align-items-center flex-wrap gap-3">
+          <h2 class="h4 mb-0"><i class="fas fa-list me-2"></i>Lista Serwerów</h2>
+          <div class="d-flex flex-column flex-md-row gap-3 align-items-center">
+            <div style="width: 250px;">
+              <div class="input-group">
+                <span class="input-group-text bg-dark border-dark text-muted">
+                  <i class="fas fa-search"></i>
+                </span>
+                <input type="text" class="form-control search-input" id="searchServer" placeholder="Wyszukaj serwer..." aria-label="Wyszukaj serwer">
+              </div>
+              <div class="search-counter" id="searchCounter">Łącznie: <%= serversdata.length %> serwerów</div>
+            </div>
+            <select class="form-select search-input" id="sortServer" aria-label="Sortuj serwery">
+              <option value="name-asc">Nazwa (A-Z)</option>
+              <option value="name-desc">Nazwa (Z-A)</option>
+              <option value="members-asc">Członkowie (rosnąco)</option>
+              <option value="members-desc">Członkowie (malejąco)</option>
+              <option value="premium-asc">Premium (rosnąco)</option>
+              <option value="premium-desc">Premium (malejąco)</option>
+            </select>
+          </div>
+        </div>
+        <div class="card-body p-0">
+          <% if (serversdata.length < 1) { %>
+            <div class="empty-state">
+              <div class="empty-state-icon">
+                <i class="fas fa-server"></i>
+              </div>
+              <h3 class="h5">Brak serwerów!</h3>
+              <p class="text-muted">W systemie nie ma jeszcze żadnych zarejestrowanych serwerów.</p>
+            </div>
+          <% } else { %>
+            <div class="table-responsive">
+              <table class="table table-dark table-hover align-middle mb-0">
+                <thead class="bg-dark-3">
+                  <tr>
+                    <th width="50px">#</th>
+                    <th>Serwer</th>
+                    <th>Właściciel</th>
+                    <th class="text-end">Członkowie</th>
+                    <th class="text-end">Status</th>
+                    <th class="text-end">Akcje</th>
+                  </tr>
+                </thead>
+                <tbody id="serversTableBody">
+                  <% 
+                  // Only show first 50 servers initially to reduce load
+                  const initialServers = serversdata.slice(0, 50);
+                  initialServers.forEach((server, index) => { 
+                    const guild = sbot.guilds.cache.get(server.serverID);
+                    const owner = sbot.users.cache.get(server.ownerID);
+                    const isPromoted = server.promotedUntil && new Date(server.promotedUntil) > new Date();
+                  %>
+                  <tr id="server_<%= server.serverID %>" class="server-row" data-premium="<%= server.status ? server.status.toLowerCase() : 'none' %>">
+                    <th scope="row"><%= index + 1 %></th>
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <img src="<%= guild?.iconURL({ size: 64, format: 'webp' }) || 'https://cdn.discordapp.com/embed/avatars/0.png' %>" 
+                             class="server-icon me-3" 
+                             alt="<%= guild?.name || 'Unknown Server' %>"
+                             loading="lazy">
+                        <div>
+                          <div class="server-name">
+                            <%= guild?.name || 'Unknown Server' %>
+                            <% if (isPromoted) { %>
+                              <span class="badge bg-success ms-2">Promowany</span>
+                            <% } %>
+                          </div>
+                          <div class="server-id">
+                            ID: <%= server.serverID %>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="user-tag">
+                        <img src="<%= owner?.displayAvatarURL({ size: 32, format: 'webp' }) || 'https://cdn.discordapp.com/embed/avatars/0.png' %>" 
+                             width="20" 
+                             height="20" 
+                             class="rounded-circle me-2" 
+                             alt="<%= owner?.tag || 'Unknown User' %>"
+                             loading="lazy">
+                        <%= owner?.tag || 'Unknown User' %>
+                      </div>
+                      <div class="server-id mt-1">
+                        ID: <%= server.ownerID %>
+                      </div>
+                    </td>
+                    <td class="text-end">
+                      <span class="badge bg-primary rounded-pill">
+                        <%= guild?.memberCount?.toLocaleString() || 'N/A' %>
+                      </span>
+                    </td>
+                    <td class="text-end">
+                      <% if (server.status) { %>
+                        <span class="badge-premium badge-<%= server.status.toLowerCase() %>">
+                          <i class="fas fa-crown me-1"></i> <%= server.status %>
+                        </span>
+                      <% } else { %>
+                        <span class="badge bg-secondary">Standard</span>
+                      <% } %>
+                    </td>
+                    <td class="text-end">
+                      <div class="d-flex gap-2 justify-content-end">
+                        <a href="/server/<%= server.serverID %>" class="btn btn-sm btn-primary action-btn" target="_blank" rel="noopener noreferrer">
+                          <i class="fas fa-external-link-alt me-1"></i> Przejdź
+                        </a>
+                        <button class="btn btn-sm btn-outline-info action-btn server-info-btn" data-server-id="<%= server.serverID %>">
+                          <i class="fas fa-info-circle me-1"></i> Info
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+            
+            <!-- Load More Button -->
+            <% if (serversdata.length > 50) { %>
+            <div class="text-center py-3">
+              <button id="loadMoreBtn" class="btn btn-primary">
+                <i class="fas fa-plus-circle me-2"></i>Załaduj więcej serwerów
+              </button>
+              <div class="text-muted mt-2">
+                Wyświetlono 50 z <%= serversdata.length %> serwerów
+              </div>
+            </div>
+            <% } %>
+          <% } %>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Server Info Modal -->
+  <div class="modal fade" id="serverInfoModal" tabindex="-1" aria-labelledby="serverInfoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content bg-dark-2 border-dark">
+        <div class="modal-header border-dark">
+          <h5 class="modal-title" id="serverInfoModalLabel">Informacje o serwerze</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center mb-4">
+            <img id="modalServerIcon" src="" class="server-icon mb-3" alt="Server Icon" loading="lazy">
+            <h4 id="modalServerName" class="mb-1"></h4>
+            <div class="text-muted" id="modalServerId"></div>
+            <div id="modalServerPremium" class="mt-2"></div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-users me-2 text-muted"></i>
+                <div>
+                  <div class="text-muted small">Członkowie</div>
+                  <div id="modalServerMembers" class="fw-bold"></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-calendar-alt me-2 text-muted"></i>
+                <div>
+                  <div class="text-muted small">Data utworzenia</div>
+                  <div id="modalServerCreated" class="fw-bold"></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-crown me-2 text-muted"></i>
+                <div>
+                  <div class="text-muted small">Właściciel</div>
+                  <div id="modalServerOwner" class="fw-bold"></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-check-circle me-2 text-muted"></i>
+                <div>
+                  <div class="text-muted small">Status Premium</div>
+                  <div id="modalServerPremiumStatus" class="fw-bold"></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 mb-3" id="modalPromotedUntilContainer" style="display: none;">
+              <div class="d-flex align-items-center">
+                <i class="fas fa-star me-2 text-warning"></i>
+                <div>
+                  <div class="text-muted small">Promowany do</div>
+                  <div class="fw-bold text-warning" id="modalPromotedUntil"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-3">
+            <h6 class="mb-2">Opis</h6>
+            <div id="modalServerDesc" class="bg-dark p-3 rounded"></div>
+          </div>
+        </div>
+        <div class="modal-footer border-dark">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zamknij</button>
+          <a id="modalServerLink" href="#" class="btn btn-primary" target="_blank" rel="noopener noreferrer">
+            <i class="fas fa-external-link-alt me-1"></i> Przejdź do serwera
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Current filter state
+    let currentFilter = 'all';
+    let currentSearch = '';
+    let currentSort = 'name-asc';
+    let loadedServers = 50; // Initial number of loaded servers
+    const totalServers = <%= serversdata.length %>;
+
+    // Debounce function for search
+    function debounce(func, wait) {
+      let timeout;
+      return function() {
+        const context = this;
+        const args = arguments;
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(context, args), wait);
+      };
+    }
+
+    // Filter servers based on current state
+    function filterServers() {
+      const rows = document.querySelectorAll("#serversTableBody tr");
+      let visibleCount = 0;
+      
+      rows.forEach(row => {
+        const matchesFilter = currentFilter === 'all' || row.dataset.premium === currentFilter;
+        const matchesSearch = currentSearch === '' || 
+          row.querySelector('td:nth-child(2) .server-name').textContent.toLowerCase().includes(currentSearch) || 
+          row.querySelector('td:nth-child(2) .server-id').textContent.toLowerCase().includes(currentSearch) || 
+          row.querySelector('td:nth-child(3) .user-tag').textContent.toLowerCase().includes(currentSearch) || 
+          row.querySelector('td:nth-child(3) .server-id').textContent.toLowerCase().includes(currentSearch);
+        
+        if (matchesFilter && matchesSearch) {
+          row.style.display = "table-row";
+          visibleCount++;
+        } else {
+          row.style.display = "none";
+        }
+      });
+      
+      // Update counter
+      document.getElementById('searchCounter').textContent = `Znaleziono ${visibleCount} serwerów`;
+    }
+
+    // Sort servers based on current state
+    function sortServers() {
+      const rows = Array.from(document.querySelectorAll("#serversTableBody tr"));
+      
+      rows.sort((a, b) => {
+        const aName = a.querySelector('td:nth-child(2) .server-name').textContent.toLowerCase();
+        const bName = b.querySelector('td:nth-child(2) .server-name').textContent.toLowerCase();
+        const aMembers = parseInt(a.querySelector('td:nth-child(4) .badge').textContent.replace(/,/g, '') || 0);
+        const bMembers = parseInt(b.querySelector('td:nth-child(4) .badge').textContent.replace(/,/g, '') || 0);
+        const aPremium = a.dataset.premium;
+        const bPremium = b.dataset.premium;
+        
+        // Premium priority: GOLD > PRO > BASIC > none
+        const premiumOrder = {gold: 3, pro: 2, basic: 1, none: 0};
+        
+        switch(currentSort) {
+          case 'name-asc': return aName.localeCompare(bName);
+          case 'name-desc': return bName.localeCompare(aName);
+          case 'members-asc': return aMembers - bMembers;
+          case 'members-desc': return bMembers - aMembers;
+          case 'premium-asc': return premiumOrder[aPremium] - premiumOrder[bPremium];
+          case 'premium-desc': return premiumOrder[bPremium] - premiumOrder[aPremium];
+          default: return 0;
+        }
+      });
+      
+      const tbody = document.getElementById('serversTableBody');
+      tbody.innerHTML = '';
+      rows.forEach(row => tbody.appendChild(row));
+      
+      // Reapply filtering after sorting
+      filterServers();
+    }
+
+    // Load more servers
+    function loadMoreServers() {
+      if (loadedServers >= totalServers) {
+        document.getElementById('loadMoreBtn').disabled = true;
+        document.getElementById('loadMoreBtn').innerHTML = '<i class="fas fa-check me-2"></i>Wszystkie serwery załadowane';
+        return;
+      }
+
+      const nextBatch = <%= JSON.stringify(serversdata.slice(50)) %>.slice(loadedServers - 50, loadedServers + 50 - 50);
+      const tbody = document.getElementById('serversTableBody');
+
+      nextBatch.forEach((server, index) => {
+        const guild = { 
+          iconURL: () => server.icon || 'https://cdn.discordapp.com/embed/avatars/0.png',
+          name: server.name || 'Unknown Server',
+          memberCount: server.memberCount || 0
+        };
+        const owner = { 
+          displayAvatarURL: () => server.ownerAvatar || 'https://cdn.discordapp.com/embed/avatars/0.png',
+          tag: server.ownerTag || 'Unknown User'
+        };
+        const isPromoted = server.promotedUntil && new Date(server.promotedUntil) > new Date();
+
+        const row = document.createElement('tr');
+        row.id = `server_${server.serverID}`;
+        row.className = 'server-row';
+        row.dataset.premium = server.status ? server.status.toLowerCase() : 'none';
+        row.innerHTML = `
+          <th scope="row">${loadedServers + index + 1}</th>
+          <td>
+            <div class="d-flex align-items-center">
+              <img src="${guild.iconURL({ size: 64, format: 'webp' })}" 
+                   class="server-icon me-3" 
+                   alt="${guild.name}"
+                   loading="lazy">
+              <div>
+                <div class="server-name">
+                  ${guild.name}
+                  ${isPromoted ? '<span class="badge bg-success ms-2">Promowany</span>' : ''}
+                </div>
+                <div class="server-id">
+                  ID: ${server.serverID}
+                </div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <div class="user-tag">
+              <img src="${owner.displayAvatarURL({ size: 32, format: 'webp' })}" 
+                   width="20" 
+                   height="20" 
+                   class="rounded-circle me-2" 
+                   alt="${owner.tag}"
+                   loading="lazy">
+              ${owner.tag}
+            </div>
+            <div class="server-id mt-1">
+              ID: ${server.ownerID}
+            </div>
+          </td>
+          <td class="text-end">
+            <span class="badge bg-primary rounded-pill">
+              ${guild.memberCount ? guild.memberCount.toLocaleString() : 'N/A'}
+            </span>
+          </td>
+          <td class="text-end">
+            ${server.status ? 
+              `<span class="badge-premium badge-${server.status.toLowerCase()}">
+                <i class="fas fa-crown me-1"></i> ${server.status}
+              </span>` : 
+              '<span class="badge bg-secondary">Standard</span>'}
+          </td>
+          <td class="text-end">
+            <div class="d-flex gap-2 justify-content-end">
+              <a href="/server/${server.serverID}" class="btn btn-sm btn-primary action-btn" target="_blank" rel="noopener noreferrer">
+                <i class="fas fa-external-link-alt me-1"></i> Przejdź
+              </a>
+              <button class="btn btn-sm btn-outline-info action-btn server-info-btn" data-server-id="${server.serverID}">
+                <i class="fas fa-info-circle me-1"></i> Info
+              </button>
+            </div>
+          </td>
+        `;
+
+        tbody.appendChild(row);
+      });
+
+      loadedServers += nextBatch.length;
+      document.querySelector('.text-muted.mt-2').textContent = `Wyświetlono ${loadedServers} z ${totalServers} serwerów`;
+
+      if (loadedServers >= totalServers) {
+        document.getElementById('loadMoreBtn').disabled = true;
+        document.getElementById('loadMoreBtn').innerHTML = '<i class="fas fa-check me-2"></i>Wszystkie serwery załadowane';
+      }
+
+      // Reattach event listeners to new buttons
+      attachServerInfoListeners();
+    }
+
+    // Attach event listeners to server info buttons
+    function attachServerInfoListeners() {
+      document.querySelectorAll('.server-info-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const serverId = this.getAttribute('data-server-id');
+          const serverRow = document.getElementById(`server_${serverId}`);
+          
+          if (!serverRow) return;
+          
+          // Get server data from row
+          const serverName = serverRow.querySelector('td:nth-child(2) .server-name').textContent;
+          const serverIcon = serverRow.querySelector('td:nth-child(2) img').src;
+          const ownerName = serverRow.querySelector('td:nth-child(3) .user-tag').textContent;
+          const members = serverRow.querySelector('td:nth-child(4) .badge').textContent;
+          const premiumStatus = serverRow.dataset.premium;
+          const isPromoted = serverRow.querySelector('.badge.bg-success') !== null;
+          
+          // Populate modal
+          document.getElementById('modalServerName').textContent = serverName;
+          document.getElementById('modalServerIcon').src = serverIcon;
+          document.getElementById('modalServerId').textContent = `ID: ${serverId}`;
+          document.getElementById('modalServerOwner').textContent = ownerName;
+          document.getElementById('modalServerMembers').textContent = members;
+          document.getElementById('modalServerLink').href = `/server/${serverId}`;
+          
+          // Set premium info
+          let premiumBadge = '';
+          if (premiumStatus === 'basic') {
+            premiumBadge = '<span class="badge-premium badge-basic"><i class="fas fa-crown me-1"></i> BASIC</span>';
+            document.getElementById('modalServerPremiumStatus').textContent = 'BASIC';
+          } else if (premiumStatus === 'pro') {
+            premiumBadge = '<span class="badge-premium badge-pro"><i class="fas fa-crown me-1"></i> PRO</span>';
+            document.getElementById('modalServerPremiumStatus').textContent = 'PRO';
+          } else if (premiumStatus === 'gold') {
+            premiumBadge = '<span class="badge-premium badge-gold"><i class="fas fa-crown me-1"></i> GOLD</span>';
+            document.getElementById('modalServerPremiumStatus').textContent = 'GOLD';
+          } else {
+            document.getElementById('modalServerPremiumStatus').textContent = 'Standardowy';
+          }
+          document.getElementById('modalServerPremium').innerHTML = premiumBadge;
+          
+          // Show/hide promotion info
+          const promotedContainer = document.getElementById('modalPromotedUntilContainer');
+          if (isPromoted) {
+            promotedContainer.style.display = 'block';
+            document.getElementById('modalPromotedUntil').textContent = 'Ładowanie...';
+          } else {
+            promotedContainer.style.display = 'none';
+          }
+          
+          // Show modal
+          const modal = new bootstrap.Modal(document.getElementById('serverInfoModal'));
+          modal.show();
+        });
+      });
+    }
+
+    // Filter functionality
+    document.querySelectorAll('.filter-tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        
+        currentFilter = this.dataset.filter;
+        filterServers();
+      });
+    });
+
+    // Sort functionality
+    document.getElementById("sortServer").addEventListener("change", function() {
+      currentSort = this.value;
+      sortServers();
+    });
+
+    // Search functionality
+    document.getElementById("searchServer").addEventListener("input", debounce(function() {
+      currentSearch = this.value.toLowerCase().trim();
+      filterServers();
+    }, 300));
+
+    // Load more servers functionality
+    if (document.getElementById('loadMoreBtn')) {
+      document.getElementById('loadMoreBtn').addEventListener('click', loadMoreServers);
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initial sort
+      sortServers();
+      
+      // Attach event listeners to server info buttons
+      attachServerInfoListeners();
+    });
+  </script>
+</body>
+</html>

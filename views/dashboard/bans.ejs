@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pl" class="dark-mode">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zarządzanie Banami | Panel Administracyjny</title>
+  <%- include('../partials/head.ejs') %>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css">
+  <style>
+    :root {
+      --primary-gradient: linear-gradient(135deg, #7289da, #5b6eae);
+      --danger-gradient: linear-gradient(135deg, #f04747, #d83c3c);
+      --card-hover-transform: translateY(-5px);
+      --card-transition: all 0.3s ease;
+    }
+    
+    .ban-card {
+      border-radius: 12px;
+      border: none;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      transition: var(--card-transition);
+      overflow: hidden;
+      background: rgba(255,255,255,0.03);
+    }
+    
+    .ban-card:hover {
+      transform: var(--card-hover-transform);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(114, 137, 218, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .user-avatar:hover {
+      transform: scale(1.1);
+      border-color: rgba(114, 137, 218, 0.7);
+    }
+    
+    .ban-row {
+      transition: all 0.3s ease;
+    }
+    
+    .ban-row:hover {
+      background: rgba(244, 67, 54, 0.05) !important;
+    }
+    
+    .action-btn {
+      transition: all 0.2s ease;
+      border-radius: 6px;
+      padding: 8px 12px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .form-control-custom {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: white;
+      transition: all 0.3s ease;
+    }
+    
+    .form-control-custom:focus {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(244, 67, 54, 0.5);
+      box-shadow: 0 0 0 3px rgba(244, 67, 54, 0.2);
+      color: white;
+    }
+    
+    .empty-state {
+      padding: 40px 20px;
+      text-align: center;
+      background: rgba(255,255,255,0.02);
+      border-radius: 12px;
+      border: 1px dashed rgba(255,255,255,0.1);
+    }
+    
+    .empty-state-icon {
+      font-size: 3rem;
+      color: rgba(255,255,255,0.2);
+      margin-bottom: 1rem;
+    }
+    
+    .reason-text {
+      max-width: 300px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    
+    .ban-date {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .ban-time {
+      font-size: 0.8rem;
+      color: #b9bbbe;
+    }
+    
+    @media (max-width: 768px) {
+      .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+  </style>
+</head>
+
+<body class="bg-dark text-light">
+  <%- include('./partials/header.ejs') %>
+  <%- include('./partials/aside.ejs') %>
+
+  <!-- Main Content -->
+  <main class="docs-container pt-5 pb-3 pb-lg-4">
+    <div class="container-fluid px-xxl-5 px-lg-4 pt-4 pt-lg-5 pb-4">
+      <!-- Page Header -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="ps-lg-2 ps-xxl-0 mt-2 mt-lg-0 pt-4 pb-2 mb-3 mb-xl-4 animate__animated animate__fadeIn">
+          <i class="fas fa-gavel me-3"></i>Zarządzanie Banami
+        </h1>
+        <div class="text-muted">
+          Liczba zbanowanych: <span class="text-white"><%= bannedUsers.length %></span>
+        </div>
+      </div>
+
+      <!-- Add Ban Form -->
+      <div class="ban-card p-4 mb-5 animate__animated animate__fadeIn">
+        <h4 class="mb-4"><i class="fas fa-user-slash me-2"></i>Dodaj zbanowanego użytkownika</h4>
+        <form action="/dashboard/bans" method="POST">
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label for="userId" class="form-label">ID Użytkownika</label>
+              <input type="text" name="userId" id="userId" class="form-control form-control-custom" required
+                     placeholder="Wprowadź Discord ID użytkownika">
+            </div>
+            <div class="col-md-6">
+              <label for="reason" class="form-label">Powód bana</label>
+              <input type="text" name="reason" id="reason" class="form-control form-control-custom" required
+                     placeholder="Wprowadź powód bana">
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn btn-danger mt-2">
+                <i class="fas fa-ban me-2"></i>Zbanuj użytkownika
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Banned Users Table -->
+      <div class="ban-card p-4 animate__animated animate__fadeIn">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h4><i class="fas fa-list me-2"></i>Lista zbanowanych użytkowników</h4>
+          <div>
+            <div class="input-group">
+              <span class="input-group-text bg-dark border-dark text-muted">
+                <i class="fas fa-search"></i>
+              </span>
+              <input type="text" class="form-control form-control-custom" id="searchBans" placeholder="Wyszukaj bany...">
+            </div>
+          </div>
+        </div>
+        
+        <% if (bannedUsers.length < 1) { %>
+          <div class="empty-state">
+            <div class="empty-state-icon">
+              <i class="fas fa-gavel"></i>
+            </div>
+            <h3 class="h5">Brak zbanowanych użytkowników!</h3>
+            <p class="text-muted">Nie ma żadnych aktywnych banów do wyświetlenia.</p>
+          </div>
+        <% } else { %>
+          <div class="table-responsive">
+            <table class="table table-dark table-hover align-middle mb-0">
+              <thead class="bg-dark-3">
+                <tr>
+                  <th width="50px">#</th>
+                  <th>Użytkownik</th>
+                  <th>Powód</th>
+                  <th>Data bana</th>
+                  <th class="text-end">Akcje</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% bannedUsers.forEach((ban, index) => { %>
+                <tr class="ban-row" id="ban_<%= ban._id %>">
+                  <th scope="row"><%= index + 1 %></th>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <img src="https://cdn.discordapp.com/avatars/<%= ban.userId %>/a_<%= ban.userAvatar %>?size=64" 
+                           onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'" 
+                           class="user-avatar me-3" 
+                           alt="<%= ban.userId %>">
+                      <div>
+                        <div class="fw-bold"><%= ban.username || ban.userId %></div>
+                        <small class="text-muted">ID: <%= ban.userId %></small>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="reason-text" title="<%= ban.reason %>">
+                      <%= ban.reason %>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="ban-date">
+                      <%= new Date(ban.dateBlocked).toLocaleDateString() %>
+                      <small class="ban-time">
+                        <%= new Date(ban.dateBlocked).toLocaleTimeString() %>
+                      </small>
+                    </div>
+                  </td>
+                  <td class="text-end">
+                    <button class="btn btn-sm btn-danger action-btn" onclick="confirmUnban('<%= ban._id %>')">
+                      <i class="fas fa-unlock me-1"></i> Odbanuj
+                    </button>
+                  </td>
+                </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </main>
+
+  <!-- Unban Confirmation Modal -->
+  <div class="modal fade" id="unbanModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content bg-dark border-dark">
+        <div class="modal-header border-dark">
+          <h5 class="modal-title">Potwierdzenie odbanowania</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Czy na pewno chcesz odbanować tego użytkownika? Tej akcji nie można cofnąć.</p>
+        </div>
+        <div class="modal-footer border-dark">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Anuluj</button>
+          <a id="confirmUnbanBtn" href="#" class="btn btn-danger">
+            <i class="fas fa-unlock me-1"></i> Odbanuj
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Search functionality
+    document.getElementById("searchBans").addEventListener("input", function() {
+      const search = this.value.toLowerCase();
+      const rows = document.querySelectorAll("tbody tr");
+      
+      rows.forEach(row => {
+        const userId = row.querySelector('td:nth-child(2) .fw-bold').textContent.toLowerCase();
+        const userTag = row.querySelector('td:nth-child(2) small').textContent.toLowerCase();
+        const reason = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+        
+        if (userId.includes(search) || 
+            userTag.includes(search) || 
+            reason.includes(search)) {
+          row.style.display = "table-row";
+          row.classList.add('animate__animated', 'animate__fadeIn');
+        } else {
+          row.style.display = "none";
+        }
+      });
+    });
+
+    // Unban confirmation
+    function confirmUnban(banId) {
+      const unbanModal = new bootstrap.Modal(document.getElementById('unbanModal'));
+      const confirmBtn = document.getElementById('confirmUnbanBtn');
+      
+      confirmBtn.href = `/dashboard/bans/delete/${banId}`;
+      unbanModal.show();
+    }
+
+    // Initialize tooltips
+    document.addEventListener('DOMContentLoaded', function() {
+      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[title]'));
+      tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <title>Zgłoszenia - Współpraca, Zgłoszenia Serwerów, Pomoc i Błędy | Discordzik.pl</title>
+  <link rel="icon" href="/assets/img/favicon.ico" type="image/x-icon">
+  <link rel="shortcut icon" href="/assets/img/favicon.ico" type="image/x-icon">
+  <meta http-equiv="content-type" content="text/html;charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="System zgłoszeń Discordzik.pl - zgłoś serwer, współpracę, problem techniczny lub uzyskaj pomoc. Nasz zespół moderacyjny pomoże w każdej sprawie.">
+  <meta name="keywords" content="discordzik zgłoszenia, zgłoś serwer discord, pomoc discord, błędy discordzik, współpraca discord, moderacja discord, problemy techniczne discord, kontakt discordzik, support discord polska, zgłoszenie serwera discord, napraw błąd discordzik, formularz zgłoszeniowy discord">
+  <meta name="theme-color" content="#5024f3">
+  <meta name="robots" content="index, follow">
+  <meta name="google-adsense-account" content="ca-pub-9136474966764887">
+  <meta name="monetag" content="d3dd2bca9e602899e10b67bd13168aa5">
+
+  <!-- Preload critical resources -->
+  <link rel="preload" href="/assets/img/banner.png" as="image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/css/main.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css">
+
+  <!-- Inline critical CSS -->
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #20232a;
+      color: #fff;
+    }
+    .container {
+      padding: 1rem;
+    }
+    a {
+      color: #8b5cf6;
+      text-decoration: none;
+    }
+  </style>
+
+  <!-- Fonts -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"></noscript>
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:site_name" content="Discordzik.pl">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://discordzik.pl/zgloszenia">
+  <meta property="og:title" content="Zgłoszenia - Współpraca, Zgłoszenia Serwerów, Pomoc i Błędy | Discordzik.pl">
+  <meta property="og:description" content="System zgłoszeń Discordzik.pl - zgłoś serwer, współpracę, problem techniczny lub uzyskaj pomoc. Nasz zespół moderacyjny pomoże w każdej sprawie.">
+  <meta property="og:image" content="https://discordzik.pl/assets/img/banner.png?v=2">
+  <meta property="og:image:secure_url" content="https://discordzik.pl/assets/img/banner.png?v=2">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:type" content="image/png">
+
+  <!-- Twitter Card Meta Tags -->
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:url" content="https://discordzik.pl/zgloszenia">
+  <meta property="twitter:title" content="Zgłoszenia - Współpraca, Zgłoszenia Serwerów, Pomoc i Błędy | Discordzik.pl">
+  <meta property="twitter:description" content="System zgłoszeń Discordzik.pl - zgłoś serwer, współpracę, problem techniczny lub uzyskaj pomoc. Nasz zespół moderacyjny pomoże w każdej sprawie.">
+  <meta property="twitter:image" content="https://discordzik.pl/assets/img/banner.png?v=2">
+  <meta property="twitter:image:width" content="1200">
+  <meta property="twitter:image:height" content="630">
+
+  <%- include('partials/head') %>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.43/moment-timezone-with-data.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/locale/pl.min.js"></script>
+ <script>
+    moment.locale('pl');
+    moment.tz.setDefault('Europe/Warsaw');
+  </script>
+  <style>
+  .form-select {
+  background-color: #f8f9fa; /* Light gray background for visibility */
+  color: #212529; /* Dark text for contrast */
+  border: 1px solid #ced4da; /* Subtle border */
+  border-radius: 0.25rem; /* Match Bootstrap's default border-radius */
+  padding: 0.375rem 2.25rem 0.375rem 0.75rem; /* Consistent padding */
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.form-select:focus {
+  background-color: #ffffff; /* White background on focus */
+  border-color: #5024f3; /* Primary color border on focus */
+  box-shadow: 0 0 0 0.2rem rgba(80, 36, 243, 0.25); /* Matching focus ring */
+  color: #212529; /* Ensure text remains dark */
+}
+
+/* Ensure dropdown arrow is visible */
+.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23333' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px 12px;
+}
+
+/* Dark mode adjustments (if applicable) */
+@media (prefers-color-scheme: dark) {
+  .form-select {
+    background-color: #2c303a; /* Darker background for dark mode */
+    color: #ffffff; /* White text for contrast */
+    border-color: #444;
+  }
+  .form-select:focus {
+    background-color: #3a3f4a;
+    border-color: #5024f3;
+    box-shadow: 0 0 0 0.2rem rgba(80, 36, 243, 0.5);
+    color: #ffffff;
+  }
+  .form-select option {
+    background-color: #2c303a; /* Ensure options have dark background */
+    color: #ffffff; /* White text for options */
+  }
+}
+    .ticket-card {
+      border-left: 4px solid;
+      transition: transform 0.2s;
+    }
+    .ticket-card:hover {
+      transform: translateY(-3px);
+    }
+    .ticket-cooperation {
+      border-left-color: #4CAF50;
+    }
+    .ticket-server {
+      border-left-color: #2196F3;
+    }
+    .ticket-help {
+      border-left-color: #FFC107;
+    }
+    .ticket-bug {
+      border-left-color: #F44336;
+    }
+    .status-badge {
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+    .status-open {
+      background-color: #4CAF50;
+      color: white;
+    }
+    .status-in_progress {
+      background-color: #2196F3;
+      color: white;
+    }
+    .status-resolved {
+      background-color: #9E9E9E;
+      color: white;
+    }
+    .status-rejected {
+      background-color: #F44336;
+      color: white;
+    }
+    .ticket-form {
+      display: none;
+    }
+    .active-tab {
+      border-bottom: 3px solid #5024f3;
+      font-weight: bold;
+    }
+
+    /* Poprawione style dla modala - bardziej responsywne */
+    .ticket-modal {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.5);
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+      background-color: #ffffff;
+      margin: 5% auto;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      width: 90%;
+      max-width: 700px;
+      position: relative;
+      animation: modalopen 0.3s;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    @media (max-width: 768px) {
+      .modal-content {
+        margin: 10px auto;
+        width: 95%;
+        padding: 15px;
+      }
+    }
+
+    @keyframes modalopen {
+      from { opacity: 0; transform: translateY(-50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .close-modal {
+      color: #aaa;
+      position: absolute;
+      right: 15px;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: color 0.3s;
+      z-index: 1;
+    }
+
+    .close-modal:hover {
+      color: black;
+    }
+
+    .ticket-details {
+      margin-bottom: 20px;
+      background-color: #0b0f19;
+      padding: 15px;
+      border-radius: 8px;
+      color: #fff;
+    }
+
+    .ticket-response {
+      border-left: 4px solid #5024f3;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 4px;
+      background-color: #1a1f2e;
+      color: #fff;
+    }
+
+    .response-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-weight: bold;
+      flex-wrap: wrap;
+    }
+
+    .no-response {
+      color: #6c757d;
+      font-style: italic;
+    }
+
+    /* Poprawki dla lepszego wyglądu na mobile */
+    @media (max-width: 576px) {
+      .response-header {
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .ticket-details, .ticket-response {
+        padding: 12px;
+      }
+
+      .modal-content {
+        padding: 15px 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <%- include('partials/spinner') %>
+  <main class="page-wrapper">
+    <%- include('partials/header') %>
+
+    <section class="container mt-4 mb-5 pt-2 pb-lg-5">
+      <h1 class="text-center mb-4">Zgłoszenia</h1>
+
+      <div class="d-flex justify-content-center mb-4">
+        <div class="btn-group" role="group">
+          <button type="button" class="btn btn-outline-primary active-tab" onclick="showTab('my-tickets')">
+            Moje zgłoszenia
+          </button>
+          <button type="button" class="btn btn-outline-primary" onclick="showTab('new-ticket')">
+            Nowe zgłoszenie
+          </button>
+        </div>
+      </div>
+
+      <!-- Lista zgłoszeń użytkownika -->
+      <div id="my-tickets" class="tickets-container">
+        <div class="text-center">
+          <div class="spinner-border text-primary" role="status" id="loading-tickets">
+            <span class="visually-hidden">Ładowanie...</span>
+          </div>
+        </div>
+        <div id="tickets-list" class="row g-4"></div>
+      </div>
+
+      <!-- Formularz nowego zgłoszenia -->
+      <div id="new-ticket" class="ticket-form">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <h4 class="card-title mb-4">Nowe zgłoszenie</h4>
+
+                <div class="mb-3">
+                  <label class="form-label">Typ zgłoszenia</label>
+                  <select class="form-select" id="ticket-type">
+				    <option value="help">Pomoc</option>
+                    <option value="cooperation">Współpraca</option>
+                    <option value="server">Zgłoszenie serwera</option>
+                    <option value="bug">Zgłoszenie błędu</option>
+                  </select>
+                </div>
+
+				          <div id="cooperation-info" class="alert alert-warning mb-3" style="display: none;">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            Przed wysłaniem zgłoszenia o współpracę upewnij się, że spełniasz wymagania:
+            <a href="https://richfeature.com/Discordzik/kb/informacje/13/zasady-wspolpracy-z-discordzikpl" target="_blank" class="alert-link">
+              Zasady współpracy z Discordzik.pl
+            </a>
+          </div>
+
+                <div id="server-id-field" class="mb-3" style="display: none;">
+                  <label class="form-label">ID Serwera Discord</label>
+                  <input type="text" class="form-control" id="server-id" placeholder="Wpisz ID serwera">
+                </div>
+
+                <div id="user-id-field" class="mb-3" style="display: none;">
+                  <label class="form-label">ID Użytkownika Discord</label>
+                  <input type="text" class="form-control" id="user-id" placeholder="Wpisz ID użytkownika">
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Tytuł zgłoszenia</label>
+                  <input type="text" class="form-control" id="ticket-title" placeholder="Krótki tytuł zgłoszenia">
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Opis</label>
+                  <textarea class="form-control" id="ticket-description" rows="5" 
+                    placeholder="Opisz szczegółowo swój problem, propozycję współpracy lub znaleziony błąd"></textarea>
+                </div>
+
+                <button class="btn btn-primary" onclick="submitTicket()">Wyślij zgłoszenie</button>
+                <div id="ticket-message" class="mt-3"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+<!-- Sekcja z informacjami o pomocy -->
+<section class="container mb-4">
+  <div class="alert alert-info d-flex align-items-center" role="alert">
+    <i class="fas fa-info-circle fs-4 me-3"></i>
+    <div class="w-100">
+      <h5 class="alert-heading mb-3">Potrzebujesz pomocy?</h5>
+      <div class="d-flex flex-column gap-2">
+        <div class="d-flex align-items-center">
+          <i class="fas fa-ticket-alt me-2"></i>
+          <span>Nowe zgłoszenie - to najszybszy sposób uzyskania pomocy</span>
+        </div>
+        <div class="d-flex align-items-center">
+          <i class="fas fa-envelope me-2"></i>
+          <span>Możesz napisać na email: <a href="mailto:kontakt@discordzik.pl" class="text-decoration-none">kontakt@discordzik.pl</a></span>
+        </div>
+        <div class="d-flex align-items-center">
+          <i class="fa-solid fa-face-smile me-2"></i>
+          <span>Sprawdź <a href="https://richfeature.com/Discordzik/kb" class="text-decoration-none">Baze Wiedzy</a> po wiecej informacji</span>
+        </div>
+		        <div class="d-flex align-items-center mt-3 pt-2 border-top">
+          <i class="fas fa-handshake me-2"></i>
+          <span><strong>Współpraca:</strong> Jesteś firmą i chcesz nawiązać współpracę? Napisz na <a href="mailto:wspolpraca@discordzik.pl" class="text-decoration-none fw-bold">wspolpraca@discordzik.pl</a></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <!-- Poprawiony modal ze szczegółami zgłoszenia -->
+    <div id="ticketModal" class="ticket-modal">
+      <div class="modal-content">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <div id="ticketDetails">
+          <div class="text-center">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Ładowanie...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%- include('partials/footer') %>
+
+    <script>
+      // Ładowanie zgłoszeń użytkownika
+      document.addEventListener('DOMContentLoaded', async () => {
+        await loadUserTickets();
+      });
+
+      // Pokazywanie odpowiedniej zakładki
+      function showTab(tabId) {
+        document.querySelectorAll('.tickets-container, .ticket-form').forEach(el => {
+          el.style.display = 'none';
+        });
+        document.getElementById(tabId).style.display = 'block';
+
+        // Aktualizacja aktywnych przycisków
+        document.querySelectorAll('.btn-group .btn').forEach(btn => {
+          btn.classList.remove('active-tab');
+        });
+        event.target.classList.add('active-tab');
+      }
+
+      // Ładowanie zgłoszeń użytkownika
+async function loadUserTickets() {
+    const ticketsList = document.getElementById('tickets-list');
+    const loadingSpinner = document.getElementById('loading-tickets');
+
+    try {
+        loadingSpinner.style.display = 'block';
+        ticketsList.innerHTML = '';
+
+        // Dodajemy wskaźnik paginacji
+        let currentPage = 1;
+        const ticketsPerPage = 9;
+
+        const loadPage = async (page) => {
+            const skip = (page - 1) * ticketsPerPage;
+            const response = await fetch(`/tickets/user?limit=${ticketsPerPage}&skip=${skip}`);
+
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+            return await response.json();
+        };
+
+        // Ładujemy pierwszą stronę
+        const response = await loadPage(currentPage);
+
+        if (!response || !response.success || !Array.isArray(response.tickets)) {
+            throw new Error('Nieprawidłowy format danych ticketów');
+        }
+
+        const tickets = response.tickets;
+
+        if (tickets.length === 0) {
+            ticketsList.innerHTML = `
+                <div class="col-12 text-center py-5">
+                    <h5 class="text-muted">Nie masz jeszcze żadnych zgłoszeń</h5>
+                    <button class="btn btn-primary mt-3" onclick="showTab('new-ticket')">
+                        Utwórz nowe zgłoszenie
+                    </button>
+                </div>
+            `;
+            return;
+        }
+
+        // Funkcja do renderowania ticketów
+        const renderTickets = (ticketsToRender) => {
+            const fragment = document.createDocumentFragment();
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'row g-4';
+            fragment.appendChild(rowDiv);
+
+            ticketsToRender.forEach(ticket => {
+                try {
+                    const ticketClass = `ticket-${ticket.type || 'help'}`;
+                    const status = ticket.status || 'open';
+                    const statusClass = `status-${status}`;
+
+                    const statusText = {
+                        'open': 'Otwarte',
+                        'in_progress': 'W trakcie',
+                        'resolved': 'Rozwiązany',
+                        'rejected': 'Odrzucony'
+                    }[status] || status;
+
+                    let createdAt = 'Brak daty';
+                    try {
+                        if (ticket.createdAt) {
+                            const date = new Date(ticket.createdAt);
+                            if (!isNaN(date)) {
+                                createdAt = date.toLocaleDateString('pl-PL', {
+                                    day: 'numeric',
+                                    month: 'long',
+                                    year: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                });
+                            }
+                        }
+                    } catch (e) {
+                        console.error('Błąd formatowania daty:', e);
+                    }
+
+                    const colDiv = document.createElement('div');
+                    colDiv.className = 'col-md-6 col-lg-4';
+                    colDiv.innerHTML = `
+                        <div class="card ticket-card ${ticketClass} h-100">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <h5 class="card-title mb-0">${ticket.title || 'Brak tytułu'}</h5>
+                                    <span class="status-badge ${statusClass}">${statusText}</span>
+                                </div>
+                                <p class="card-text text-muted small mb-2">${createdAt}</p>
+                                <p class="card-text">${ticket.description ? 
+                                    (ticket.description.length > 100 ? 
+                                        ticket.description.substring(0, 100) + '...' : 
+                                        ticket.description) : 
+                                    'Brak opisu'}</p>
+                            </div>
+                            <div class="card-footer bg-transparent">
+                                <button class="btn btn-sm btn-outline-primary" onclick="viewTicketDetails('${ticket._id || ''}')">
+                                    Szczegóły
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                    rowDiv.appendChild(colDiv);
+                } catch (error) {
+                    console.error('Błąd podczas renderowania ticketa:', ticket, error);
+                }
+            });
+
+            ticketsList.appendChild(fragment);
+
+            // Dodajemy przyciski paginacji jeśli jest więcej wyników
+            if (tickets.length === ticketsPerPage) {
+                const loadMoreDiv = document.createElement('div');
+                loadMoreDiv.className = 'col-12 text-center mt-4';
+                loadMoreDiv.innerHTML = `
+                    <button class="btn btn-primary" onclick="loadMoreTickets(${currentPage + 1})">
+                        Załaduj więcej zgłoszeń
+                    </button>
+                `;
+                ticketsList.appendChild(loadMoreDiv);
+            }
+        };
+
+        renderTickets(tickets);
+
+        // Funkcja do ładowania kolejnych stron
+        window.loadMoreTickets = async (page) => {
+            try {
+                currentPage = page;
+                const response = await loadPage(page);
+                if (response && response.success && response.tickets.length > 0) {
+                    renderTickets(response.tickets);
+                }
+            } catch (error) {
+                console.error('Błąd podczas ładowania kolejnych zgłoszeń:', error);
+                alert('Wystąpił błąd podczas ładowania kolejnych zgłoszeń');
+            }
+        };
+
+    } catch (error) {
+        console.error('Błąd podczas ładowania zgłoszeń:', error);
+        ticketsList.innerHTML = `
+            <div class="col-12 text-center py-5">
+                <h5 class="text-danger">Wystąpił błąd podczas ładowania zgłoszeń</h5>
+                <p class="text-muted">${error.message}</p>
+                <button class="btn btn-secondary mt-3" onclick="loadUserTickets()">
+                    Spróbuj ponownie
+                </button>
+            </div>
+        `;
+    } finally {
+        loadingSpinner.style.display = 'none';
+    }
+}
+
+      // Obsługa zmiany typu zgłoszenia
+  document.getElementById('ticket-type').addEventListener('change', function() {
+    const type = this.value;
+    document.getElementById('server-id-field').style.display = type === 'server' ? 'block' : 'none';
+    document.getElementById('user-id-field').style.display = type === 'cooperation' ? 'block' : 'none';
+    document.getElementById('cooperation-info').style.display = type === 'cooperation' ? 'block' : 'none';
+  });
+
+      // Wysyłanie nowego zgłoszenia
+      async function submitTicket() {
+        const type = document.getElementById('ticket-type').value;
+        const title = document.getElementById('ticket-title').value.trim();
+        const description = document.getElementById('ticket-description').value.trim();
+        const serverID = type === 'server' ? document.getElementById('server-id').value.trim() : null;
+        const discordID = type === 'cooperation' ? document.getElementById('user-id').value.trim() : null;
+
+        const messageDiv = document.getElementById('ticket-message');
+        messageDiv.innerHTML = '';
+
+        // Walidacja po stronie klienta
+        const errors = [];
+
+        if (!title) {
+          errors.push('Tytuł jest wymagany');
+        } else if (title.length < 5) {
+          errors.push('Tytuł musi mieć co najmniej 5 znaków');
+        } else if (title.length > 100) {
+          errors.push('Tytuł może mieć maksymalnie 100 znaków');
+        }
+
+        if (!description) {
+          errors.push('Opis jest wymagany');
+        } else if (description.length < 10) {
+          errors.push('Opis musi mieć co najmniej 10 znaków');
+        } else if (description.length > 1000) {
+          errors.push('Opis może mieć maksymalnie 1000 znaków');
+        }
+
+        if (type === 'server') {
+          if (!serverID) {
+            errors.push('ID Serwera jest wymagane dla zgłoszeń serwera');
+          } else if (serverID.length < 17 || serverID.length > 19) {
+            errors.push('ID Serwera musi mieć od 17 do 19 znaków');
+          } else if (!/^\d+$/.test(serverID)) {
+            errors.push('ID Serwera musi być liczbą');
+          }
+        }
+
+        if (type === 'cooperation') {
+          if (!discordID) {
+            errors.push('ID Użytkownika jest wymagane dla zgłoszeń współpracy');
+          } else if (discordID.length < 17 || discordID.length > 19) {
+            errors.push('ID Użytkownika musi mieć od 17 do 19 znaków');
+          } else if (!/^\d+$/.test(discordID)) {
+            errors.push('ID Użytkownika musi być liczbą');
+          }
+        }
+
+        if (errors.length > 0) {
+          messageDiv.innerHTML = `<div class="alert alert-danger"><ul class="mb-0">${errors.map(err => `<li>${err}</li>`).join('')}</ul></div>`;
+          return;
+        }
+
+        try {
+          const response = await fetch('/tickets/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ type, title, description, serverID, discordID })
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            messageDiv.innerHTML = '<div class="alert alert-success">Zgłoszenie zostało wysłane! Odpowiemy w ciągu 24 godzin.</div>';
+            document.getElementById('ticket-title').value = '';
+            document.getElementById('ticket-description').value = '';
+            if (serverID) document.getElementById('server-id').value = '';
+            if (discordID) document.getElementById('user-id').value = '';
+
+            await loadUserTickets();
+            showTab('my-tickets');
+          } else {
+            // Obsługa błędów walidacji serwera
+            if (data.errors && Array.isArray(data.errors)) {
+              const errorMessages = data.errors.map(err => err.msg || err.message || err).join('<br>');
+              messageDiv.innerHTML = `<div class="alert alert-danger">${errorMessages}</div>`;
+            } else {
+              messageDiv.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+            }
+          }
+        } catch (error) {
+          console.error('Błąd podczas wysyłania zgłoszenia:', error);
+          messageDiv.innerHTML = '<div class="alert alert-danger">Wystąpił błąd podczas wysyłania zgłoszenia. Spróbuj ponownie.</div>';
+        }
+      }
+
+      // Funkcje do obsługi modala
+      function openModal() {
+        document.getElementById('ticketModal').style.display = 'block';
+        document.body.style.overflow = 'hidden'; // Zapobiega przewijaniu strony w tle
+      }
+
+      function closeModal() {
+        document.getElementById('ticketModal').style.display = 'none';
+        document.body.style.overflow = 'auto'; // Przywraca przewijanie strony
+      }
+
+      // Wyświetlanie szczegółów zgłoszenia w modal
+      async function viewTicketDetails(ticketId) {
+    if (!ticketId || typeof ticketId !== 'string') {
+        console.error('Nieprawidłowe ID zgłoszenia');
+        return;
+    }
+
+    openModal();
+    const ticketDetails = document.getElementById('ticketDetails');
+    ticketDetails.innerHTML = '<div class="text-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Ładowanie...</span></div></div>';
+
+    try {
+        const response = await fetch(`/tickets/details/${ticketId}`);
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        if (!data.success) {
+            throw new Error(data.message || 'Nieznany błąd');
+        }
+        
+        const ticket = data.ticket;
+
+        // Bezpieczne formatowanie daty
+        let createdAt = 'Brak daty';
+        let updatedAt = 'Brak danych';
+
+        try {
+            if (ticket.createdAt) {
+                const createdDate = moment(ticket.createdAt);
+                if (createdDate.isValid()) {
+                    createdAt = createdDate.tz('Europe/Warsaw').format('D MMMM YYYY, HH:mm');
+                }
+            }
+
+            if (ticket.updatedAt) {
+                const updatedDate = moment(ticket.updatedAt);
+                if (updatedDate.isValid()) {
+                    updatedAt = updatedDate.tz('Europe/Warsaw').format('D MMMM YYYY, HH:mm');
+                }
+            }
+        } catch (dateError) {
+            console.error('Błąd formatowania daty:', dateError);
+        }
+
+        // Bezpieczne mapowanie typów i statusów
+        const typeMap = {
+            'cooperation': 'Współpraca',
+            'server': 'Zgłoszenie serwera',
+            'help': 'Pomoc',
+            'bug': 'Zgłoszenie błędu'
+        };
+
+        const statusMap = {
+            'open': 'Otwarte',
+            'in_progress': 'W trakcie',
+            'resolved': 'Rozwiązany',
+            'rejected': 'Odrzucony'
+        };
+
+        const typeText = typeMap[ticket.type] || ticket.type || 'Nieznany typ';
+        const statusText = statusMap[ticket.status] || ticket.status || 'Nieznany status';
+
+        // Bezpieczne tworzenie sekcji odpowiedzi
+        let responseSection = '';
+        if (ticket.response && typeof ticket.response === 'string') {
+            responseSection = `
+                <div class="ticket-response">
+                    <div class="response-header">
+                        <span>Odpowiedź administracji</span>
+                        <span>${ticket.respondedBy || 'Administrator'} • ${updatedAt}</span>
+                    </div>
+                    <p>${ticket.response}</p>
+                </div>
+            `;
+        } else {
+            responseSection = '<p class="no-response">Brak odpowiedzi na to zgłoszenie</p>';
+        }
+
+        // Bezpieczne tworzenie HTML
+        ticketDetails.innerHTML = `
+            <div class="ticket-details">
+                <h3>${ticket.title || 'Brak tytułu'}</h3>
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="badge bg-secondary">${typeText}</span>
+                    <span class="status-badge status-${ticket.status || 'open'}">${statusText}</span>
+                </div>
+                <p><strong>Data utworzenia:</strong> ${createdAt}</p>
+                ${ticket.serverID ? `<p><strong>ID Serwera:</strong> ${ticket.serverID}</p>` : ''}
+                ${ticket.discordID ? `<p><strong>ID Użytkownika:</strong> ${ticket.discordID}</p>` : ''}
+                <h5 class="mt-4">Opis zgłoszenia:</h5>
+                <p>${ticket.description || 'Brak opisu'}</p>
+                <h5 class="mt-4">Odpowiedź:</h5>
+                ${responseSection}
+            </div>
+            <div class="text-center mt-3">
+                <button class="btn btn-primary" onclick="closeModal()">Zamknij</button>
+            </div>
+        `;
+    } catch (error) {
+        console.error('Błąd podczas ładowania szczegółów zgłoszenia:', error);
+        ticketDetails.innerHTML = `
+            <div class="alert alert-danger">
+                <h4>Wystąpił błąd</h4>
+                <p>Nie udało się załadować szczegółów zgłoszenia.</p>
+                <p class="text-muted small">${error.message}</p>
+                <div class="text-center mt-3">
+                    <button class="btn btn-secondary me-2" onclick="viewTicketDetails('${ticketId}')">Spróbuj ponownie</button>
+                    <button class="btn btn-primary" onclick="closeModal()">Zamknij</button>
+                </div>
+            </div>
+        `;
+    }
+}
+
+      // Zamknięcie modala po kliknięciu poza jego obszar
+      window.onclick = function(event) {
+        const modal = document.getElementById('ticketModal');
+        if (event.target === modal) {
+          closeModal();
+        }
+      }
+    </script>
+  </main>
+</body>
+</html>

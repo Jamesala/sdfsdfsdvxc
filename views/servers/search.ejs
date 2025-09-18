@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Serwery Discord z tagiem <%= tag %> | Discordzik.pl</title>
+  <meta name="description" content="Lista najlepszych polskich serwerów Discord oznaczonych tagiem <%= tag %>. Znajdź idealną społeczność dla siebie!">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://discordzik.pl/servers/<%= encodeURIComponent(tag) %>" />
+
+  <link rel="icon" href="/assets/img/favicon.png" type="image/png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Serwery Discord z tagiem <%= tag %> | Discordzik.pl">
+  <meta property="og:description" content="Lista polskich serwerów Discord oznaczonych tagiem <%= tag %>">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://discordzik.pl/servers/<%= encodeURIComponent(tag) %>">
+  <meta property="og:image" content="/assets/img/banner.png">
+
+  <meta name="robots" content="index, follow">
+</head>
+<%- include('../partials/head') %>
+<body>
+  <%- include('../partials/spinner') %>
+  <main class="page-wrapper">
+    <%- include('../partials/header') %>
+
+    <section class="position-relative py-5 border-bottom">
+      <div class="container mt-4 mb-lg-5 pt-lg-2 pb-5">
+        <!-- Breadcrumbs -->
+        <nav aria-label="breadcrumb" class="mb-4 d-flex justify-content-center">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Strona główna</a></li>
+            <li class="breadcrumb-item"><a href="/servers">Serwery</a></li>
+            <li class="breadcrumb-item active" aria-current="page"><%= tag %></li>
+          </ol>
+        </nav>
+
+        <!-- Nagłówek -->
+        <div class="text-center mb-5">
+          <h1 class="display-5 fw-bold mb-3">Serwery z tagiem: <span class="text-primary"><%= tag %></span></h1>
+          <p class="lead">
+            <% if (totalServers > 0) { %>
+              Znaleziono <%= totalServers %> serwerów z tym tagiem. Dołącz do społeczności już teraz!
+            <% } else { %>
+              Aktualnie nie mamy serwerów z tagiem <%= tag %>. Możesz dodać swój jako pierwszy!
+            <% } %>
+          </p>
+        </div>
+
+        <!-- Sortowanie -->
+        <div class="d-flex justify-content-end mb-4">
+          <div class="btn-group gap-3" role="group" aria-label="Sortowanie serwerów">
+            <button onclick="sortServers('votes')" 
+                    class="btn btn-outline-primary px-3 py-2"
+                    aria-label="Sortuj według głosów">
+              <i class="fas fa-thumbs-up me-2"></i>Najpopularniejsze
+            </button>
+            <button onclick="sortServers('random')" 
+                    class="btn btn-outline-primary px-3 py-2"
+                    aria-label="Losowe sortowanie">
+              <i class="fas fa-random me-2"></i>Losowe
+            </button>
+          </div>
+        </div>
+
+        <!-- Lista serwerów -->
+        <div class="row g-4" id="servers">
+          <% if (servers && servers.length > 0) { %>
+            <% servers.forEach((server, index) => { 
+              const guild = sbot?.guilds.cache.get(server.serverID);
+              const serverName = guild?.name || server.name || 'Nieznana nazwa';
+              const serverIcon = guild?.iconURL() || server.icon || 'https://cdn.discordapp.com/embed/avatars/0.png';
+            %>
+              <div class="col-md-6 col-lg-3" data-votes="<%= server.votes || 0 %>">
+                <div class="card h-100 shadow-sm">
+                  <a href="/server/<%= server.serverID %>" class="text-decoration-none text-reset">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center mb-3">
+                        <img src="<%= serverIcon %>" 
+                             class="rounded-circle me-3" 
+                             width="60" 
+                             height="60" 
+                             alt="Ikona serwera <%= serverName %>">
+                        <h3 class="h5 mb-0"><%= serverName %></h3>
+                      </div>
+                      <p class="text-muted"><%= server.shortDesc || 'Brak opisu' %></p>
+                      <div class="d-flex flex-wrap gap-2 mt-auto">
+                        <% if (server.tags && server.tags.length > 0) { %>
+                          <% server.tags.slice(0, 3).forEach(t => { %>
+                            <span class="badge bg-secondary"><%= t %></span>
+                          <% }) %>
+                        <% } %>
+                        <span class="badge bg-primary ms-auto">
+                          <i class="fas fa-thumbs-up me-1"></i> <%= server.votes || 0 %>
+                        </span>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            <% }) %>
+          <% } else { %>
+            <div class="col-12 text-center py-5">
+              <i class="fas fa-server fa-3x text-muted mb-3"></i>
+              <h3 class="h4">Brak serwerów z tym tagiem</h3>
+              <a href="/add-server" class="btn btn-primary mt-3">Dodaj swój serwer</a>
+            </div>
+          <% } %>
+        </div>
+
+        <!-- Paginacja -->
+        <% if (totalPages > 1) { %>
+          <nav aria-label="Nawigacja stron" class="mt-5">
+            <ul class="pagination justify-content-center">
+              <% const startPage = Math.max(1, page - 2) %>
+              <% const endPage = Math.min(totalPages, page + 2) %>
+
+              <% if (page > 1) { %>
+                <li class="page-item">
+                  <a class="page-link" href="?page=<%= page - 1 %>" aria-label="Poprzednia">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+              <% } %>
+
+              <% for (let p = startPage; p <= endPage; p++) { %>
+                <li class="page-item <%= p === page ? 'active' : '' %>">
+                  <a class="page-link" href="?page=<%= p %>"><%= p %></a>
+                </li>
+              <% } %>
+
+              <% if (page < totalPages) { %>
+                <li class="page-item">
+                  <a class="page-link" href="?page=<%= page + 1 %>" aria-label="Następna">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+              <% } %>
+            </ul>
+          </nav>
+        <% } %>
+
+        <!-- Popularne tagi -->
+        <div class="mt-5 pt-5 border-top">
+          <h3 class="h4 mb-4">Popularne tagi</h3>
+          <div class="d-flex flex-wrap gap-2">
+            <% if (tags && tags.length > 0) { %>
+              <% tags.sort((a, b) => b.count - a.count).forEach(t => { %>
+                <a href="/servers/<%= t.tag %>" 
+                   class="btn btn-sm btn-outline-primary <%= t.tag === tag ? 'active' : '' %>">
+                  <%= t.tag %> <span class="badge bg-primary rounded-pill ms-1"><%= t.count %></span>
+                </a>
+              <% }) %>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sekcja SEO -->
+    <section class="container my-5 py-3">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <h2 class="h3 mb-4">Serwery Discord z tagiem <%= tag %></h2>
+          <p>
+            Na tej stronie znajdziesz wszystkie polskie serwery Discord oznaczone tagiem <strong><%= tag %></strong>. 
+            Niezależnie czy szukasz społeczności gamingowej, edukacyjnej czy towarzyskiej, nasza lista pomoże Ci znaleźć idealne miejsce.
+          </p>
+          <p>
+            Każdy serwer jest weryfikowany przez nasz zespół, aby zapewnić Ci najlepsze doświadczenia. Możesz sortować serwery według 
+            popularności lub przeglądać je w losowej kolejności. Dołączając do którejś ze społeczności, zyskujesz dostęp do kanałów 
+            tekstowych i głosowych, gdzie możesz rozmawiać z osobami o podobnych zainteresowaniach.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <%- include('../partials/footer') %>
+
+    <script>
+      function sortServers(method) {
+        const container = document.getElementById('servers');
+        if (!container) return;
+
+        const servers = Array.from(container.children);
+
+        if (method === 'votes') {
+          servers.sort((a, b) => {
+            const votesA = parseInt(a.dataset.votes) || 0;
+            const votesB = parseInt(b.dataset.votes) || 0;
+            return votesB - votesA;
+          });
+        } else if (method === 'random') {
+          // Fisher-Yates shuffle algorithm
+          for (let i = servers.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [servers[i], servers[j]] = [servers[j], servers[i]];
+          }
+        }
+
+        // Clear container
+        while (container.firstChild) {
+          container.removeChild(container.firstChild);
+        }
+
+        // Append shuffled servers
+        servers.forEach(server => container.appendChild(server));
+      }
+
+      // Apply random sorting on page load
+      document.addEventListener('DOMContentLoaded', function() {
+        sortServers('random');
+      });
+    </script>
+  </main>
+</body>
+</html>

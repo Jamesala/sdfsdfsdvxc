@@ -1,0 +1,211 @@
+
+/* Widget z wyłaniającym się logo */
+/* Widget z wyłaniającym się logo */
+.surprise-widget {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+  z-index: 1000;
+  cursor: pointer;
+}
+
+.logo-container {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  border-radius: 0 20px 20px 0;
+  transition: all 0.3s ease;
+}
+
+/* Stan normalny (bez hover) */
+.logo-container {
+  width: 100px;
+  height: 100px;
+}
+
+.logo-container:hover,
+.logo-container.bubble-open { /* Dodano bubble-open */
+  width: 100px;
+  height: 100px;
+  animation: none;
+}
+
+.logo-half {
+  position: absolute;
+  left: -45%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100px;
+  height: 100px;
+  background: url('/assets/img/logoside.gif') center center / contain no-repeat;
+  transition: left 0.3s ease;
+}
+
+.logo-container:hover .logo-half,
+.logo-half.bubble-open { /* Dodano bubble-open */
+  left: -30%;
+}
+
+
+@keyframes pulse {
+  0%, 100% { 
+    box-shadow: 2px 0 15px rgba(80, 36, 243, 0.3);
+  }
+  50% { 
+    box-shadow: 2px 0 25px rgba(80, 36, 243, 0.6);
+  }
+}
+
+/* Dymek */
+.speech-bubble {
+  position: fixed;
+  left: 100px;
+  top: 50%;
+  transform: translateY(-50%) scale(0);
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  min-width: 250px;
+  z-index: 1001;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  opacity: 0;
+}
+
+.speech-bubble.show {
+  transform: translateY(-50%) scale(1);
+  opacity: 1;
+}
+
+.speech-bubble::before {
+  content: '';
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 10px 10px 10px 0;
+  border-color: transparent white transparent transparent;
+}
+
+.bubble-content {
+  text-align: center;
+}
+
+.bubble-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+  background: linear-gradient(135deg, #5024f3, #8b5cf6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.surprise-btn {
+  background: linear-gradient(135deg, #5024f3, #8b5cf6);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+}
+
+.surprise-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(80, 36, 243, 0.4);
+}
+
+.surprise-btn:active {
+  transform: translateY(0);
+}
+
+.surprise-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
+.surprise-btn:hover::before {
+  left: 100%;
+}
+
+.close-btn {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #999;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+  color: #333;
+}
+
+/* Loading animation */
+.loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .logo-container {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .logo-container:hover {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .speech-bubble {
+    left: 80px;
+    min-width: 200px;
+    padding: 15px;
+  }
+  
+  .bubble-title {
+    font-size: 16px;
+  }
+  
+  .surprise-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+}
+@media (max-width: 768px) {
+  .surprise-widget {
+    display: none;
+  }
+}

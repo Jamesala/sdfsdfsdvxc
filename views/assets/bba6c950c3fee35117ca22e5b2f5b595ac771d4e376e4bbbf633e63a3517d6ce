@@ -1,0 +1,1 @@
+{"success":false,"errors":[{"type":"field","value":"test","msg":"Tytuł musi mieć od 5 do 100 znaków","path":"title","location":"body"},{"type":"field","value":"test","msg":"Opis musi mieć od 10 do 1000 znaków","path":"description","location":"body"}],"message":"Popraw błędy w formularzu"}
